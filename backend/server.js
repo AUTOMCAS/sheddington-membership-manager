@@ -15,6 +15,12 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+const db = require('./src/models');
+
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('Drop and re-sync db.');
+});
+
 // simple route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome!' });
