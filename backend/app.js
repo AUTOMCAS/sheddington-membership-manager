@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
 const memberRouter = require('./src/routes/member.routes');
 
@@ -10,6 +12,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -23,10 +28,17 @@ db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and re-sync db.');
 });
 
-// simple route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome!' });
-});
+// A catch-all route for anything the webservice does not define.
+app.get('*', (req, res) =>
+  res.status(404).send({
+    message: 'Hello!',
+  })
+);
+
+// // simple route
+// app.get('/', (req, res) => {
+//   res.json({ message: 'Welcome!' });
+// });
 
 // route setup
 app.use('/members', memberRouter);
