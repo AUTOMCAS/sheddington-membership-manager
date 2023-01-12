@@ -13,7 +13,7 @@ describe('GET /', () => {
       .get('/')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(404, { message: 'Hello!' }, done);
+      .expect(200, { message: 'Welcome!' }, done);
   });
   afterAll(async () => {
     await thisDb.sequelize.close();

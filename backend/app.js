@@ -24,21 +24,21 @@ app.use(express.urlencoded({ extended: true }));
 
 const db = require('./src/models');
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log('Drop and re-sync db.');
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log('Drop and re-sync db.');
+// });
 
 // A catch-all route for anything the webservice does not define.
-app.get('*', (req, res) =>
-  res.status(404).send({
-    message: 'Hello!',
-  })
-);
+// app.get('*', (req, res) =>
+//   res.status(404).send({
+//     message: 'Welcome!',
+//   })
+// );
 
 // // simple route
-// app.get('/', (req, res) => {
-//   res.json({ message: 'Welcome!' });
-// });
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome!' });
+});
 
 // route setup
 app.use('/members', memberRouter);
