@@ -1,8 +1,8 @@
 module.exports = {
   HOST: 'localhost',
   USER: 'cas',
-  PASSWORD: '123',
-  DB: 'testdb',
+  PASSWORD: 'password',
+  DB: 'sheddington_membership_directory',
   dialect: 'postgres',
   pool: {
     max: 5,

@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
+const memberRouter = require('./src/routes/member.routes');
+
 const app = express();
 
 const corsOptions = {
@@ -26,8 +28,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome!' });
 });
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+// route setup
+app.use('/members', memberRouter);
+
+module.exports = app;
