@@ -1,31 +1,19 @@
-// module.exports = {
-//   HOST: 'localhost',
-//   USER: 'cas',
-//   PASSWORD: 'password',
-//   DB: 'sheddington_membership_directory',
-//   dialect: 'postgres',
-//   pool: {
-//     max: 5,
-//     min: 0,
-//     acquire: 30000,
-//     idle: 10000,
-//   },
-// };
+require('dotenv').config();
 
 module.exports = {
   development: {
-    username: 'cas',
-    password: null,
-    database: 'sheddington_membership_directory',
-    host: '127.0.0.1',
+    username: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
     dialect: 'postgres',
     logging: false,
   },
   test: {
-    username: 'cas',
-    password: null,
-    database: 'sheddington_membership_directory_test',
-    host: '127.0.0.1',
+    database: process.env.DB_TEST_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
     dialect: 'postgres',
     logging: false,
   },
