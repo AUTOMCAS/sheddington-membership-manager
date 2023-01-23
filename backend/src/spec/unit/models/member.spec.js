@@ -9,12 +9,15 @@ const MemberModel = require('../../../models/member.model');
 
 describe('Member model', () => {
   const Member = MemberModel(sequelize, dataTypes);
-  const member = new Member();
-  checkModelName(Member)('Member');
+  describe('Has correct model name', () => {
+    checkModelName(Member)('Member');
+  });
 
   describe('Contains all properties', () => {
+    const member = new Member();
     [
-      'name',
+      'first_name',
+      'second_name',
       'email',
       'telephone',
       'address',
@@ -23,4 +26,6 @@ describe('Member model', () => {
       'renewalDate',
     ].forEach(checkPropertyExists(member));
   });
+
+  it('name cannot be null', () => {});
 });

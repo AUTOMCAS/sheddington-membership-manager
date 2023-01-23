@@ -1,10 +1,17 @@
 module.exports = (sequelize, Sequelize) => {
   const Member = sequelize.define('Member', {
-    name: {
+    first_name: {
+      type: Sequelize.STRING,
+    },
+    second_name: {
       type: Sequelize.STRING,
     },
     email: {
       type: Sequelize.STRING,
+      unique: {
+        name: 'member_email',
+        msg: 'A member with this email already exists.',
+      },
     },
     telephone: {
       type: Sequelize.STRING,
