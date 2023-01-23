@@ -26,6 +26,4 @@ describe('Member model', () => {
       'renewalDate',
     ].forEach(checkPropertyExists(member));
   });
-
-  it('name cannot be null', () => {});
 });
