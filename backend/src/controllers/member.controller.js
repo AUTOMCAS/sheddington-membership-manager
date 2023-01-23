@@ -2,7 +2,7 @@ const db = require('../models');
 
 const Member = db.members;
 
-const Op = db.Sequelize.Op;
+// const Op = db.Sequelize.Op;
 
 // Create and Save a new Member
 exports.create = (req, res) => {
@@ -45,8 +45,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || 'Some error occurred while retrieving tutorials.',
+        message: err.message || 'Some error occurred while retrieving Members',
       });
     });
 };

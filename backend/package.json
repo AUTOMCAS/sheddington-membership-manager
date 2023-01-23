@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "-": "^0.0.1",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -21,7 +22,10 @@
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.28.0"
+    "save-dev": "^0.0.1-security",
+    "sequelize": "^6.28.0",
+    "sequelize-test-helpers": "^1.4.3",
+    "sinon": "^15.0.1"
   },
   "devDependencies": {
     "eslint": "^8.31.0",
