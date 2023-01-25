@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      second_name: {
+      last_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -32,11 +32,13 @@ module.exports = {
       },
       join_date: {
         allowNull: false,
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
       renewal_date: {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
+      createdAt: { type: Sequelize.DATE, allowNull: false },
+      updatedAt: { type: Sequelize.DATE, allowNull: false },
     });
   },
   down(queryInterface /* , Sequelize */) {
