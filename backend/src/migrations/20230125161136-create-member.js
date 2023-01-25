@@ -41,7 +41,7 @@ module.exports = {
       updatedAt: { type: Sequelize.DATE, allowNull: false },
     });
   },
-  down(queryInterface /* , Sequelize */) {
+  down(queryInterface, Sequelize) {
     return queryInterface.dropTable('Members');
   },
 };
