@@ -1,6 +1,6 @@
 const db = require('../models');
 
-const Member = db.members;
+const Members = db.members;
 
 // const Op = db.Sequelize.Op;
 
@@ -16,7 +16,8 @@ exports.create = (req, res) => {
 
   // Create a Member
   const member = {
-    name: req.body.name,
+    firstName: req.body.firstName,
+    secondName: req.body.secondName,
     email: req.body.email,
     telephone: req.body.telephone,
     address: req.body.address,
@@ -26,7 +27,7 @@ exports.create = (req, res) => {
   };
 
   // Save Member in the database
-  Member.create(member)
+  Members.create(member)
     .then((data) => {
       res.send(data);
     })
@@ -39,7 +40,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  Member.findAll()
+  Members.findAll()
     .then((data) => {
       res.send(data);
     })

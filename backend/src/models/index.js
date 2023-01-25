@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const env = process.env.NODE_ENV || 'development';
 
-const config = require('../config/db.config')[env];
+const config = require('../config/config')[env];
 
 let sequelize = '';
 if (config.use_env_variable) {

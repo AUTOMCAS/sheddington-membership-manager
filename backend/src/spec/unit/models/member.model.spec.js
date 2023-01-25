@@ -17,13 +17,27 @@ describe('Member model', () => {
     const member = new Member();
     [
       'first_name',
-      'second_name',
+      'last_name',
       'email',
       'telephone',
       'address',
       'gender',
-      'joinDate',
-      'renewalDate',
+      'join_date',
+      'renewal_date',
     ].forEach(checkPropertyExists(member));
   });
+
+  // it('has an email address', () => {
+  //   const member = new Member({
+  //     firstName: 'John',
+  //     secondName: 'Doe',
+  //     email: 'jd@example.com',
+  //     telephone: '1234567890',
+  //     address: '12 example address',
+  //     gender: 'M',
+  //     joinDate: '01/01/23',
+  //     renewalDate: '01/01/24',
+  //   });
+  //   expect(member.email).toEqual('someone@example.com');
+  // });
 });
