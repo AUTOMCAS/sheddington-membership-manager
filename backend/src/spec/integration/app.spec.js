@@ -16,6 +16,7 @@ describe('GET /', () => {
       .expect('Content-Type', /json/)
       .expect(200, { message: 'Welcome!' }, done);
   });
+
   afterAll(async () => {
     await thisDb.sequelize.close();
   });

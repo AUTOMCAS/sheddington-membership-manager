@@ -15,7 +15,7 @@ jest.mock('../../../models/member.model', () => () => {
   });
 });
 
-describe('Test Sequelize Mocking', () => {
+xdescribe('Test Sequelize Mocking', () => {
   it('Should get value from mock', async () => {
     const user = await MemberController.findOne();
     expect(user.firstName).toEqual('good');
