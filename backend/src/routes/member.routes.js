@@ -2,12 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 
-const members = require('../controllers/member.controller');
+const MemberController = require('../controllers/member.controller');
 
 // Create a new Members
-router.post('/', members.create);
+router.post('/', MemberController.Create);
 
 // Retrieve all Members
-router.get('/', members.findAll);
+router.get('/', MemberController.FindAll);
 
 module.exports = router;
