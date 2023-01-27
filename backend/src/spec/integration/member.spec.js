@@ -83,6 +83,15 @@ describe('/members routes', () => {
         });
         expect(response.statusCode).toBe(400);
       });
+      it('should fail with error when first name is not given with', async () => {
+        const response = await supertest(app)
+          .post('/members')
+          .send({ ...memberInput, firstName: '' });
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toMatchObject({
+          message: 'Name must not be empty!',
+        });
+      });
     });
   });
   afterAll(async () => {
