@@ -9,7 +9,7 @@ const MemberController = {
   Create: (req, res) => {
     if (!req.body.firstName) {
       res.status(400).send({
-        message: 'Content can not be empty!',
+        message: 'Name must not be empty!',
       });
 
       return;

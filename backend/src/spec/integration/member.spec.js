@@ -4,8 +4,6 @@ const app = require('../../../app');
 
 const db = require('../../models');
 
-const MemberController = require('../../controllers/member.controller');
-
 const Members = db.members;
 
 const memberPayload = {
@@ -59,64 +57,31 @@ describe('/members routes', () => {
 
   describe('POST /members, create a member', () => {
     describe('given valid entries', () => {
-      it('should return the member payload', async () => {
-        const createMemberControllerMock = jest
-          .spyOn(MemberController, 'Create')
-          .mockReturnValueOnce(memberPayload);
-
-        const { statusCode, body } = await supertest(app)
-          .post('/members')
-          .send(memberInput);
-
-        expect(statusCode).toBe(200);
-
-        expect(body).toEqual(memberPayload);
-
-        expect(createMemberControllerMock).toHaveBeenCalled();
-        //With(memberInput);
-      });
-      it('should succeed with code 200', async () => {
-        const response = await supertest(app).post('/members').send({
-          firstName: 'John',
-          secondName: 'Doe',
-          email: 'jd@example.com',
-          telephone: '1234567890',
-          address: '12 example address',
-          gender: 'M',
-          joinDate: '01/01/23',
-          renewalDate: '01/01/24',
-        });
-        expect(response.statusCode).toBe(200);
-      });
-      it('should creates a new member', async () => {
-        const memberExample = {
-          firstName: 'John',
-          secondName: 'Doe',
-          email: 'jd@example.com',
-          telephone: '1234567890',
-          address: '12 example address',
-          gender: 'M',
-          joinDate: '01/01/23',
-          renewalDate: '01/01/24',
-        };
-        await supertest(app).post('/members').send(memberExample);
+      it('should create a new member in the database', async () => {
+        await supertest(app).post('/members').send(memberInput);
 
         await supertest(app)
           .get('/members')
           .then((res) => {
             expect(res.body[0].id).toBe(1);
-            expect(res.body[0].first_name).toBe('John');
+            expect(res.body[0].first_name).toBe(memberInput.firstName);
           });
       });
-    });
+      it('should return the member payload', async () => {
+        const { statusCode, body } = await supertest(app)
+          .post('/members')
+          .send(memberInput);
 
-    xit('should fail with code 400 with missing entries', async () => {
-      const response = await supertest(app).post('/members').send({
-        name: 'John',
+        expect(statusCode).toBe(200);
+        expect(body).toEqual(memberPayload);
       });
-      expect(response.statusCode).toBe(400);
-      expect(response.body).toMatchObject({
-        message: 'Invalid token.',
+    });
+    describe('given invalid entries', () => {
+      it('should fail with code 400', async () => {
+        const response = await supertest(app).post('/members').send({
+          name: 'John',
+        });
+        expect(response.statusCode).toBe(400);
       });
     });
   });
