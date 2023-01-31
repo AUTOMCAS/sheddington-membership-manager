@@ -77,7 +77,7 @@ describe('/members routes', () => {
       });
     });
     describe('given invalid entries', () => {
-      xit('should fail with code 400', async () => {
+      it('should fail with code 400', async () => {
         const response = await supertest(app).post('/members').send({
           name: 'John',
         });
