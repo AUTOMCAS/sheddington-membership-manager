@@ -1,10 +1,5 @@
 const memberService = require('../services/member.services');
-
-// const db = require('../models');
-
-// const Members = db.members;
-
-// const Op = db.Sequelize.Op;
+const { logger } = require('../utils/logger');
 
 const createMember = async (req, res) => {
   const member = {
@@ -17,22 +12,23 @@ const createMember = async (req, res) => {
     join_date: req.body.joinDate,
     renewal_date: req.body.renewalDate,
   };
-
-  const createdMember = await memberService.create(member);
-
-  res.status(200).json({
-    status: 'success',
-    createdMember,
-  });
+  try {
+    const createdMember = await memberService.create(member);
+    return res.send(createdMember);
+  } catch (error) {
+    logger.error(error);
+    return res.status(400).send(error);
+  }
 };
 
 const getAllMembers = async (req, res) => {
-  const members = await memberService.getAll();
-
-  res.status(200).json({
-    status: 'success',
-    members,
-  });
+  try {
+    const members = await memberService.getAll();
+    return res.send(members);
+  } catch (error) {
+    logger.error(error);
+    return res.status(400).send(error);
+  }
 };
 
 module.exports = {

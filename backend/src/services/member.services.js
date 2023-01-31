@@ -1,4 +1,4 @@
-// const { ErrorHandler } = require('../helpers/error');
+const { ErrorHandler } = require('../helpers/errorHandler');
 
 const db = require('../models');
 
@@ -8,15 +8,19 @@ async function create(member) {
   try {
     return await Members.create(member);
   } catch (error) {
-    // throw new ErrorHandler(error.statusCode, error.message);
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      throw new ErrorHandler(error.errors.map((e) => e.message));
+    } else {
+      throw new ErrorHandler(error.message);
+    }
   }
 }
+
 async function getAll() {
   try {
     return await Members.findAll();
   } catch (error) {
-    throw new Error(error);
-    //throw new ErrorHandler(error.statusCode, error.message);
+    throw new ErrorHandler(error.message);
   }
 }
 

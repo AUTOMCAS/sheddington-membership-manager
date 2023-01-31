@@ -1,9 +1,10 @@
-// const pino = require('pino');
+const pino = require('pino');
 
-// // Create a logging instance
-// const logger = pino({
-//   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-//   prettyPrint: process.env.NODE_ENV !== 'production',
-// });
+const logger = pino({
+  //level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  transport: {
+    target: 'pino-pretty',
+  },
+});
 
-// module.exports.logger = logger;
+module.exports = { logger };
