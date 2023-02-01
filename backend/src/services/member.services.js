@@ -14,14 +14,10 @@ async function create(member) {
     }
   });
 
-  if (member.first_name.length === 0) {
-    throw new Error('First name cannot be empty');
-  }
-
   try {
     return await Members.create(member);
   } catch (error) {
-    //logger.error(error);
+    logger.error(error);
     if (error.errors[0].message === 'email must be unique') {
       throw new Error('Email must be unique');
     }
