@@ -1,4 +1,4 @@
-const supertest = require('supertest');
+const request = require('supertest');
 
 const app = require('../../../app');
 
@@ -34,22 +34,22 @@ const memberInput = {
 jest.useFakeTimers().setSystemTime(new Date('2023-01-01'));
 
 describe('/members routes', () => {
-  const thisDb = db;
-  beforeAll(async () => {
-    await thisDb.sequelize.sync({ force: true });
-  });
-  beforeEach(async () => {
+  // const thisDb = db;
+  // beforeAll(async () => {
+  //   await thisDb.sequelize.sync({ force: true });
+  // });
+  afterEach(async () => {
     await Members.truncate({ cascade: true, restartIdentity: true });
   });
 
   describe('GET /members, get all members', () => {
     it('should respond with a 200', async () => {
-      const { statusCode } = await supertest(app).get('/members');
+      const response = await request(app).get('/members');
 
-      expect(statusCode).toBe(200);
+      expect(response.statusCode).toBe(200);
     });
     it('should initially respond with an empty member list', async () => {
-      const { body } = await supertest(app).get('/members');
+      const { body } = await request(app).get('/members');
 
       expect(body).toEqual([]);
     });
@@ -58,9 +58,9 @@ describe('/members routes', () => {
   describe('POST /members, create a member', () => {
     describe('given valid entries', () => {
       it('should create a new member in the database', async () => {
-        await supertest(app).post('/members').send(memberInput);
+        await request(app).post('/members').send(memberInput);
 
-        await supertest(app)
+        await request(app)
           .get('/members')
           .then((res) => {
             expect(res.body[0].id).toBe(1);
@@ -68,7 +68,7 @@ describe('/members routes', () => {
           });
       });
       it('should return the member payload', async () => {
-        const { statusCode, body } = await supertest(app)
+        const { statusCode, body } = await request(app)
           .post('/members')
           .send(memberInput);
 
@@ -77,33 +77,40 @@ describe('/members routes', () => {
       });
     });
     describe('given invalid entries', () => {
-      xit('should fail with code 400', async () => {
-        const response = await supertest(app).post('/members').send({
-          name: 'John',
-        });
+      it('should fail with code 400', async () => {
+        await request(app).post('/members').send(memberInput);
+        const response = await request(app).post('/members').send(memberInput);
+
         expect(response.statusCode).toBe(400);
       });
 
-      xit('should fail with error when no content is given', async () => {
-        const response = await supertest(app).post('/members').send();
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toMatchObject({
-          message: 'Content must not be empty!',
-        });
-      });
+      // xit('should fail with code 400', async () => {
+      //   const response = await request(app).post('/members').send({});
+      //   console.log(response.statusCode);
 
-      xit('should fail with error when first name is not given', async () => {
-        const response = await supertest(app)
-          .post('/members')
-          .send({ ...memberInput, firstName: '' });
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toMatchObject({
-          message: 'Name must not be empty!',
-        });
-      });
+      //   expect(response.statusCode).toBe(400);
+      // });
+
+      // xit('should fail with error when no content is given', async () => {
+      //   const response = await request(app).post('/members').send();
+      //   expect(response.statusCode).toBe(400);
+      //   expect(response.body).toMatchObject({
+      //     message: 'Content must not be empty!',
+      //   });
+      // });
+
+      // xit('should fail with error when first name is not given', async () => {
+      //   const response = await request(app)
+      //     .post('/members')
+      //     .send({ ...memberInput, firstName: '' });
+      //   expect(response.statusCode).toBe(400);
+      //   expect(response.body).toMatchObject({
+      //     message: 'Name must not be empty!',
+      //   });
+      // });
     });
   });
-  afterAll(async () => {
-    await thisDb.sequelize.close();
-  });
+  // afterAll(async () => {
+  //   await thisDb.sequelize.close();
+  // });
 });

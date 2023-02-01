@@ -1,26 +1,26 @@
-const MemberController = require('../../../controllers/member.controller');
+// const MemberController = require('../../../controllers/member.controller');
 
-jest.mock('../../../models/member.model', () => () => {
-  const SequelizeMock = require('sequelize-mock');
-  const dbMock = new SequelizeMock();
-  return dbMock.define('member', {
-    firstName: 'John',
-    secondName: 'Doe',
-    email: 'jd@example.com',
-    telephone: '1234567890',
-    address: '12 example address',
-    gender: 'M',
-    joinDate: '01/01/23',
-    renewalDate: '01/01/24',
-  });
-});
+// jest.mock('../../../models/member.model', () => () => {
+//   const SequelizeMock = require('sequelize-mock');
+//   const dbMock = new SequelizeMock();
+//   return dbMock.define('member', {
+//     firstName: 'John',
+//     secondName: 'Doe',
+//     email: 'jd@example.com',
+//     telephone: '1234567890',
+//     address: '12 example address',
+//     gender: 'M',
+//     joinDate: '01/01/23',
+//     renewalDate: '01/01/24',
+//   });
+// });
 
-xdescribe('Test Sequelize Mocking', () => {
-  it('Should get value from mock', async () => {
-    const user = await MemberController.findOne();
-    expect(user.firstName).toEqual('good');
-  });
-});
+// xdescribe('Test Sequelize Mocking', () => {
+//   it('Should get value from mock', async () => {
+//     const user = await MemberController.findOne();
+//     expect(user.firstName).toEqual('good');
+//   });
+// });
 
 // const { match, stub, resetHistory } = require('sinon');
 // const proxyquire = require('proxyquire');

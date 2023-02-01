@@ -1,4 +1,5 @@
 const { ErrorHandler } = require('../helpers/errorHandler');
+const { logger } = require('../utils/logger');
 
 const db = require('../models');
 
@@ -11,6 +12,7 @@ async function create(member) {
     if (error.name === 'SequelizeUniqueConstraintError') {
       throw new ErrorHandler(error.errors.map((e) => e.message));
     } else {
+      logger.error(error);
       throw new ErrorHandler(error.message);
     }
   }

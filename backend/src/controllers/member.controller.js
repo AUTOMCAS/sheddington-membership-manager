@@ -12,11 +12,11 @@ const createMember = async (req, res) => {
     join_date: req.body.joinDate,
     renewal_date: req.body.renewalDate,
   };
+
   try {
     const createdMember = await memberService.create(member);
     return res.send(createdMember);
   } catch (error) {
-    logger.error(error);
     return res.status(400).send(error);
   }
 };
