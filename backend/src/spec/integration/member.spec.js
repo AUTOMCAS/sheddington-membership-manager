@@ -79,14 +79,22 @@ describe('/members routes', () => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toHaveProperty('message', 'All fields required');
       });
+      it('should fail when duplicate email already exists', async () => {
+        await request(app).post('/members').send(memberInput);
+        const response = await request(app).post('/members').send(memberInput);
 
-      xit('should fail with error when first name is not given', async () => {
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toMatchObject({
+          message: 'Error: email must be unique',
+        });
+      });
+      xit('should fail with error when firstName is not present', async () => {
         const response = await request(app)
           .post('/members')
           .send({ ...memberInput, firstName: '' });
         expect(response.statusCode).toBe(400);
         expect(response.body).toMatchObject({
-          message: 'Name must not be empty!',
+          message: 'First name must not be empty!',
         });
       });
     });

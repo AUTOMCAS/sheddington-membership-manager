@@ -1,5 +1,4 @@
 const memberService = require('../services/member.services');
-const { logger } = require('../utils/logger');
 
 async function createMember(req, res) {
   const member = {
@@ -20,8 +19,7 @@ async function createMember(req, res) {
     const createdMember = await memberService.create(member);
     return res.status(200).json(createdMember);
   } catch (error) {
-    console.log('ERROR', error);
-    return res.status(400).send({ message: 'An unknown error occurred.' });
+    return res.status(400).send({ message: `${error}` });
   }
 }
 
