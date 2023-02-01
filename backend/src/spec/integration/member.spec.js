@@ -64,12 +64,10 @@ describe('/members routes', () => {
           });
       });
       it('should return the member payload', async () => {
-        const { statusCode, body } = await request(app)
-          .post('/members')
-          .send(memberInput);
+        const response = await request(app).post('/members').send(memberInput);
 
-        expect(statusCode).toBe(200);
-        expect(body).toEqual(memberPayload);
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual(memberPayload);
       });
     });
     describe('given invalid entries', () => {
@@ -113,5 +111,3 @@ describe('/members routes', () => {
     await models.sequelize.close();
   });
 });
-
-//{ ...memberInput, firstName: '' }
