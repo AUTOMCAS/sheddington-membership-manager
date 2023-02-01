@@ -6,12 +6,27 @@ const models = require('../models');
 const Members = models.members;
 
 async function create(member) {
+  const memberEntries = Object.entries(member);
+
+  memberEntries.forEach((entry) => {
+    if (entry[1].length === 0) {
+      throw new Error(`${entry[0]} cannot be empty`);
+    }
+  });
+
+  if (member.first_name.length === 0) {
+    throw new Error('First name cannot be empty');
+  }
+
   try {
     return await Members.create(member);
   } catch (error) {
     //logger.error(error);
-    //console.log('error.errors', error.errors[0].message);
-    throw new Error(error.errors[0].message);
+    if (error.errors[0].message === 'email must be unique') {
+      throw new Error('Email must be unique');
+    }
+
+    throw new Error(error);
   }
 }
 

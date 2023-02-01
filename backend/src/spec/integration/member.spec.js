@@ -85,16 +85,25 @@ describe('/members routes', () => {
 
         expect(response.statusCode).toBe(400);
         expect(response.body).toMatchObject({
-          message: 'Error: email must be unique',
+          message: 'Error: Email must be unique',
         });
       });
-      xit('should fail with error when firstName is not present', async () => {
+      it('should fail with error when firstName is not present', async () => {
         const response = await request(app)
           .post('/members')
           .send({ ...memberInput, firstName: '' });
         expect(response.statusCode).toBe(400);
         expect(response.body).toMatchObject({
-          message: 'First name must not be empty!',
+          message: 'Error: first_name cannot be empty',
+        });
+      });
+      it('should fail with error when lastName is not present', async () => {
+        const response = await request(app)
+          .post('/members')
+          .send({ ...memberInput, lastName: '' });
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toMatchObject({
+          message: 'Error: last_name cannot be empty',
         });
       });
     });
@@ -104,3 +113,5 @@ describe('/members routes', () => {
     await models.sequelize.close();
   });
 });
+
+//{ ...memberInput, firstName: '' }
