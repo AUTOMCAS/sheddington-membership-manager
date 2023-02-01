@@ -1,7 +1,7 @@
 const memberService = require('../services/member.services');
 const { logger } = require('../utils/logger');
 
-const createMember = async (req, res) => {
+async function createMember(req, res) {
   const member = {
     first_name: req.body.firstName,
     last_name: req.body.lastName,
@@ -13,23 +13,26 @@ const createMember = async (req, res) => {
     renewal_date: req.body.renewalDate,
   };
 
+  const isEmpty = Object.keys(req.body).length === 0;
+  if (isEmpty) return res.status(400).send({ message: 'All fields required' });
+
   try {
     const createdMember = await memberService.create(member);
-    return res.send(createdMember);
+    return res.status(200).json(createdMember);
   } catch (error) {
-    return res.status(400).send(error);
+    console.log('ERROR', error);
+    return res.status(400).send({ message: 'An unknown error occurred.' });
   }
-};
+}
 
-const getAllMembers = async (req, res) => {
+async function getAllMembers(req, res) {
   try {
     const members = await memberService.getAll();
-    return res.send(members);
+    return res.status(200).json(members);
   } catch (error) {
-    logger.error(error);
-    return res.status(400).send(error);
+    return res.status(400).send({ message: 'An unknown error occurred.' });
   }
-};
+}
 
 module.exports = {
   createMember,
