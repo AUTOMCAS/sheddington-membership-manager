@@ -5,6 +5,7 @@ const CreateMember: React.FC = () => {
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [telephone, setTelephone] = useState<string>('');
+  const [gender, setGender] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [joinDate, setJoinDate] = useState<string>('');
   const [renewalDate, setRenewalDate] = useState<string>('');
@@ -45,12 +46,41 @@ const CreateMember: React.FC = () => {
   const handleFirstNameChange = (e: React.SyntheticEvent): void => {
     let target = e.target as HTMLInputElement;
     setFirstName(target.value);
-    console.log(firstName);
   };
 
-  // const handleEmailChange = (event) => {
-  //   setEmail(event.target.value);
-  // };
+  const handleLastNameChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setLastName(target.value);
+  };
+
+  const handleEmailNameChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setEmail(target.value);
+  };
+
+  const handleTelephoneChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setTelephone(target.value);
+  };
+
+  const handleAddressChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setAddress(target.value);
+  };
+
+  const handleGenderChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setGender(target.value);
+  };
+
+  const handleJoinDateChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setJoinDate(target.value);
+  };
+  const handleRenewalDateChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setRenewalDate(target.value);
+  };
 
   return (
     <form className="createMemberInput">
@@ -63,10 +93,11 @@ const CreateMember: React.FC = () => {
         data-test="firstNameInput"
       />
       <br></br>
-      <br></br>
       <input
         id="lastName"
         type="input"
+        value={lastName}
+        onChange={handleLastNameChange}
         placeholder="Last Name"
         data-test="lastNameInput"
       />
