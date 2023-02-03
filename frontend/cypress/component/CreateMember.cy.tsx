@@ -7,6 +7,8 @@ describe('CreateMember.cy.tsx', () => {
   it('Should have input for first name', () => {
     cy.mount(<CreateMember />);
     cy.getByData('firstNameInput');
+    cy.getByData('firstNameInput').type('Chris');
+    cy.getByData('firstNameInput').should('have.value', 'Chris');
   });
   it('Should have input for last name', () => {
     cy.mount(<CreateMember />);
