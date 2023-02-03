@@ -7,7 +7,9 @@
     "lib": ["dom", "esnext"],
     "strict": true,
     "sourceMap": true,
-    "target": "esnext"
+    "target": "esnext",
+    "types": ["cypress", "node"]
   },
+  "include": ["**/*.ts"],
   "exclude": ["node_modules"]
 }
