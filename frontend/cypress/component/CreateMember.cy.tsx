@@ -1,5 +1,7 @@
+import CreateMember from '../../src/components/CreateMember/CreateMember';
+
 describe('CreateMember.cy.tsx', () => {
-  it('playground', () => {
-    // cy.mount()
-  })
-})
+  it('renders', () => {
+    cy.mount(<CreateMember />);
+  });
+});
