@@ -9,39 +9,55 @@ const CreateMember: React.FC = () => {
   const [address, setAddress] = useState<string>('');
   const [joinDate, setJoinDate] = useState<string>('');
   const [renewalDate, setRenewalDate] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-  // const handleSubmit = async (event) => {
-  // event.preventDefault();
+  const handleSubmit = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
 
-  // if (email === '' || password === '' || usersName === '') return;
-  // if (
-  //   !email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) ||
-  //   !password.match(/^[a-zA-Z0-9]{4,25}$/) ||
-  //   !usersName.match(/^[a-z ,.'-]*$/i)
-  // )
-  //   return;
-  // if (!usersName.match(/^[a-z ,.'-]*$/i)) return;
+    // if (email === '' || password === '' || usersName === '') return;
+    // if (
+    //   !email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) ||
+    //   !password.match(/^[a-zA-Z0-9]{4,25}$/) ||
+    //   !usersName.match(/^[a-z ,.'-]*$/i)
+    // )
+    //   return;
+    // if (!usersName.match(/^[a-z ,.'-]*$/i)) return;
+    // try {
+    //   const response = await fetch('http://localhost:8080/members', {
+    //     mode: 'cors',
+    //   });
+    //   const data = await response.json();
+    //   console.log({ data });
+    // } catch (e) {
+    //   console.log(e);
+    // }
 
-  // await fetch('/users', {
-  //   method: 'post',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
+    const member = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      telephone: telephone,
+      gender: gender,
+      address: address,
+      joinDate: joinDate,
+      renewalDate: renewalDate,
+    };
 
-  //   body: JSON.stringify({
-  //     email: email,
-  //     password: password,
-  //     usersName: usersName,
-  //     profilePic: profilePicURL,
-  //   }),
-  // }).then((response) => {
-  //   if (response.status === 201) {
-  //     navigate('/login');
-  //   } else {
-  //     navigate('/signup');
-  //   }
-  // });
-  //};
+    let response = await fetch('http://localhost:8080/members', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(member),
+    });
+
+    if (response.status === 200) {
+      setErrorMessage('Member Created');
+    } else {
+      const data = await response.json();
+      setErrorMessage(data.message);
+    }
+  };
 
   const handleFirstNameChange = (e: React.SyntheticEvent): void => {
     let target = e.target as HTMLInputElement;
@@ -53,7 +69,7 @@ const CreateMember: React.FC = () => {
     setLastName(target.value);
   };
 
-  const handleEmailNameChange = (e: React.SyntheticEvent): void => {
+  const handleEmailChange = (e: React.SyntheticEvent): void => {
     let target = e.target as HTMLInputElement;
     setEmail(target.value);
   };
@@ -83,7 +99,7 @@ const CreateMember: React.FC = () => {
   };
 
   return (
-    <form className="createMemberInput">
+    <form id="createMemberInput" onSubmit={handleSubmit}>
       <input
         id="firstName"
         type="input"
@@ -105,19 +121,25 @@ const CreateMember: React.FC = () => {
       <input
         id="email"
         type="input"
+        value={email}
+        onChange={handleEmailChange}
         placeholder="Email"
         data-test="emailInput"
       />
       <br></br>
       <input
-        type="input"
-        placeholder="Telephone"
         id="telephone"
+        type="input"
+        value={telephone}
+        onChange={handleTelephoneChange}
+        placeholder="Telephone"
         data-test="telephoneInput"
       />
       <br></br>
       <input
         id="address"
+        value={address}
+        onChange={handleAddressChange}
         type="input"
         placeholder="Address"
         data-test="addressInput"
@@ -125,6 +147,8 @@ const CreateMember: React.FC = () => {
       <br></br>
       <input
         id="gender"
+        value={gender}
+        onChange={handleGenderChange}
         type="input"
         placeholder="Gender"
         data-test="genderInput"
@@ -132,6 +156,8 @@ const CreateMember: React.FC = () => {
       <br></br>
       <input
         id="joinDate"
+        value={joinDate}
+        onChange={handleJoinDateChange}
         type="input"
         placeholder="Join date"
         data-test="joinDateInput"
@@ -139,6 +165,8 @@ const CreateMember: React.FC = () => {
       <br></br>
       <input
         id="renewalDate"
+        value={renewalDate}
+        onChange={handleRenewalDateChange}
         type="input"
         placeholder="Renewal date"
         data-test="renewalDateInput"
@@ -147,6 +175,7 @@ const CreateMember: React.FC = () => {
       <button className="submitButton" type="submit" data-test="submitButton">
         Create Member
       </button>
+      {errorMessage && <div className="error"> {errorMessage} </div>}
     </form>
   );
 };

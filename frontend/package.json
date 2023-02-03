@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@testing-library/cypress": "^9.0.0",
+    "axios": "^1.3.2",
     "eslint-plugin-cypress": "^2.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

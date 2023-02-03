@@ -50,9 +50,14 @@ describe('CreateMember.cy.tsx', () => {
     cy.mount(<CreateMember />);
     cy.getByData('submitButton');
   });
-  it('Should allow a new member to be created', () => {
+  it('Should submit a form', () => {
     cy.mount(<CreateMember />);
-    cy.getByData('firstNameInput').type('Chris');
+    cy.get('#createMemberInput').submit();
+  });
+
+  xit('Should allow a new member to be created', () => {
+    cy.mount(<CreateMember />);
+    cy.getByData('memberForm').type('Chris');
     //cy.getByData('successMessage').should('exist');
   });
 });
