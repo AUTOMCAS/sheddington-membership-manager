@@ -1,26 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const CreateMember: React.FC = () => {
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [telephone, setTelephone] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [joinDate, setJoinDate] = useState<string>('');
+  const [renewalDate, setRenewalDate] = useState<string>('');
+
+  // const handleSubmit = async (event) => {
+  // event.preventDefault();
+
+  // if (email === '' || password === '' || usersName === '') return;
+  // if (
+  //   !email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) ||
+  //   !password.match(/^[a-zA-Z0-9]{4,25}$/) ||
+  //   !usersName.match(/^[a-z ,.'-]*$/i)
+  // )
+  //   return;
+  // if (!usersName.match(/^[a-z ,.'-]*$/i)) return;
+
+  // await fetch('/users', {
+  //   method: 'post',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+
+  //   body: JSON.stringify({
+  //     email: email,
+  //     password: password,
+  //     usersName: usersName,
+  //     profilePic: profilePicURL,
+  //   }),
+  // }).then((response) => {
+  //   if (response.status === 201) {
+  //     navigate('/login');
+  //   } else {
+  //     navigate('/signup');
+  //   }
+  // });
+  //};
+
+  const handleFirstNameChange = (e: React.SyntheticEvent): void => {
+    let target = e.target as HTMLInputElement;
+    setFirstName(target.value);
+    console.log(firstName);
+  };
+
+  // const handleEmailChange = (event) => {
+  //   setEmail(event.target.value);
+  // };
+
   return (
     <form className="createMemberInput">
       <input
-        type="input"
-        placeholder="First Name"
         id="firstName"
+        type="input"
+        value={firstName}
+        onChange={handleFirstNameChange}
+        placeholder="First Name"
         data-test="firstNameInput"
       />
       <br></br>
+      <br></br>
       <input
+        id="lastName"
         type="input"
-        placeholder="Second Name"
-        id="secondName"
-        data-test="secondNameInput"
+        placeholder="Last Name"
+        data-test="lastNameInput"
       />
       <br></br>
       <input
+        id="email"
         type="input"
         placeholder="Email"
-        id="email"
         data-test="emailInput"
       />
       <br></br>
@@ -32,33 +86,36 @@ const CreateMember: React.FC = () => {
       />
       <br></br>
       <input
+        id="address"
         type="input"
         placeholder="Address"
-        id="address"
         data-test="addressInput"
       />
       <br></br>
       <input
+        id="gender"
         type="input"
         placeholder="Gender"
-        id="gender"
         data-test="genderInput"
       />
       <br></br>
       <input
+        id="joinDate"
         type="input"
         placeholder="Join date"
-        id="joinDate"
         data-test="joinDateInput"
       />
       <br></br>
       <input
+        id="renewalDate"
         type="input"
         placeholder="Renewal date"
-        id="renewalDate"
         data-test="renewalDateInput"
       />
       <br></br>
+      <button className="submitButton" type="submit" data-test="submitButton">
+        Create Member
+      </button>
     </form>
   );
 };

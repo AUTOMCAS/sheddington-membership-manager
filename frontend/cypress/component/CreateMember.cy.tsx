@@ -8,9 +8,9 @@ describe('CreateMember.cy.tsx', () => {
     cy.mount(<CreateMember />);
     cy.getByData('firstNameInput');
   });
-  it('Should have input for second name', () => {
+  it('Should have input for last name', () => {
     cy.mount(<CreateMember />);
-    cy.getByData('secondNameInput');
+    cy.getByData('lastNameInput');
   });
   it('Should have input for email', () => {
     cy.mount(<CreateMember />);
@@ -36,17 +36,13 @@ describe('CreateMember.cy.tsx', () => {
     cy.mount(<CreateMember />);
     cy.getByData('renewalDateInput');
   });
-  it('Should have input for renewal date', () => {
+  it('Should have a submit button', () => {
     cy.mount(<CreateMember />);
-    cy.getByData('renewalDateInput');
+    cy.getByData('submitButton');
   });
-  xit('Should have a submit button', () => {
-    cy.mount(<CreateMember />);
-    cy.getByData('submit-button');
-  });
-  xit('Should allow a new member to be created', () => {
+  it('Should allow a new member to be created', () => {
     cy.mount(<CreateMember />);
     cy.getByData('firstNameInput').type('Chris');
-    cy.getByData('submit-button').click();
+    //cy.getByData('successMessage').should('exist');
   });
 });
