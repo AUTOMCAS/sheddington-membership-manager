@@ -1,4 +1,4 @@
-import CreateMember from '../../src/components/CreateMember/CreateMember';
+import CreateMember from '../../src/pages/CreateMember/CreateMember';
 
 describe('CreateMember.cy.tsx', () => {
   it('renders', () => {
@@ -53,11 +53,5 @@ describe('CreateMember.cy.tsx', () => {
   it('Should submit a form', () => {
     cy.mount(<CreateMember />);
     cy.get('#createMemberInput').submit();
-  });
-
-  xit('Should allow a new member to be created', () => {
-    cy.mount(<CreateMember />);
-    cy.getByData('memberForm').type('Chris');
-    //cy.getByData('successMessage').should('exist');
   });
 });

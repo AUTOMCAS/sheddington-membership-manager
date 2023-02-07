@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-.App {
+.CreateMemberPage {
   width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #5a95bd;
+  padding-top: 100px;
 }
 .heading {
   text-transform: uppercase;
