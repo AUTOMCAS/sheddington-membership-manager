@@ -1,6 +1,6 @@
 import React from 'react';
-import CreateMember from '../CreateMember/CreateMember';
-import Home from '../Home/Home';
+import CreateMember from './pages/CreateMember/CreateMember';
+import Home from './pages/Home/Home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App: React.FC = () => {
