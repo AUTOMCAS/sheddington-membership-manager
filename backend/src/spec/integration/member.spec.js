@@ -8,14 +8,14 @@ const Members = models.members;
 
 const memberPayload = {
   id: 1,
-  first_name: 'John',
-  last_name: 'Doe',
+  firstName: 'John',
+  lastName: 'Doe',
   email: 'jd@example.com',
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
-  join_date: '2023-01-01T00:00:00.000Z',
-  renewal_date: '2024-01-01T00:00:00.000Z',
+  joinDate: '2023-01-01T00:00:00.000Z',
+  renewalDate: '2024-01-01T00:00:00.000Z',
   createdAt: '2023-01-01T00:00:00.000Z',
   updatedAt: '2023-01-01T00:00:00.000Z',
 };
@@ -60,7 +60,7 @@ describe('/members routes', () => {
           .get('/members')
           .then((res) => {
             expect(res.body[0].id).toBe(1);
-            expect(res.body[0].first_name).toBe(memberInput.firstName);
+            expect(res.body[0].firstName).toBe(memberInput.firstName);
           });
       });
       it('should return the member payload', async () => {
@@ -92,7 +92,7 @@ describe('/members routes', () => {
           .send({ ...memberInput, firstName: '' });
         expect(response.statusCode).toBe(400);
         expect(response.body).toMatchObject({
-          message: 'Error: first_name cannot be empty',
+          message: 'Error: firstName cannot be empty',
         });
       });
       it('should fail with error when lastName is not present', async () => {
@@ -101,7 +101,7 @@ describe('/members routes', () => {
           .send({ ...memberInput, lastName: '' });
         expect(response.statusCode).toBe(400);
         expect(response.body).toMatchObject({
-          message: 'Error: last_name cannot be empty',
+          message: 'Error: lastName cannot be empty',
         });
       });
     });

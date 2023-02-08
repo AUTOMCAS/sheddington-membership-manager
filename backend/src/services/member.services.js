@@ -1,4 +1,3 @@
-const { ErrorHandler } = require('../helpers/errorHandler');
 const { logger } = require('../utils/logger');
 
 const models = require('../models');

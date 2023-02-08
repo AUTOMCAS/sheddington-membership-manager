@@ -8,7 +8,7 @@ const memberRouter = require('./src/routes/member.routes');
 const app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:8081',
+  origin: 'http://localhost:3000',
 };
 
 app.use(cors(corsOptions));
@@ -42,5 +42,9 @@ app.get('/', (req, res) => {
 
 // route setup
 app.use('/members', memberRouter);
+
+// app.listen(8080, () => {
+//   console.log('listening on port 8080');
+// });
 
 module.exports = app;

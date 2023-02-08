@@ -10,7 +10,7 @@ module.exports = {
     logging: false,
   },
   test: {
-    database: 'sheddington_membership_directory',
+    database: 'sheddington_membership_directory_test',
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,

@@ -16,14 +16,14 @@ describe('Member model', () => {
   describe('Contains all properties', () => {
     const member = new Member();
     [
-      'first_name',
-      'last_name',
+      'firstName',
+      'lastName',
       'email',
       'telephone',
       'address',
       'gender',
-      'join_date',
-      'renewal_date',
+      'joinDate',
+      'renewalDate',
     ].forEach(checkPropertyExists(member));
   });
 });
