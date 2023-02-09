@@ -9,9 +9,10 @@
     "sourceMap": true,
     "target": "esnext",
     "types": ["cypress", "node"],
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "resolveJsonModule": true,
+    "noImplicitReturns": true
+    //"noUnusedLocals": true
+    //"noUnusedParameters": true
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

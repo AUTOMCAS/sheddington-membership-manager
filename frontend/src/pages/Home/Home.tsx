@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import * as moment from 'moment';
 
 import './Home.css';
 
 interface MemberProps {
   id: string | number;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   telephone: string;
   address: string;
   gender: string | undefined;
-  join_date: string;
-  renewal_date: string;
+  joinDate: string;
+  renewalDate: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -39,6 +40,16 @@ const Home: React.FC = (): JSX.Element => {
     }
   };
 
+  const formatDate = (dateTime: string) => {
+    const date = dateTime.substring(0, 10);
+    const formattedDate = `${date.substring(8, 10)}/${date.substring(
+      5,
+      7,
+    )}/${date.substring(0, 4)}`;
+
+    return formattedDate;
+  };
+
   return (
     <div className="Home">
       <h1 data-test="hero-heading" className="heading">
@@ -50,7 +61,21 @@ const Home: React.FC = (): JSX.Element => {
       </div>
       <div className="members" data-test="members">
         {members.map((member: MemberProps) => (
-          <p>{member.first_name}</p>
+          <div
+            className="member"
+            key={member.id}
+            data-test={`member${member.id}`}
+          >
+            <p>First Name: {member.firstName}</p>
+            <p>Last Name: {member.lastName}</p>
+            <p>Email: {member.email}</p>
+            <p>Telephone: {member.telephone}</p>
+            <p>Address: {member.address}</p>
+            <p>Gender: {member.gender}</p>
+            <p>Join Date: {formatDate(member.joinDate)}</p>
+            <p>Renewal Date: {formatDate(member.renewalDate)}</p>
+            <br></br>
+          </div>
         ))}
       </div>
     </div>

@@ -1,27 +1,27 @@
 [
   {
     "id": 1,
-    "first_name": "Chris",
-    "last_name": "Test",
+    "firstName": "Chris",
+    "lastName": "Test",
     "email": "chris@test.com",
     "telephone": "07975777666",
     "address": "12 Example Address",
     "gender": "unknown",
-    "join_date": "2023-01-01T00:00:00.000Z",
-    "renewal_date": "2024-01-01T00:00:00.000Z",
+    "joinDate": "2023-01-01T00:00:00.000Z",
+    "renewalDate": "2024-01-01T00:00:00.000Z",
     "createdAt": "2023-02-03T18:59:23.640Z",
     "updatedAt": "2023-02-03T18:59:23.640Z"
   },
   {
     "id": 2,
-    "first_name": "Mark",
-    "last_name": "Cypress",
+    "firstName": "Mark",
+    "lastName": "Cypress",
     "email": "mark@test.com",
     "telephone": "7942377321",
     "address": "44 Example Address",
     "gender": "unknown",
-    "join_date": "2023-01-01T00:00:00.000Z",
-    "renewal_date": "2024-01-01T00:00:00.000Z",
+    "joinDate": "2023-01-01T00:00:00.000Z",
+    "renewalDate": "2024-01-01T00:00:00.000Z",
     "createdAt": "2023-02-03T21:15:27.299Z",
     "updatedAt": "2023-02-03T21:15:27.299Z"
   }
