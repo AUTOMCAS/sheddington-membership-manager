@@ -20,7 +20,7 @@ describe('template spec', () => {
     cy.visit('http://localhost:3000/');
     cy.wait(['@getMembers']);
 
-    cy.getByData('member1')
+    cy.getByData('member0')
       .should('contain', `${membersFixture[0].firstName}`)
       .and('contain', `${membersFixture[0].lastName}`)
       .and('contain', `${membersFixture[0].email}`)

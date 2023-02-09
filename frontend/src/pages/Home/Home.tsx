@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import * as moment from 'moment';
+import React, { useState, useEffect, useMemo } from 'react';
+import MemberTable from '../../components/MemberTable';
 
 import './Home.css';
 
@@ -50,6 +50,49 @@ const Home: React.FC = (): JSX.Element => {
     return formattedDate;
   };
 
+  const columns: any = useMemo(
+    () => [
+      {
+        Header: 'Members',
+        columns: [
+          {
+            Header: 'First Name',
+            accessor: 'firstName',
+          },
+          {
+            Header: 'Last Name',
+            accessor: 'lastName',
+          },
+          {
+            Header: 'Email',
+            accessor: 'email',
+          },
+          {
+            Header: 'Telephone',
+            accessor: 'telephone',
+          },
+          {
+            Header: 'Address',
+            accessor: 'address',
+          },
+          {
+            Header: 'Gender',
+            accessor: 'gender',
+          },
+          {
+            Header: 'Join Date',
+            accessor: (row: any) => formatDate(row.joinDate),
+          },
+          {
+            Header: 'Renewal Date',
+            accessor: (row: any) => formatDate(row.renewalDate),
+          },
+        ],
+      },
+    ],
+    [],
+  );
+
   return (
     <div className="Home">
       <h1 data-test="hero-heading" className="heading">
@@ -59,25 +102,7 @@ const Home: React.FC = (): JSX.Element => {
         {' '}
         {errorMessage}{' '}
       </div>
-      <div className="members" data-test="members">
-        {members.map((member: MemberProps) => (
-          <div
-            className="member"
-            key={member.id}
-            data-test={`member${member.id}`}
-          >
-            <p>First Name: {member.firstName}</p>
-            <p>Last Name: {member.lastName}</p>
-            <p>Email: {member.email}</p>
-            <p>Telephone: {member.telephone}</p>
-            <p>Address: {member.address}</p>
-            <p>Gender: {member.gender}</p>
-            <p>Join Date: {formatDate(member.joinDate)}</p>
-            <p>Renewal Date: {formatDate(member.renewalDate)}</p>
-            <br></br>
-          </div>
-        ))}
-      </div>
+      <MemberTable columns={columns} data={members} />
     </div>
   );
 };
