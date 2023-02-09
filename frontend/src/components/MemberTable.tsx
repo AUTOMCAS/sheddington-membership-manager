@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTable } from 'react-table';
 
-interface MemberProps {
+type MemberProps = {
   id: string | number;
   firstName: string;
   lastName: string;
@@ -13,14 +13,55 @@ interface MemberProps {
   renewalDate: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
-interface TableProps {
-  columns: any;
-  data: any;
-}
+type Props = {
+  data: Array<MemberProps>;
+};
 
-export default function MemberTable({ columns, data }: TableProps) {
+export default function MemberTable({ data }: Props): JSX.Element {
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Members',
+        columns: [
+          {
+            Header: 'First Name',
+            accessor: 'firstName',
+          },
+          {
+            Header: 'Last Name',
+            accessor: 'lastName',
+          },
+          {
+            Header: 'Email',
+            accessor: 'email',
+          },
+          {
+            Header: 'Telephone',
+            accessor: 'telephone',
+          },
+          {
+            Header: 'Address',
+            accessor: 'address',
+          },
+          {
+            Header: 'Gender',
+            accessor: 'gender',
+          },
+          {
+            Header: 'Join Date',
+            accessor: (row: any): string => formatDate(row.joinDate),
+          },
+          {
+            Header: 'Renewal Date',
+            accessor: (row: any): string => formatDate(row.renewalDate),
+          },
+        ],
+      },
+    ],
+    [],
+  );
   // Use the useTable Hook to send the columns and data to build the table
   const {
     getTableProps, // table props from react-table
@@ -32,11 +73,21 @@ export default function MemberTable({ columns, data }: TableProps) {
     columns,
     data,
   });
-
   /* 
     Render the UI for your table
     - react-table doesn't have UI, it's headless. We just need to put the react-table props from the Hooks, and it will do its magic automatically
   */
+
+  const formatDate = (dateTime: string) => {
+    const date = dateTime.substring(0, 10);
+    const formattedDate = `${date.substring(8, 10)}/${date.substring(
+      5,
+      7,
+    )}/${date.substring(0, 4)}`;
+
+    return formattedDate;
+  };
+
   return (
     <table {...getTableProps()}>
       <thead>

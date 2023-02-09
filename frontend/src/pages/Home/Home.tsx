@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import MemberTable from '../../components/MemberTable';
 
 import './Home.css';
 
-interface MemberProps {
+type MemberProps = {
   id: string | number;
   firstName: string;
   lastName: string;
@@ -15,10 +15,10 @@ interface MemberProps {
   renewalDate: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 const Home: React.FC = (): JSX.Element => {
-  const [members, setMembers] = useState<MemberProps[]>([]);
+  const [members, setMembers] = useState<Array<MemberProps>>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
@@ -40,59 +40,6 @@ const Home: React.FC = (): JSX.Element => {
     }
   };
 
-  const formatDate = (dateTime: string) => {
-    const date = dateTime.substring(0, 10);
-    const formattedDate = `${date.substring(8, 10)}/${date.substring(
-      5,
-      7,
-    )}/${date.substring(0, 4)}`;
-
-    return formattedDate;
-  };
-
-  const columns: any = useMemo(
-    () => [
-      {
-        Header: 'Members',
-        columns: [
-          {
-            Header: 'First Name',
-            accessor: 'firstName',
-          },
-          {
-            Header: 'Last Name',
-            accessor: 'lastName',
-          },
-          {
-            Header: 'Email',
-            accessor: 'email',
-          },
-          {
-            Header: 'Telephone',
-            accessor: 'telephone',
-          },
-          {
-            Header: 'Address',
-            accessor: 'address',
-          },
-          {
-            Header: 'Gender',
-            accessor: 'gender',
-          },
-          {
-            Header: 'Join Date',
-            accessor: (row: any) => formatDate(row.joinDate),
-          },
-          {
-            Header: 'Renewal Date',
-            accessor: (row: any) => formatDate(row.renewalDate),
-          },
-        ],
-      },
-    ],
-    [],
-  );
-
   return (
     <div className="Home">
       <h1 data-test="hero-heading" className="heading">
@@ -102,7 +49,7 @@ const Home: React.FC = (): JSX.Element => {
         {' '}
         {errorMessage}{' '}
       </div>
-      <MemberTable columns={columns} data={members} />
+      <MemberTable data={members} />
     </div>
   );
 };
