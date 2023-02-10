@@ -44,7 +44,7 @@ const Home: React.FC = (): JSX.Element => {
     <div className="home">
       <h2 className="pageHeading">Manage Members</h2>
       <div>
-        <a href="/member/add">
+        <a href="/member/create">
           {' '}
           <button>Add Member</button>
         </a>

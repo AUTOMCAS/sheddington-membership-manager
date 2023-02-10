@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AddMember.css';
+import './CreateMember.css';
 
 const CreateMember: React.FC = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -10,7 +10,7 @@ const CreateMember: React.FC = () => {
   const [address, setAddress] = useState<string>('');
   const [joinDate, setJoinDate] = useState<string>('');
   const [renewalDate, setRenewalDate] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [displayMessage, setDisplayMessage] = useState<string>('');
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -35,10 +35,11 @@ const CreateMember: React.FC = () => {
     });
 
     if (response.status === 200) {
-      setErrorMessage('Member Added');
+      console.log(response);
+      setDisplayMessage('Member Created');
     } else {
       const data = await response.json();
-      setErrorMessage(data.message);
+      setDisplayMessage(data.message);
     }
   };
 
@@ -82,8 +83,12 @@ const CreateMember: React.FC = () => {
   };
 
   return (
-    <div className="AddMemberPage">
-      <form id="addMemberInput" onSubmit={handleSubmit} data-test="memberForm">
+    <div className="createMemberPage">
+      <form
+        id="createMemberInput"
+        onSubmit={handleSubmit}
+        data-test="memberForm"
+      >
         <input
           id="firstName"
           type="input"
@@ -159,9 +164,8 @@ const CreateMember: React.FC = () => {
         <button className="submitButton" type="submit" data-test="submitButton">
           Add Member
         </button>
-        <div className="errorMessage" data-test="errorMessage">
-          {' '}
-          {errorMessage}{' '}
+        <div className="displayMessage" data-test="displayMessage">
+          {displayMessage}
         </div>
       </form>
     </div>
