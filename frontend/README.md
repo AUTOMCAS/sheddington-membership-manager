@@ -13,3 +13,5 @@ serve is a simple Node.js program that serves static files. Once launched, it ou
 https://dev.to/alekseiberezkin/setting-up-react-typescript-app-without-create-react-app-oph
 
 npx cypress open
+
+background-color: #5a95bd;

@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&display=swap');
 
-body {
+.appContent {
   font-family: 'Lato', sans-serif;
   background-color: #ffffff;
-  color: #000000;
-  text-align: center;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -18,4 +16,11 @@ body {
   scroll-behavior: smooth;
 }
 
-/* background-color: #5a95bd; */
+.banner {
+  padding: 20px;
+  background-color: #5299c8;
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  color: #ffffff;
+  font-size: 24px;
+}

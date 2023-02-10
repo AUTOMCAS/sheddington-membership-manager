@@ -9,9 +9,13 @@ const container = document.getElementById('app-root')!;
 const root = createRoot(container);
 root.render(
   <>
-    <h1 className="heroHeading" data-test="hero-heading">
-      Sheddington Membership Manager
-    </h1>
-    <App />
+    <div className="banner">
+      <h1 className="heroHeading" data-test="hero-heading">
+        Sheddington Membership Manager
+      </h1>
+    </div>
+    <div className="appContent">
+      <App />
+    </div>
   </>,
 );

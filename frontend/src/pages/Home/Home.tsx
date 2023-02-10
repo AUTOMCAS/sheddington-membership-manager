@@ -43,7 +43,7 @@ const Home: React.FC = (): JSX.Element => {
   return (
     <div className="home">
       <h2 className="pageHeading">Manage Members</h2>
-      <div>
+      <div className="interactionBar" data-test="interactionBar">
         <a href="/member/create">
           {' '}
           <button>Add Member</button>
@@ -51,8 +51,7 @@ const Home: React.FC = (): JSX.Element => {
       </div>
 
       <div className="errorMessage" data-test="errorMessage">
-        {' '}
-        {errorMessage}{' '}
+        {errorMessage}
       </div>
       <div className="table">
         <MemberTable data={members} />
