@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { useTable } from 'react-table';
+import './MemberTable.css';
 
+import { useTable } from 'react-table';
 type MemberProps = {
   id: string | number;
   firstName: string;
@@ -94,7 +95,15 @@ export default function MemberTable({ data }: Props): JSX.Element {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th
+                {...column.getHeaderProps()}
+                style={{
+                  borderRight: '1px solid black',
+                  borderTop: '1px solid black',
+                }}
+              >
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}

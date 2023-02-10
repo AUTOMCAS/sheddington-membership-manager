@@ -1,0 +1,31 @@
+table {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  width: 90%;
+  margin: 0 auto;
+  /* border-spacing: 0;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid; */
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: collapse;
+  border: none;
+}
+
+th {
+  background-color: #35729b;
+}
+
+table tbody tr td {
+  border-right-width: 1px;
+  border-top-width: 1px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-style: solid;
+  border-color: black;
+}
+
+table tbody tr td:last-child {
+  border-right: 0px;
+}

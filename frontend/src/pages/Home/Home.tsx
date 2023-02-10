@@ -41,7 +41,7 @@ const Home: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div className="Home">
+    <div className="home">
       <h1 data-test="hero-heading" className="heading">
         Sheddington Membership Manager
       </h1>
@@ -49,7 +49,9 @@ const Home: React.FC = (): JSX.Element => {
         {' '}
         {errorMessage}{' '}
       </div>
-      <MemberTable data={members} />
+      <div className="table">
+        <MemberTable data={members} />
+      </div>
     </div>
   );
 };
