@@ -84,90 +84,132 @@ const CreateMember: React.FC = () => {
 
   return (
     <div className="createMemberPage">
-      <form
-        id="createMemberInput"
-        onSubmit={handleSubmit}
-        data-test="memberForm"
-      >
-        <input
-          id="firstName"
-          type="input"
-          value={firstName}
-          onChange={handleFirstNameChange}
-          placeholder="First Name"
-          data-test="firstNameInput"
-        />
-        <br></br>
-        <input
-          id="lastName"
-          type="input"
-          value={lastName}
-          onChange={handleLastNameChange}
-          placeholder="Last Name"
-          data-test="lastNameInput"
-        />
-        <br></br>
-        <input
-          id="email"
-          type="input"
-          value={email}
-          onChange={handleEmailChange}
-          placeholder="Email"
-          data-test="emailInput"
-        />
-        <br></br>
-        <input
-          id="telephone"
-          type="input"
-          value={telephone}
-          onChange={handleTelephoneChange}
-          placeholder="Telephone"
-          data-test="telephoneInput"
-        />
-        <br></br>
-        <input
-          id="address"
-          value={address}
-          onChange={handleAddressChange}
-          type="input"
-          placeholder="Address"
-          data-test="addressInput"
-        />
-        <br></br>
-        <input
-          id="gender"
-          value={gender}
-          onChange={handleGenderChange}
-          type="input"
-          placeholder="Gender"
-          data-test="genderInput"
-        />
-        <br></br>
-        <input
-          id="joinDate"
-          value={joinDate}
-          onChange={handleJoinDateChange}
-          type="input"
-          placeholder="Join date"
-          data-test="joinDateInput"
-        />
-        <br></br>
-        <input
-          id="renewalDate"
-          value={renewalDate}
-          onChange={handleRenewalDateChange}
-          type="input"
-          placeholder="Renewal date"
-          data-test="renewalDateInput"
-        />
-        <br></br>
-        <button className="submitButton" type="submit" data-test="submitButton">
-          Add Member
-        </button>
-        <div className="displayMessage" data-test="displayMessage">
-          {displayMessage}
-        </div>
-      </form>
+      <div>
+        <form
+          className="form"
+          id="createMemberInput"
+          onSubmit={handleSubmit}
+          data-test="memberForm"
+        >
+          <div className="formBody">
+            <label>
+              First Name
+              <input
+                id="firstName"
+                className="form__input"
+                type="input"
+                value={firstName}
+                onChange={handleFirstNameChange}
+                placeholder="First Name"
+                data-test="firstNameInput"
+              />
+            </label>
+
+            <label>
+              Last Name
+              <input
+                id="lastName"
+                className="form__input"
+                type="input"
+                value={lastName}
+                onChange={handleLastNameChange}
+                placeholder="Last Name"
+                data-test="lastNameInput"
+              />
+            </label>
+
+            <label>
+              Email
+              <input
+                id="email"
+                className="form__input"
+                type="input"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Email"
+                data-test="emailInput"
+              />
+            </label>
+
+            <label>
+              Telephone
+              <input
+                id="telephone"
+                className="form__input"
+                type="input"
+                value={telephone}
+                onChange={handleTelephoneChange}
+                placeholder="Telephone"
+                data-test="telephoneInput"
+              />
+            </label>
+
+            <label>
+              Address
+              <input
+                id="address"
+                className="form__input"
+                value={address}
+                onChange={handleAddressChange}
+                type="input"
+                placeholder="Address"
+                data-test="addressInput"
+              />
+            </label>
+
+            <label>
+              Gender
+              <input
+                id="gender"
+                className="form__input"
+                value={gender}
+                onChange={handleGenderChange}
+                type="input"
+                placeholder="Gender"
+                data-test="genderInput"
+              />
+            </label>
+
+            <label>
+              Join Date
+              <input
+                id="joinDate"
+                className="form__input"
+                value={joinDate}
+                onChange={handleJoinDateChange}
+                type="input"
+                placeholder="Join date"
+                data-test="joinDateInput"
+              />
+            </label>
+
+            <label>
+              Renewal Date
+              <input
+                id="renewalDate"
+                className="form__input"
+                value={renewalDate}
+                onChange={handleRenewalDateChange}
+                type="input"
+                placeholder="Renewal date"
+                data-test="renewalDateInput"
+              />
+            </label>
+          </div>
+          <div className="displayMessage" data-test="displayMessage">
+            {displayMessage}
+          </div>
+          <div className="buttonDiv">
+            <button
+              className="submitButton"
+              type="submit"
+              data-test="submitButton"
+            >
+              Add Member
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
