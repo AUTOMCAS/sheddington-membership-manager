@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CreateMember.css';
+import './AddMember.css';
 
 const CreateMember: React.FC = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -35,7 +35,7 @@ const CreateMember: React.FC = () => {
     });
 
     if (response.status === 200) {
-      setErrorMessage('Member Created');
+      setErrorMessage('Member Added');
     } else {
       const data = await response.json();
       setErrorMessage(data.message);
@@ -82,12 +82,8 @@ const CreateMember: React.FC = () => {
   };
 
   return (
-    <div className="CreateMemberPage">
-      <form
-        id="createMemberInput"
-        onSubmit={handleSubmit}
-        data-test="memberForm"
-      >
+    <div className="AddMemberPage">
+      <form id="addMemberInput" onSubmit={handleSubmit} data-test="memberForm">
         <input
           id="firstName"
           type="input"
@@ -161,7 +157,7 @@ const CreateMember: React.FC = () => {
         />
         <br></br>
         <button className="submitButton" type="submit" data-test="submitButton">
-          Create Member
+          Add Member
         </button>
         <div className="errorMessage" data-test="errorMessage">
           {' '}

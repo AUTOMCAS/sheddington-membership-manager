@@ -42,9 +42,14 @@ const Home: React.FC = (): JSX.Element => {
 
   return (
     <div className="home">
-      <h1 data-test="hero-heading" className="heading">
-        Sheddington Membership Manager
-      </h1>
+      <h2 className="pageHeading">Manage Members</h2>
+      <div>
+        <a href="/member/add">
+          {' '}
+          <button>Add Member</button>
+        </a>
+      </div>
+
       <div className="errorMessage" data-test="errorMessage">
         {' '}
         {errorMessage}{' '}

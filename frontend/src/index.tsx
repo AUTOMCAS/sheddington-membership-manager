@@ -7,4 +7,11 @@ import App from './App';
 const container = document.getElementById('app-root')!;
 
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <>
+    <h1 className="heroHeading" data-test="hero-heading">
+      Sheddington Membership Manager
+    </h1>
+    <App />
+  </>,
+);

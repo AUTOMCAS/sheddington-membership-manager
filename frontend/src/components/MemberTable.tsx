@@ -20,8 +20,13 @@ type Props = {
   data: Array<MemberProps>;
 };
 
+// export interface Column extends ColumnInterface {
+//   Header: string;
+//   accessor: string;
+// }
+
 export default function MemberTable({ data }: Props): JSX.Element {
-  const columns = useMemo(
+  const columns: any = useMemo(
     () => [
       {
         Header: 'Members',
@@ -74,6 +79,7 @@ export default function MemberTable({ data }: Props): JSX.Element {
     columns,
     data,
   });
+
   /* 
     Render the UI for your table
     - react-table doesn't have UI, it's headless. We just need to put the react-table props from the Hooks, and it will do its magic automatically
@@ -94,17 +100,11 @@ export default function MemberTable({ data }: Props): JSX.Element {
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th
-                {...column.getHeaderProps()}
-                style={{
-                  borderRight: '1px solid black',
-                  borderTop: '1px solid black',
-                }}
-              >
-                {column.render('Header')}
-              </th>
-            ))}
+            {headerGroup.headers.map((column) => {
+              return column.Header === 'Members' ? null : (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              );
+            })}
           </tr>
         ))}
       </thead>
