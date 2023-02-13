@@ -1,37 +1,55 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import './CreateMember.css';
 
-const CreateMember: React.FC = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [telephone, setTelephone] = useState<string>('');
-  const [gender, setGender] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [joinDate, setJoinDate] = useState<string>('');
-  const [renewalDate, setRenewalDate] = useState<string>('');
+type Member = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  telephone: string;
+  address: string;
+  gender: string;
+  joinDate: string;
+  renewalDate: string;
+};
+
+const CreateMember: React.FC = (): JSX.Element => {
   const [displayMessage, setDisplayMessage] = useState<string>('');
 
-  const handleSubmit = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
+    telephone: Yup.string()
+      .required('Telephone number is required')
+      .min(10, 'Telephone number must be at least 10 characters')
+      .max(15, 'Telephone number must not exceed 15 characters'),
+    gender: Yup.string().required(
+      'Gender is required, enter "Unknown" or "Undisclosed if appropriate',
+    ),
+    address: Yup.string().required('Address is required'),
+    joinDate: Yup.string().required('Address is required'),
+    renewalDate: Yup.string().required('Address is required'),
+  });
 
-    const member = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      telephone: telephone,
-      gender: gender,
-      address: address,
-      joinDate: joinDate,
-      renewalDate: renewalDate,
-    };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Member>({
+    resolver: yupResolver(validationSchema),
+  });
 
+  const onSubmit = async (data: Member) => {
     let response = await fetch('http://localhost:8080/members', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(member),
+      body: JSON.stringify(data),
     });
 
     if (response.status === 200) {
@@ -43,158 +61,119 @@ const CreateMember: React.FC = () => {
     }
   };
 
-  const handleFirstNameChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setFirstName(target.value);
-  };
-
-  const handleLastNameChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setLastName(target.value);
-  };
-
-  const handleEmailChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setEmail(target.value);
-  };
-
-  const handleTelephoneChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setTelephone(target.value);
-  };
-
-  const handleAddressChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setAddress(target.value);
-  };
-
-  const handleGenderChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setGender(target.value);
-  };
-
-  const handleJoinDateChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setJoinDate(target.value);
-  };
-  const handleRenewalDateChange = (e: React.SyntheticEvent): void => {
-    let target = e.target as HTMLInputElement;
-    setRenewalDate(target.value);
-  };
-
   return (
     <div className="createMemberPage">
       <div>
         <form
           className="form"
           id="createMemberInput"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           data-test="memberForm"
         >
           <div className="formBody">
-            <label>
-              First Name
+            <div className="formGroup">
+              <label>First Name </label>
               <input
-                id="firstName"
-                className="form__input"
                 type="input"
-                value={firstName}
-                onChange={handleFirstNameChange}
-                placeholder="First Name"
+                {...register('firstName')}
+                className={`form-control ${
+                  errors.firstName ? 'is-invalid' : ''
+                }`}
                 data-test="firstNameInput"
               />
-            </label>
+              <div className="invalid-feedback">
+                {errors.firstName?.message}
+              </div>
+            </div>
 
-            <label>
-              Last Name
+            <div className="formGroup">
+              <label>Last Name </label>
               <input
-                id="lastName"
-                className="form__input"
                 type="input"
-                value={lastName}
-                onChange={handleLastNameChange}
-                placeholder="Last Name"
+                {...register('lastName')}
+                className={`form-control ${
+                  errors.lastName ? 'is-invalid' : ''
+                }`}
                 data-test="lastNameInput"
               />
-            </label>
+              <div className="invalid-feedback">{errors.lastName?.message}</div>
+            </div>
 
-            <label>
-              Email
+            <div className="formGroup">
+              <label>Email</label>
               <input
-                id="email"
-                className="form__input"
                 type="input"
-                value={email}
-                onChange={handleEmailChange}
-                placeholder="Email"
+                {...register('email')}
+                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                 data-test="emailInput"
               />
-            </label>
+              <div className="invalid-feedback">{errors.email?.message}</div>
+            </div>
 
-            <label>
-              Telephone
+            <div className="formGroup">
+              <label>Telephone</label>
               <input
-                id="telephone"
-                className="form__input"
                 type="input"
-                value={telephone}
-                onChange={handleTelephoneChange}
-                placeholder="Telephone"
+                {...register('telephone')}
+                className={`form-control ${
+                  errors.telephone ? 'is-invalid' : ''
+                }`}
                 data-test="telephoneInput"
               />
-            </label>
+              <div className="invalid-feedback">
+                {errors.telephone?.message}
+              </div>
+            </div>
 
-            <label>
-              Address
+            <div className="formGroup">
+              <label>Address</label>
               <input
-                id="address"
-                className="form__input"
-                value={address}
-                onChange={handleAddressChange}
                 type="input"
-                placeholder="Address"
+                {...register('address')}
+                className={`form-control ${errors.address ? 'is-invalid' : ''}`}
                 data-test="addressInput"
               />
-            </label>
+              <div className="invalid-feedback">{errors.address?.message}</div>
+            </div>
 
-            <label>
-              Gender
+            <div className="formGroup">
+              <label>Gender</label>
               <input
-                id="gender"
-                className="form__input"
-                value={gender}
-                onChange={handleGenderChange}
                 type="input"
-                placeholder="Gender"
+                {...register('gender')}
+                className={`form-control ${errors.gender ? 'is-invalid' : ''}`}
                 data-test="genderInput"
               />
-            </label>
+              <div className="invalid-feedback">{errors.gender?.message}</div>
+            </div>
 
-            <label>
-              Join Date
+            <div className="formGroup">
+              <label>Join Date</label>
               <input
-                id="joinDate"
-                className="form__input"
-                value={joinDate}
-                onChange={handleJoinDateChange}
                 type="input"
-                placeholder="Join date"
+                {...register('joinDate')}
+                className={`form-control ${
+                  errors.joinDate ? 'is-invalid' : ''
+                }`}
                 data-test="joinDateInput"
               />
-            </label>
+              <div className="invalid-feedback">{errors.joinDate?.message}</div>
+            </div>
 
-            <label>
-              Renewal Date
+            <div className="formGroup">
+              <label>Renewal Date</label>
               <input
-                id="renewalDate"
-                className="form__input"
-                value={renewalDate}
-                onChange={handleRenewalDateChange}
                 type="input"
-                placeholder="Renewal date"
+                {...register('renewalDate')}
+                className={`form-control ${
+                  errors.renewalDate ? 'is-invalid' : ''
+                }`}
                 data-test="renewalDateInput"
               />
-            </label>
+              <div className="invalid-feedback">
+                {errors.renewalDate?.message}
+              </div>
+            </div>
           </div>
           <div className="displayMessage" data-test="displayMessage">
             {displayMessage}

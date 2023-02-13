@@ -10,7 +10,7 @@ type MemberProps = {
   email: string;
   telephone: string;
   address: string;
-  gender: string | undefined;
+  gender: string;
   joinDate: string;
   renewalDate: string;
   createdAt: string;
