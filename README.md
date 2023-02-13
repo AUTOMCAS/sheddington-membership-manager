@@ -51,6 +51,9 @@
 **Validation (Front and backend)**
 ![Member validation](https://github.com/AUTOMCAS/-sheddington-membership-manager/blob/main/misc/screenshots/member-validation.png)
 
+**Validation Email duplicate (Backend response)**
+![Member validation Email](https://github.com/AUTOMCAS/-sheddington-membership-manager/blob/main/misc/screenshots/member-validation-email-duplicate.png)
+
 ## Setup and installation
 
 Clone this repository.\
