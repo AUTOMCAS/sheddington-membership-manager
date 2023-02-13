@@ -15,3 +15,24 @@ https://dev.to/alekseiberezkin/setting-up-react-typescript-app-without-create-re
 npx cypress open
 
 background-color: #5a95bd;
+
+### `npm start`
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### `npm test`
+
+    "test": "npm run test:unit && npm run test:feature",
+    "test:unit": "cypress run --component",
+    "test:feature": "cypress run",
+
+### `npm run dev`
+
+Runs the app in the development mode.\
+
+### `npm run build`
+
+Builds the app for production using [Webpack](https://webpack.js.org/) bundler.\
