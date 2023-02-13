@@ -1,38 +1,48 @@
-## Run dev server
+# Sheddington Membership Manager: Frontend
 
-`npm start`
+**ATTENTION: Ensure backend server is setup and running before running frontend.**
 
-## Build application
+## Setup
 
-`npm start`
+### `npm install`
 
-You should observe appeared dist folder with bundle files generated. Let's try serving them as in real production:
-`npx serve dist`
-serve is a simple Node.js program that serves static files. Once launched, it outputs the URL it serves your app from, usually it's http://localhost:3000/. Open it — you should see the greeting.
+Install all dependencies.
 
-https://dev.to/alekseiberezkin/setting-up-react-typescript-app-without-create-react-app-oph
-
-npx cypress open
-
-background-color: #5a95bd;
+## Run
 
 ### `npm start`
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-    "test": "npm run test:unit && npm run test:feature",
-    "test:unit": "cypress run --component",
-    "test:feature": "cypress run",
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.\
+The page will reload if you make edits.
 
 ### `npm run dev`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
+
+## Test
+
+### `npm test`
+
+Run both unit and end to end feature tests using Cypress
+
+### `npm test:unit`
+
+Run unit tests only
+
+### `npm test:feature`
+
+Run feature e2e tests.
+
+### `npx cypress open`
+
+Open Cypress interface for testing visibility.
+
+## Build
 
 ### `npm run build`
 
-Builds the app for production using [Webpack](https://webpack.js.org/) bundler.\
+Builds the app for production using [Webpack](https://github.com/webpack/webpack) bundler.
+
+## Sources
+
+https://dev.to/alekseiberezkin/setting-up-react-typescript-app-without-create-react-app-oph

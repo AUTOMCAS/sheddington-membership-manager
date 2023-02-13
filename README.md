@@ -44,6 +44,28 @@
 
 ## Setup and installation
 
+Clone this repository.\
+Navigate into the frontend and backend directories and follow the guides to setup and run.\
+The backend must be running for most of the frontend features to function.
+
 [Frontend](https://github.com/AUTOMCAS/-sheddington-membership-manager/tree/main/frontend#readme)
 
 [Backend](https://github.com/AUTOMCAS/-sheddington-membership-manager/tree/main/backend#readme)
+
+## Quick run AFTER setup:
+
+### Run backend and frontend
+
+cd /backend
+`npm start`
+
+cd /frontend
+`npm start`
+
+### Test backend and frontend - backend must be running for frontend tests.
+
+cd /backend
+`npm test`
+
+cd /frontend
+`npm test`
