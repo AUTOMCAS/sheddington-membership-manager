@@ -42,9 +42,17 @@
 - [PostgreSQL](https://github.com/postgres/postgres)
 - [Jest](https://github.com/facebook/jest)
 
+## Screenshots
+
+![Member list]()
+![Member creation]()
+![Member validation]()
+
 ## Setup and installation
 
 Clone this repository.\
+`git clone https://github.com/AUTOMCAS/-sheddington-membership-manager.git`
+
 Navigate into the frontend and backend directories and follow the guides to setup and run.\
 The backend must be running for most of the frontend features to function.
 
@@ -61,6 +69,7 @@ cd /backend
 
 cd /frontend
 `npm start`
+Navigate to http://localhost:3000/
 
 ### Test backend and frontend - backend must be running for frontend tests.
 

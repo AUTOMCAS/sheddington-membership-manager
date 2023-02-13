@@ -29,7 +29,9 @@ From within this /backend directory:
 
 ### `npm start`
 
-Run the backend server.
+Run the backend server.\
+The backend will restart if you make edits.
+Backend address: http://localhost:8080/
 
 ### `npm run dev`
 
