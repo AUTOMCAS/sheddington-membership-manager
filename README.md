@@ -44,8 +44,11 @@
 
 ## Screenshots
 
+**View all members**
 ![Member list](https://github.com/AUTOMCAS/-sheddington-membership-manager/blob/main/misc/screenshots/view-members.png)
-![Member creation](https://github.com/AUTOMCAS/-sheddington-membership-manager/blob/main/misc/screenshots/member-validation.png)
+**Creation**
+![Member creation](https://github.com/AUTOMCAS/-sheddington-membership-manager/blob/main/misc/screenshots/member-creation.png)
+**Validation (Front and backend)**
 ![Member validation](https://github.com/AUTOMCAS/-sheddington-membership-manager/blob/main/misc/screenshots/member-validation.png)
 
 ## Setup and installation
