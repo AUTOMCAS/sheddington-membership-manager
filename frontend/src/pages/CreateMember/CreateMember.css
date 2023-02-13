@@ -9,10 +9,12 @@
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
+  width: 450px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-shadow: #000000 0 10px 20px -10px;
+  padding: 40px;
 }
 
 .buttonDiv {
@@ -22,21 +24,26 @@
   margin-top: 10px;
 }
 
-label {
+.formGroup {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  text-align: right;
-  width: 330px;
-  line-height: 26px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  padding-bottom: 5px;
+  gap: 2px;
+}
+
+label {
+  font-size: 16px;
 }
 
 input {
-  height: 25px;
-  flex: 0 0 200px;
-  margin-left: 10px;
+  height: 30px;
   padding: 5px;
+  text-align: start;
+}
+
+.invalidFeedback {
+  color: #cd5c5c;
+  font-size: 14px;
 }
 
 button {

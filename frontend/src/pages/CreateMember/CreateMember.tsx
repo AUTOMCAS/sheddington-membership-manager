@@ -27,7 +27,7 @@ const CreateMember: React.FC = (): JSX.Element => {
       .min(10, 'Telephone number must be at least 10 characters')
       .max(15, 'Telephone number must not exceed 15 characters'),
     gender: Yup.string().required(
-      'Gender is required, enter "Unknown" or "Undisclosed if appropriate',
+      'Gender is required. Enter "Unknown" or "Undisclosed where appropriate',
     ),
     address: Yup.string().required('Address is required'),
     joinDate: Yup.string().required('Address is required'),
@@ -76,14 +76,12 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('firstName')}
-                className={`form-control ${
+                className={`formControl ${
                   errors.firstName ? 'is-invalid' : ''
                 }`}
                 data-test="firstNameInput"
               />
-              <div className="invalid-feedback">
-                {errors.firstName?.message}
-              </div>
+              <div className="invalidFeedback">{errors.firstName?.message}</div>
             </div>
 
             <div className="formGroup">
@@ -91,12 +89,10 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('lastName')}
-                className={`form-control ${
-                  errors.lastName ? 'is-invalid' : ''
-                }`}
+                className={`formControl ${errors.lastName ? 'is-invalid' : ''}`}
                 data-test="lastNameInput"
               />
-              <div className="invalid-feedback">{errors.lastName?.message}</div>
+              <div className="invalidFeedback">{errors.lastName?.message}</div>
             </div>
 
             <div className="formGroup">
@@ -104,10 +100,10 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('email')}
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                className={`formControl ${errors.email ? 'is-invalid' : ''}`}
                 data-test="emailInput"
               />
-              <div className="invalid-feedback">{errors.email?.message}</div>
+              <div className="invalidFeedback">{errors.email?.message}</div>
             </div>
 
             <div className="formGroup">
@@ -115,25 +111,24 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('telephone')}
-                className={`form-control ${
+                className={`formControl ${
                   errors.telephone ? 'is-invalid' : ''
                 }`}
                 data-test="telephoneInput"
               />
-              <div className="invalid-feedback">
-                {errors.telephone?.message}
-              </div>
+              <div className="invalidFeedback">{errors.telephone?.message}</div>
             </div>
 
             <div className="formGroup">
               <label>Address</label>
               <input
+                id="addressInput"
                 type="input"
                 {...register('address')}
-                className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+                className={`formControl ${errors.address ? 'is-invalid' : ''}`}
                 data-test="addressInput"
               />
-              <div className="invalid-feedback">{errors.address?.message}</div>
+              <div className="invalidFeedback">{errors.address?.message}</div>
             </div>
 
             <div className="formGroup">
@@ -141,10 +136,10 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('gender')}
-                className={`form-control ${errors.gender ? 'is-invalid' : ''}`}
+                className={`formControl ${errors.gender ? 'is-invalid' : ''}`}
                 data-test="genderInput"
               />
-              <div className="invalid-feedback">{errors.gender?.message}</div>
+              <div className="invalidFeedback">{errors.gender?.message}</div>
             </div>
 
             <div className="formGroup">
@@ -152,12 +147,10 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('joinDate')}
-                className={`form-control ${
-                  errors.joinDate ? 'is-invalid' : ''
-                }`}
+                className={`formControl ${errors.joinDate ? 'is-invalid' : ''}`}
                 data-test="joinDateInput"
               />
-              <div className="invalid-feedback">{errors.joinDate?.message}</div>
+              <div className="invalidFeedback">{errors.joinDate?.message}</div>
             </div>
 
             <div className="formGroup">
@@ -165,12 +158,12 @@ const CreateMember: React.FC = (): JSX.Element => {
               <input
                 type="input"
                 {...register('renewalDate')}
-                className={`form-control ${
+                className={`formControl ${
                   errors.renewalDate ? 'is-invalid' : ''
                 }`}
                 data-test="renewalDateInput"
               />
-              <div className="invalid-feedback">
+              <div className="invalidFeedback">
                 {errors.renewalDate?.message}
               </div>
             </div>
