@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import memberService from '../../services/member.service';
 import './CreateMember.css';
 
 type Member = {
@@ -44,13 +45,7 @@ const CreateMember: React.FC = (): JSX.Element => {
   });
 
   const onSubmit = async (data: Member) => {
-    let response = await fetch('http://localhost:8080/members', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    let response = await memberService.create(data);
 
     if (response.status === 200) {
       console.log(response);
