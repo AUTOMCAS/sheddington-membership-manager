@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MemberTable from '../../components/MemberTable';
+import memberService from '../../services/member.service';
 
 import './Home.css';
 
@@ -19,25 +20,14 @@ type MemberProps = {
 
 const Home: React.FC = (): JSX.Element => {
   const [members, setMembers] = useState<Array<MemberProps>>([]);
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     getMembers();
   }, []);
 
-  const getMembers = () => {
-    try {
-      fetch('http://localhost:8080/members', {
-        method: 'get',
-      })
-        .then((response) => response.json())
-        .then(async (data) => {
-          console.log(data);
-          setMembers(data);
-        });
-    } catch (error: any) {
-      setErrorMessage(error);
-    }
+  const getMembers = async () => {
+    const data = await memberService.getAll();
+    setMembers(data);
   };
 
   return (
@@ -48,10 +38,6 @@ const Home: React.FC = (): JSX.Element => {
           {' '}
           <button>Add Member</button>
         </a>
-      </div>
-
-      <div className="errorMessage" data-test="errorMessage">
-        {errorMessage}
       </div>
       <div className="table">
         <MemberTable data={members} />

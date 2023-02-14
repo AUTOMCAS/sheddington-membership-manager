@@ -19,6 +19,16 @@ class MemberService {
       body: JSON.stringify(data),
     });
   }
+
+  getAll() {
+    return fetch('http://localhost:8080/members', {
+      method: 'get',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      });
+  }
 }
 
 export default new MemberService();
