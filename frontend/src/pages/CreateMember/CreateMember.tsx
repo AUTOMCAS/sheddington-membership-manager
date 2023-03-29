@@ -31,8 +31,8 @@ const CreateMember: React.FC = (): JSX.Element => {
       'Gender is required. Enter "Unknown" or "Undisclosed where appropriate',
     ),
     address: Yup.string().required('Address is required'),
-    joinDate: Yup.string().required('Address is required'),
-    renewalDate: Yup.string().required('Address is required'),
+    joinDate: Yup.string().required('Join date is required'),
+    renewalDate: Yup.string().required('Renewal date is required'),
   });
 
   const {
