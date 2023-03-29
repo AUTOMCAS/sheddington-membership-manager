@@ -6,7 +6,7 @@
 
 1. Install all dependencies from within this /backend directory using `npm install`
 
-2. Make sure you have PostgreSQL running on your computer with a database called and `sheddington_membership_directory` (and `sheddington_membership_directory_test` for testing) and a user who has access to that database with the username postgres and password postgres
+2. Make sure you have PostgreSQL running on your computer with a database called `sheddington_membership_directory` (and `sheddington_membership_directory_test` for testing) and a user who has access to that database with the username postgres and password postgres
 
 3. Create a .env file in backend/src and fill in your username and postgreSQL password. Use the backend/src/.env.sample file as a template.
 

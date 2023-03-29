@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   development: {
-    database: 'sheddington_membership_directory',
+    database: process.env.DB_NAME,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
@@ -10,7 +10,7 @@ module.exports = {
     logging: false,
   },
   test: {
-    database: 'sheddington_membership_directory_test',
+    database: process.env.DB_TEST_NAME,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,

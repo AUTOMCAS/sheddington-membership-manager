@@ -14,8 +14,8 @@ const memberPayload = {
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
-  joinDate: '2023-01-01T00:00:00.000Z',
-  renewalDate: '2024-01-01T00:00:00.000Z',
+  joinDate: '2023-12-01T00:00:00.000Z',
+  renewalDate: '2024-12-01T00:00:00.000Z',
   createdAt: '2023-01-01T00:00:00.000Z',
   updatedAt: '2023-01-01T00:00:00.000Z',
 };
@@ -27,8 +27,8 @@ const memberInput = {
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
-  joinDate: '01/01/23',
-  renewalDate: '01/01/24',
+  joinDate: '2023-12-01T00:00:00.000Z',
+  renewalDate: '2024-12-01T00:00:00.000Z',
 };
 
 jest.useFakeTimers().setSystemTime(new Date('2023-01-01'));
