@@ -72,8 +72,8 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
       }}
     >
       <div className="createMemberPage">
-        <div>
-          <Form className="form" id="createMemberInput" data-test="memberForm">
+        <div className="form" data-test="memberForm">
+          <Form>
             <TextInputField
               label="First Name"
               name="firstName"
@@ -138,7 +138,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               {displayMessage}
             </div>
 
-            <div className="buttonDiv">
+            <div className="submitButtonContainer">
               <button
                 className="submitButton"
                 type="submit"
@@ -148,6 +148,14 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               </button>
             </div>
           </Form>
+          <div className="backButtonContainer">
+            <a href="/members">
+              {' '}
+              <button className="backButton" data-test="backButton">
+                Back to Members
+              </button>
+            </a>
+          </div>
         </div>
       </div>
     </Formik>

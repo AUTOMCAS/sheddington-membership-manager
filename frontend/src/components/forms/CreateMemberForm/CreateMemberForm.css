@@ -17,11 +17,18 @@
   padding: 40px;
 }
 
-.buttonDiv {
+.submitButtonContainer {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 14px;
+}
+
+.backButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .error {
