@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateMember from './pages/CreateMember/CreateMember';
+import CreateMember from './components/CreateMemberForm/CreateMemberForm';
 import Home from './pages/Home/Home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 

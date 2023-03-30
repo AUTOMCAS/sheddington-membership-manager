@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MemberTable from '../../components/MemberTable';
+import MemberTable from '../../components/MemberTable/MemberTable';
 import memberService from '../../services/member.service';
 
 import './Home.css';

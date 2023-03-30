@@ -35,13 +35,13 @@ label {
   font-size: 16px;
 }
 
-input {
+.text-input {
   height: 30px;
   padding: 5px;
   text-align: start;
 }
 
-.invalidFeedback {
+.error {
   color: #cd5c5c;
   font-size: 14px;
 }
