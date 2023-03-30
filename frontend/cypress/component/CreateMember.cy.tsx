@@ -36,14 +36,10 @@ describe('CreateMember.cy.tsx', () => {
   });
   it('Should have input for join date', () => {
     cy.mount(<CreateMember />);
-    cy.getByData('joinDateInput')
-      .type('01/01/23')
-      .should('have.value', '01/01/23');
+    cy.get('#joinDate').type('01/01/23').should('have.value', '01/01/23');
   });
   it('Should have input for renewal date', () => {
     cy.mount(<CreateMember />);
-    cy.getByData('renewalDateInput')
-      .type('01/01/24')
-      .should('have.value', '01/01/24');
+    cy.get('#renewalDate').type('01/01/24').should('have.value', '01/01/24');
   });
 });
