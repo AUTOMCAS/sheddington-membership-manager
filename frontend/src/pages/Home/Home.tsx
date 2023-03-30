@@ -27,7 +27,7 @@ const Home: React.FC = (): JSX.Element => {
 
   const getMembers = async () => {
     const data = await memberService.getAll();
-    setMembers(data);
+    setMembers(data.reverse());
   };
 
   return (

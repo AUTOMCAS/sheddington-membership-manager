@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import './MemberTable.css';
+import moment from 'moment';
 
 import { useTable } from 'react-table';
 type MemberProps = {
@@ -16,16 +17,13 @@ type MemberProps = {
   updatedAt: string;
 };
 
-type Props = {
+type MemberTableProps = {
   data: Array<MemberProps>;
 };
 
-// export interface Column extends ColumnInterface {
-//   Header: string;
-//   accessor: string;
-// }
-
-export default function MemberTable({ data }: Props): JSX.Element {
+const MemberTable: React.FC<MemberTableProps> = ({
+  data,
+}: MemberTableProps): JSX.Element => {
   const columns: any = useMemo(
     () => [
       {
@@ -86,13 +84,9 @@ export default function MemberTable({ data }: Props): JSX.Element {
   */
 
   const formatDate = (dateTime: string) => {
-    const date = dateTime.substring(0, 10);
-    const formattedDate = `${date.substring(8, 10)}/${date.substring(
-      5,
-      7,
-    )}/${date.substring(0, 4)}`;
+    const formattedDateOnly = moment(dateTime).format('DD/MM/YYYY');
 
-    return formattedDate;
+    return formattedDateOnly;
   };
 
   return (
@@ -126,4 +120,6 @@ export default function MemberTable({ data }: Props): JSX.Element {
       </tbody>
     </table>
   );
-}
+};
+
+export default MemberTable;

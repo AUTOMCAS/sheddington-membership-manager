@@ -24,9 +24,8 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
         onChange={(val) => {
           helpers.setValue(val);
         }}
-        onBlur={() => {
-          helpers.setTouched(true);
-        }}
+        dateFormat="DD/MM/YYYY"
+        autoComplete="off"
       />{' '}
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
