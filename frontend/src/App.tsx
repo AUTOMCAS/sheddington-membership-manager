@@ -1,14 +1,14 @@
 import React from 'react';
 import CreateMember from './components/forms/CreateMemberForm/CreateMemberForm';
-import Home from './pages/Home/Home';
+import Members from './pages/Members/Members';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/member/create" element={<CreateMember />} />
+        <Route path="/members" element={<Members />} />
+        <Route path="/members/create" element={<CreateMember />} />
       </Routes>
     </BrowserRouter>
   );

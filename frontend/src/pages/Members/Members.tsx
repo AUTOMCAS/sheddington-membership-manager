@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MemberTable from '../../components/MemberTable/MemberTable';
 import memberService from '../../services/member.service';
 
-import './Home.css';
+import './Members.css';
 
 type MemberProps = {
   id: string | number;
@@ -18,7 +18,7 @@ type MemberProps = {
   updatedAt: string;
 };
 
-const Home: React.FC = (): JSX.Element => {
+const Members: React.FC = (): JSX.Element => {
   const [members, setMembers] = useState<Array<MemberProps>>([]);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Home: React.FC = (): JSX.Element => {
     <div className="home">
       <h2 className="pageHeading">Manage Members</h2>
       <div className="interactionBar" data-test="interactionBar">
-        <a href="/member/create">
+        <a href="/members/create">
           {' '}
           <button>Add Member</button>
         </a>
@@ -46,4 +46,4 @@ const Home: React.FC = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default Members;
