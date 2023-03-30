@@ -1,5 +1,6 @@
 import React from 'react';
 import { useField } from 'formik';
+import './TextInputField.css';
 
 type TextInputFieldProps = {
   id?: any;
@@ -16,7 +17,7 @@ const TextInputField: React.FC<TextInputFieldProps> = ({
   const [field, meta] = useField(props);
 
   return (
-    <div className="formGroup">
+    <div className="text-input-field">
       <label htmlFor={props.id || props.name}>{label}</label>
       <input className="text-input" autoComplete="off" {...field} {...props} />
       {meta.touched && meta.error ? (

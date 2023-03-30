@@ -24,23 +24,6 @@
   margin-top: 10px;
 }
 
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 5px;
-  gap: 2px;
-}
-
-label {
-  font-size: 16px;
-}
-
-.text-input {
-  height: 30px;
-  padding: 5px;
-  text-align: start;
-}
-
 .error {
   color: #cd5c5c;
   font-size: 14px;

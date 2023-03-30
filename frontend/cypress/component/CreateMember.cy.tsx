@@ -1,4 +1,4 @@
-import CreateMember from '../../src/components/CreateMemberForm/CreateMemberForm';
+import CreateMember from '../../src/components/forms/CreateMemberForm/CreateMemberForm';
 
 describe('CreateMember.cy.tsx', () => {
   it('renders', () => {

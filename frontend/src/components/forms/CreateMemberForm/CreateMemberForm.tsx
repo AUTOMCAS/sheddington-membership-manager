@@ -5,7 +5,7 @@ import { Formik, Form } from 'formik';
 
 import * as Yup from 'yup';
 
-import memberService from '../../services/member.service';
+import memberService from '../../../services/member.service';
 import './CreateMemberForm.css';
 import TextInputField from '../TextInputField/TextInputField';
 import DatePickerField from '../DatePickerField/DatePickerField';
@@ -122,9 +122,17 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               data-test="genderInput"
             />
 
-            <DatePickerField name="joinDate" label="Join Date" />
+            <DatePickerField
+              name="joinDate"
+              label="Join Date"
+              placeholder="Join Date"
+            />
 
-            <DatePickerField name="renewalDate" label="Renewal Date" />
+            <DatePickerField
+              name="renewalDate"
+              label="Renewal Date"
+              placeholder="Renewal Date"
+            />
 
             <div className="displayMessage" data-test="displayMessage">
               {displayMessage}

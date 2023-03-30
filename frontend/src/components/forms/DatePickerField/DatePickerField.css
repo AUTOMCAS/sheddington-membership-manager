@@ -1,0 +1,20 @@
+.date-picker-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  padding: 6px 0;
+  margin: auto;
+  width: 350px;
+}
+
+label {
+  padding-bottom: 6px;
+  font-size: 16px;
+}
+
+.react-datepicker__input-container input {
+  height: 30px;
+  padding: 5px;
+  text-align: start;
+  width: 100%;
+}
