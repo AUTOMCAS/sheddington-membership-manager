@@ -10,7 +10,7 @@ const EmergencyContatModel = require('../../../models/emergencyContact.model');
 describe('EmergencyContact model', () => {
   const EmergencyContact = EmergencyContatModel(sequelize, dataTypes);
   describe('Has correct model name', () => {
-    checkModelName(EmergencyContact)('Emergency Contact');
+    checkModelName(EmergencyContact)('emergency_contact');
   });
 
   describe('Contains all properties', () => {

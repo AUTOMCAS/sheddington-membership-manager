@@ -10,7 +10,7 @@ const MemberModel = require('../../../models/member.model');
 describe('Member model', () => {
   const Member = MemberModel(sequelize, dataTypes);
   describe('Has correct model name', () => {
-    checkModelName(Member)('Member');
+    checkModelName(Member)('member');
   });
 
   describe('Contains all properties', () => {
