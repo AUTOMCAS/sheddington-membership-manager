@@ -24,5 +24,16 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.members = require('./member.model')(sequelize, Sequelize);
+db.emergencyContact = require('./emergencyContact.model')(sequelize, Sequelize);
+
+db.emergencyContact.belongsTo(db.members, {
+  foreignKey: 'member_id',
+});
+db.members.hasMany(db.emergencyContact, {
+  foreignKey: 'member_id',
+  onDelete: 'CASCADE',
+});
+
+db.sequelize.sync({ force: true });
 
 module.exports = db;

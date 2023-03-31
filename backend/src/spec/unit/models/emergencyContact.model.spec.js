@@ -15,7 +15,7 @@ describe('EmergencyContact model', () => {
 
   describe('Contains all properties', () => {
     const emergencyContact = new EmergencyContact();
-    ['firstName', 'lastName', 'relationship', 'contactNumber'].forEach(
+    ['firstName', 'lastName', 'relationship', 'telephone'].forEach(
       checkPropertyExists(emergencyContact),
     );
   });
