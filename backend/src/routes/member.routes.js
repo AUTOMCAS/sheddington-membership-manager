@@ -7,7 +7,7 @@ const {
   getAllMembers,
 } = require('../controllers/member.controller');
 
-// Create a new Members
+// Create a new Member
 router.post('/', createMember);
 
 // Retrieve all Members

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { logRequest } = require('./src/utils/logger');
 
 const memberRouter = require('./src/routes/member.routes');
+const emergencyContactRouter = require('./src/routes/emergencyContact.routes');
 
 const app = express();
 
@@ -32,5 +33,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome!' });
 });
 app.use('/members', memberRouter);
+app.use('/emergencyContacts', emergencyContactRouter);
 
 module.exports = app;
