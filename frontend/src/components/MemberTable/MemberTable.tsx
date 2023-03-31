@@ -102,7 +102,7 @@ const MemberTable: React.FC<MemberTableProps> = ({
           </tr>
         ))}
       </thead>
-      <tbody data-test="memberTableBody" {...getTableBodyProps()}>
+      <tbody data-test="member-table-body" {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
           return (

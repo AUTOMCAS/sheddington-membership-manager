@@ -21,7 +21,6 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
     <div className="date-picker-field-wrapper">
       <label htmlFor={props.name}>{label}</label>
       <DatePicker
-        wrapperClassName="datePicker"
         id={props.name}
         {...field}
         {...props}

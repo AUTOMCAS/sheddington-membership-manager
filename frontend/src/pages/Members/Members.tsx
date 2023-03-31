@@ -32,8 +32,8 @@ const Members: React.FC = (): JSX.Element => {
 
   return (
     <div className="home">
-      <h2 className="pageHeading">Manage Members</h2>
-      <div className="interactionBar" data-test="interactionBar">
+      <h2 className="page-heading">Manage Members</h2>
+      <div className="interaction-bar" data-test="interaction-bar">
         <a href="/members/create">
           {' '}
           <button>Add Member</button>

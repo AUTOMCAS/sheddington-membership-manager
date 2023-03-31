@@ -10,11 +10,11 @@ const root = createRoot(container);
 root.render(
   <>
     <div className="banner">
-      <h1 className="heroHeading" data-test="hero-heading">
+      <h1 className="hero-heading" data-test="hero-heading">
         Sheddington Membership Manager
       </h1>
     </div>
-    <div className="appContent">
+    <div className="app-content">
       <App />
     </div>
   </>,

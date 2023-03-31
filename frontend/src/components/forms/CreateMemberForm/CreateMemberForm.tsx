@@ -71,7 +71,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
         setSubmitting(false);
       }}
     >
-      <div className="createMemberPage">
+      <div className="create-member-page">
         <div className="form" data-test="memberForm">
           <Form>
             <TextInputField
@@ -134,24 +134,24 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               placeholder="Renewal Date"
             />
 
-            <div className="displayMessage" data-test="displayMessage">
+            <div className="display-message" data-test="display-message">
               {displayMessage}
             </div>
 
-            <div className="submitButtonContainer">
+            <div className="submit-button-container">
               <button
-                className="submitButton"
+                className="submit-button"
                 type="submit"
-                data-test="submitButton"
+                data-test="submit-button"
               >
                 Add Member
               </button>
             </div>
           </Form>
-          <div className="backButtonContainer">
+          <div className="back-button-container">
             <a href="/members">
               {' '}
-              <button className="backButton" data-test="backButton">
+              <button className="back-button" data-test="back-button">
                 Back to Members
               </button>
             </a>
