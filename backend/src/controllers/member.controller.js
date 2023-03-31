@@ -20,6 +20,7 @@ async function getAllMembers(req, res) {
     const members = await memberService.getAll();
     return res.status(200).json(members);
   } catch (error) {
+    logger.error(error);
     return res
       .status(400)
       .send({ message: `An unknown error occurred. ${error}` });

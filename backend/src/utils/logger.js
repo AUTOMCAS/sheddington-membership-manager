@@ -1,5 +1,6 @@
 const pino = require('pino');
 const pretty = require('pino-pretty');
+const expressPino = require('express-pino-logger');
 
 const stream = pretty({
   colorize: true,
@@ -7,8 +8,16 @@ const stream = pretty({
 
 const logger = pino(
   {
-    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    level: process.env.NODE_ENV === 'development' ? 'debug' : 'silent',
   },
-  stream
+  stream,
 );
-module.exports = { logger };
+
+const logRequest = expressPino({
+  level: 'info',
+  transport: {
+    target: 'pino-pretty',
+  },
+});
+
+module.exports = { logger, logRequest };
