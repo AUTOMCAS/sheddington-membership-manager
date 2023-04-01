@@ -16,7 +16,6 @@ async function create(emergencyContact) {
   try {
     return await EmergencyContacts.create(emergencyContact);
   } catch (error) {
-    console.log('oh');
     logger.error(error);
     throw new Error(error);
   }

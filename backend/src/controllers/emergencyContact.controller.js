@@ -1,4 +1,4 @@
-const emergencyContactService = require('../services/emergencyContact.services');
+const emergencyContactService = require('../services/emergencyContact.service');
 const { logger } = require('../utils/logger');
 
 async function createEmergencyContact(req, res) {

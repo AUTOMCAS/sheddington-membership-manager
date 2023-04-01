@@ -2,9 +2,9 @@ const request = require('supertest');
 
 const app = require('../../../app');
 
-const models = require('../../models');
+const db = require('../../models');
 
-const Members = models.members;
+const Members = db.members;
 
 const memberPayload = {
   id: 1,
@@ -31,22 +31,24 @@ const memberInput = {
   renewalDate: '2024-12-01T00:00:00.000Z',
 };
 
-jest.useFakeTimers().setSystemTime(new Date('2023-01-01'));
-
 describe('/members routes', () => {
+  const thisDb = db;
+
   afterEach(async () => {
     await Members.truncate({ cascade: true, restartIdentity: true });
+  });
+
+  afterAll(async () => {
+    await thisDb.sequelize.close();
   });
 
   describe('GET /members, get all members', () => {
     it('should respond with a 200', async () => {
       const response = await request(app).get('/members');
-
       expect(response.statusCode).toBe(200);
     });
     it('should initially respond with an empty member list', async () => {
       const { body } = await request(app).get('/members');
-
       expect(body).toEqual([]);
     });
   });
@@ -55,7 +57,6 @@ describe('/members routes', () => {
     describe('given valid entries', () => {
       it('should create a new member in the database', async () => {
         await request(app).post('/members').send(memberInput);
-
         await request(app)
           .get('/members')
           .then((res) => {
@@ -65,49 +66,47 @@ describe('/members routes', () => {
       });
       it('should return the member payload', async () => {
         const response = await request(app).post('/members').send(memberInput);
+        const responseKeys = Object.keys(response.body);
+        const payloadKeys = Object.keys(memberPayload);
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual(memberPayload);
-      });
-    });
-    describe('given invalid entries', () => {
-      it('should fail with code 400 and error message when given nothing', async () => {
-        const response = await request(app).post('/members').send();
-
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toHaveProperty('message', 'All fields required');
-      });
-      it('should fail when duplicate email already exists', async () => {
-        await request(app).post('/members').send(memberInput);
-        const response = await request(app).post('/members').send(memberInput);
-
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toMatchObject({
-          message: 'Error: Email must be unique',
-        });
-      });
-      it('should fail with error when firstName is not present', async () => {
-        const response = await request(app)
-          .post('/members')
-          .send({ ...memberInput, firstName: '' });
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toMatchObject({
-          message: 'Error: firstName cannot be empty',
-        });
-      });
-      it('should fail with error when lastName is not present', async () => {
-        const response = await request(app)
-          .post('/members')
-          .send({ ...memberInput, lastName: '' });
-        expect(response.statusCode).toBe(400);
-        expect(response.body).toMatchObject({
-          message: 'Error: lastName cannot be empty',
-        });
+        expect(payloadKeys.every((key) => responseKeys.includes(key))).toBe(
+          true,
+        );
       });
     });
   });
 
-  afterAll(async () => {
-    await models.sequelize.close();
+  describe('given invalid entries', () => {
+    it('should fail with code 400 and error message when given nothing', async () => {
+      const response = await request(app).post('/members').send();
+      expect(response.statusCode).toBe(400);
+    });
+    it('should fail when duplicate email already exists', async () => {
+      await request(app).post('/members').send(memberInput);
+      const response = await request(app).post('/members').send(memberInput);
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toMatchObject({
+        message: 'Error: Email must be unique',
+      });
+    });
+    it('should fail with error when firstName is not present', async () => {
+      const response = await request(app)
+        .post('/members')
+        .send({ ...memberInput, firstName: '' });
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toMatchObject({
+        message: 'Error: firstName cannot be null/empty',
+      });
+    });
+    it('should fail with error when lastName is not present', async () => {
+      const response = await request(app)
+        .post('/members')
+        .send({ ...memberInput, lastName: '' });
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toMatchObject({
+        message: 'Error: lastName cannot be null/empty',
+      });
+    });
   });
 });

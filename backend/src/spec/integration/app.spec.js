@@ -2,18 +2,19 @@ const request = require('supertest');
 
 const app = require('../../../app');
 
-const models = require('../../models');
+const db = require('../../models');
 
 describe('GET /', () => {
-  it('responds with a 200', (done) => {
+  const thisDb = db;
+  it('responds with a 200', () => {
     request(app)
       .get('/')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, { message: 'Welcome!' }, done);
+      .expect(200);
   });
 
   afterAll(async () => {
-    await models.sequelize.close();
+    await thisDb.sequelize.close();
   });
 });

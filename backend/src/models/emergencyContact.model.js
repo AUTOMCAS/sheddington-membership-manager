@@ -17,8 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'last_name',
     },
-    relationship: { type: DataTypes.TEXT, allowNull: false },
-    telephone: { type: DataTypes.TEXT, allowNull: false },
+    relationship: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    telephone: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at',

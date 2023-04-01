@@ -8,13 +8,13 @@ const stream = pretty({
 
 const logger = pino(
   {
-    level: process.env.NODE_ENV === 'development' ? 'debug' : 'silent',
+    level: process.env.NODE_ENV === 'test' ? 'silent' : 'debug',
   },
   stream,
 );
 
 const logRequest = expressPino({
-  level: 'info',
+  level: process.env.NODE_ENV === 'test' ? 'silent' : 'info',
   transport: {
     target: 'pino-pretty',
   },

@@ -30,10 +30,11 @@ db.emergencyContacts = require('./emergencyContact.model')(
 );
 
 db.emergencyContacts.belongsTo(db.members, {
-  foreignKey: 'member_id',
+  foreignKey: { name: 'member_id', allowNull: false },
+  onDelete: 'CASCADE',
 });
 db.members.hasMany(db.emergencyContacts, {
-  foreignKey: 'member_id',
+  foreignKey: { name: 'member_id', allowNull: false },
   onDelete: 'CASCADE',
 });
 

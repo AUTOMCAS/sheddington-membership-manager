@@ -1,10 +1,8 @@
-const memberService = require('../services/member.services');
+const memberService = require('../services/member.service');
 const { logger } = require('../utils/logger');
 
 async function createMember(req, res) {
   const member = req.body;
-  const isEmpty = Object.keys(req.body).length === 0;
-  if (isEmpty) return res.status(400).send({ message: 'All fields required' });
 
   try {
     const createdMember = await memberService.create(member);
@@ -27,7 +25,22 @@ async function getAllMembers(req, res) {
   }
 }
 
+async function createMemberWithEContact(req, res) {
+  const memberWithEContact = req.body;
+
+  try {
+    const createdMember = await memberService.createWithEContact(
+      memberWithEContact,
+    );
+    return res.status(200).json(createdMember);
+  } catch (error) {
+    logger.error(error);
+    return res.status(400).send({ message: `${error}` });
+  }
+}
+
 module.exports = {
   createMember,
   getAllMembers,
+  createMemberWithEContact,
 };

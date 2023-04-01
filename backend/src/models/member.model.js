@@ -12,11 +12,28 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'first_name',
     },
-    lastName: { type: DataTypes.STRING, allowNull: false, field: 'last_name' },
-    email: { type: DataTypes.TEXT, allowNull: false, unique: true },
-    telephone: { type: DataTypes.TEXT, allowNull: false },
-    address: { type: DataTypes.TEXT, allowNull: false },
-    gender: { type: DataTypes.TEXT, allowNull: false },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      field: 'last_name',
+    },
+    email: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    telephone: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     joinDate: {
       type: DataTypes.DATE,
       allowNull: false,

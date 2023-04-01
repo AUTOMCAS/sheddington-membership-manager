@@ -5,6 +5,7 @@ const { logRequest } = require('./src/utils/logger');
 
 const memberRouter = require('./src/routes/member.routes');
 const emergencyContactRouter = require('./src/routes/emergencyContact.routes');
+const db = require('./src/models');
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('env');
-console.log(process.env.NODE_ENV);
+console.log('Environment: ', process.env.NODE_ENV);
 
 // parse requests of content-type - application/json
 app.use(express.json());
