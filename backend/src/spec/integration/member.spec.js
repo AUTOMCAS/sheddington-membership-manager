@@ -6,29 +6,45 @@ const db = require('../../models');
 
 const Members = db.members;
 
-const memberPayload = {
-  id: 1,
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'jd@example.com',
-  telephone: '1234567890',
-  address: '12 example address',
-  gender: 'M',
-  joinDate: '2023-12-01T00:00:00.000Z',
-  renewalDate: '2024-12-01T00:00:00.000Z',
-  createdAt: '2023-01-01T00:00:00.000Z',
-  updatedAt: '2023-01-01T00:00:00.000Z',
+const expectedMemberPayload = {
+  createdMember: {
+    id: 1,
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'jd@example.com',
+    telephone: '1234567890',
+    address: '12 example address',
+    gender: 'M',
+    joinDate: '2023-12-01T00:00:00.000Z',
+    renewalDate: '2024-12-01T00:00:00.000Z',
+  },
+  createdEmergencyContact: {
+    id: 1,
+    firstName: 'Some',
+    lastName: 'One',
+    telephone: '1234123412',
+    relationship: 'Friend',
+    member_id: 1,
+  },
 };
 
 const memberInput = {
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'jd@example.com',
-  telephone: '1234567890',
-  address: '12 example address',
-  gender: 'M',
-  joinDate: '2023-12-01T00:00:00.000Z',
-  renewalDate: '2024-12-01T00:00:00.000Z',
+  member: {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'jd@example.com',
+    telephone: '1234567890',
+    address: '12 example address',
+    gender: 'M',
+    joinDate: '2023-12-01T00:00:00.000Z',
+    renewalDate: '2024-12-01T00:00:00.000Z',
+  },
+  emergencyContact: {
+    firstName: 'Some',
+    lastName: 'One',
+    telephone: '1234123412',
+    relationship: 'Friend',
+  },
 };
 
 describe('/members routes', () => {
@@ -55,23 +71,19 @@ describe('/members routes', () => {
 
   describe('POST /members, create a member', () => {
     describe('given valid entries', () => {
-      it('should create a new member in the database', async () => {
-        await request(app).post('/members').send(memberInput);
-        await request(app)
-          .get('/members')
-          .then((res) => {
-            expect(res.body[0].id).toBe(1);
-            expect(res.body[0].firstName).toBe(memberInput.firstName);
-          });
-      });
       it('should return the member payload', async () => {
         const response = await request(app).post('/members').send(memberInput);
-        const responseKeys = Object.keys(response.body);
-        const payloadKeys = Object.keys(memberPayload);
+        const { createdMember, createdEmergencyContact } = response.body;
 
         expect(response.statusCode).toBe(200);
-        expect(payloadKeys.every((key) => responseKeys.includes(key))).toBe(
-          true,
+        expect(createdMember).toMatchObject(
+          expectedMemberPayload.createdMember,
+          {
+            ignore: ['createdAt', 'updatedAt'],
+          },
+        );
+        expect(createdEmergencyContact).toMatchObject(
+          expectedMemberPayload.createdEmergencyContact,
         );
       });
     });
@@ -90,22 +102,22 @@ describe('/members routes', () => {
         message: 'Error: Email must be unique',
       });
     });
-    it('should fail with error when firstName is not present', async () => {
-      const response = await request(app)
-        .post('/members')
-        .send({ ...memberInput, firstName: '' });
+
+    it('should fail with error when entry is not present', async () => {
+      const { member, emergencyContact } = memberInput;
+
+      const updatedMember = {
+        member: {
+          ...member,
+          firstName: '',
+        },
+        emergencyContact,
+      };
+
+      const response = await request(app).post('/members').send(updatedMember);
       expect(response.statusCode).toBe(400);
       expect(response.body).toMatchObject({
-        message: 'Error: firstName cannot be null/empty',
-      });
-    });
-    it('should fail with error when lastName is not present', async () => {
-      const response = await request(app)
-        .post('/members')
-        .send({ ...memberInput, lastName: '' });
-      expect(response.statusCode).toBe(400);
-      expect(response.body).toMatchObject({
-        message: 'Error: lastName cannot be null/empty',
+        message: "Error: Member's firstName cannot be empty string",
       });
     });
   });

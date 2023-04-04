@@ -5,6 +5,7 @@ const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
 
 const validateEntries = async (data, owner) => {
+  if (data === null) return;
   const entries = Object.entries(data);
 
   entries.forEach((entry) => {
@@ -17,16 +18,16 @@ const validateEntries = async (data, owner) => {
 const getAll = async () => {
   try {
     return await Members.findAll();
-  } catch (error) {
-    throw new Error(error);
+  } catch (er) {
+    throw new Error(er);
   }
 };
 
 const create = async (memberData) => {
   const { member, emergencyContact } = memberData;
 
-  validateEntries(member, 'Member');
-  validateEntries(emergencyContact, 'Emergency Contact');
+  await validateEntries(member, 'Member');
+  await validateEntries(emergencyContact, 'Emergency Contact');
 
   try {
     return await sequelize.transaction(async (t) => {
