@@ -25,7 +25,6 @@ const getAll = async () => {
 
 const create = async (memberData) => {
   const { member, emergencyContact } = memberData;
-
   await validateEntries(member, 'Member');
   await validateEntries(emergencyContact, 'Emergency Contact');
 
@@ -51,4 +50,4 @@ const create = async (memberData) => {
   }
 };
 
-module.exports = { create, getAll };
+module.exports = { create, getAll, validateEntries };
