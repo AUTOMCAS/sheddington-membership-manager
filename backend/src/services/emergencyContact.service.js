@@ -4,7 +4,7 @@ const models = require('../models');
 
 const EmergencyContacts = models.emergencyContacts;
 
-async function create(emergencyContact) {
+const create = async (emergencyContact) => {
   const emergencyContactEntries = Object.entries(emergencyContact);
 
   emergencyContactEntries.forEach((entry) => {
@@ -19,6 +19,6 @@ async function create(emergencyContact) {
     logger.error(error);
     throw new Error(error);
   }
-}
+};
 
 module.exports = { create };
