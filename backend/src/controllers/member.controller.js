@@ -25,7 +25,19 @@ const getAllMembers = async (req, res) => {
   }
 };
 
+const getMemberById = async (req, res) => {
+  console.log('ID: ', req.params.id);
+  try {
+    const member = await memberService.getById(req.params.id);
+    return res.status(200).json(member);
+  } catch (error) {
+    logger.error(error);
+    return res.status(400).send();
+  }
+};
+
 module.exports = {
   createMember,
   getAllMembers,
+  getMemberById,
 };

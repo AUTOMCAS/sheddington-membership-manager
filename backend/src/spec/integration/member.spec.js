@@ -6,44 +6,40 @@ const db = require('../../models');
 
 const Members = db.members;
 
-const expectedMemberPayload = {
-  createdMember: {
+const expectedMemberResponse = {
+  id: 1,
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'jd@example.com',
+  telephone: '1234567890',
+  address: '12 example address',
+  gender: 'M',
+  joinDate: '2023-12-01T00:00:00.000Z',
+  renewalDate: '2024-12-01T00:00:00.000Z',
+  newEmergencyContact: {
     id: 1,
-    firstName: 'John',
+    firstName: 'Jane',
     lastName: 'Doe',
-    email: 'jd@example.com',
-    telephone: '1234567890',
-    address: '12 example address',
-    gender: 'M',
-    joinDate: '2023-12-01T00:00:00.000Z',
-    renewalDate: '2024-12-01T00:00:00.000Z',
-  },
-  createdEmergencyContact: {
-    id: 1,
-    firstName: 'Some',
-    lastName: 'One',
     telephone: '1234123412',
-    relationship: 'Friend',
+    relationship: 'Partner',
     member_id: 1,
   },
 };
 
 const memberInput = {
-  member: {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'jd@example.com',
-    telephone: '1234567890',
-    address: '12 example address',
-    gender: 'M',
-    joinDate: '2023-12-01T00:00:00.000Z',
-    renewalDate: '2024-12-01T00:00:00.000Z',
-  },
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'jd@example.com',
+  telephone: '1234567890',
+  address: '12 example address',
+  gender: 'M',
+  joinDate: '2023-12-01T00:00:00.000Z',
+  renewalDate: '2024-12-01T00:00:00.000Z',
   emergencyContact: {
-    firstName: 'Some',
-    lastName: 'One',
+    firstName: 'Jane',
+    lastName: 'Doe',
     telephone: '1234123412',
-    relationship: 'Friend',
+    relationship: 'Partner',
   },
 };
 
@@ -58,6 +54,7 @@ describe('/members routes', () => {
     await thisDb.sequelize.close();
   });
 
+  // Get all members
   describe('GET /members, get all members', () => {
     it('should respond with a 200', async () => {
       const response = await request(app).get('/members');
@@ -69,21 +66,45 @@ describe('/members routes', () => {
     });
   });
 
+  // Get member by ID
+  describe('GET /members/:id, get member by ID', () => {
+    xit('should return member by ID', async () => {
+      await request(app).post('/members').send(memberInput);
+
+      const id = 1;
+      const response = await request(app).get(`/members/${id}`);
+
+      const { createdMember, createdEmergencyContact } = response.body;
+      expect(response.statusCode).toBe(200);
+      expect(createdMember).toMatchObject(
+        expectedMemberResponse.createdMember,
+        {
+          ignore: ['createdAt', 'updatedAt', 'createdEmergencyContact'],
+        },
+      );
+      expect(createdEmergencyContact).toMatchObject(
+        expectedMemberResponse.createdEmergencyContact,
+      );
+    });
+  });
+
+  // Create members
   describe('POST /members, create a member', () => {
     describe('given valid entries', () => {
       it('should return the member payload', async () => {
         const response = await request(app).post('/members').send(memberInput);
-        const { createdMember, createdEmergencyContact } = response.body;
+        const createdMember = response.body;
 
         expect(response.statusCode).toBe(200);
-        expect(createdMember).toMatchObject(
-          expectedMemberPayload.createdMember,
+        expect(createdMember).toMatchObject(expectedMemberResponse, {
+          ignore: ['createdAt', 'updatedAt', 'newEmergencyContact'],
+        });
+
+        expect(createdMember.newEmergencyContact).toMatchObject(
+          expectedMemberResponse.newEmergencyContact,
           {
             ignore: ['createdAt', 'updatedAt'],
           },
-        );
-        expect(createdEmergencyContact).toMatchObject(
-          expectedMemberPayload.createdEmergencyContact,
         );
       });
     });
@@ -94,6 +115,7 @@ describe('/members routes', () => {
       const response = await request(app).post('/members').send();
       expect(response.statusCode).toBe(400);
     });
+
     it('should fail when duplicate email already exists', async () => {
       await request(app).post('/members').send(memberInput);
       const response = await request(app).post('/members').send(memberInput);
@@ -104,16 +126,10 @@ describe('/members routes', () => {
     });
 
     it('should fail with error when entry is not present', async () => {
-      const { member, emergencyContact } = memberInput;
-
       const updatedMember = {
-        member: {
-          ...member,
-          firstName: '',
-        },
-        emergencyContact,
+        ...memberInput,
+        firstName: '',
       };
-
       const response = await request(app).post('/members').send(updatedMember);
       expect(response.statusCode).toBe(400);
       expect(response.body).toMatchObject({

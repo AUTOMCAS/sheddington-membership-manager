@@ -18,28 +18,40 @@ const validateEntries = async (data, owner) => {
 const getAll = async () => {
   try {
     return await Members.findAll();
-  } catch (er) {
-    throw new Error(er);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const getById = async (id) => {
+  try {
+    return await Members.findByPk(id);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
 const create = async (memberData) => {
-  const { member, emergencyContact } = memberData;
+  const { emergencyContact, ...member } = memberData;
   await validateEntries(member, 'Member');
   await validateEntries(emergencyContact, 'Emergency Contact');
 
   try {
     return await sequelize.transaction(async (t) => {
-      const createdMember = await Members.create(member, { transaction: t });
+      const createdMember = await Members.create(member, {
+        transaction: t,
+      });
 
       emergencyContact.member_id = createdMember.id;
 
-      const createdEmergencyContact = await EmergencyContact.create(
+      const newEmergencyContact = await EmergencyContact.create(
         emergencyContact,
         { transaction: t },
       );
 
-      return { createdEmergencyContact, createdMember };
+      const obk = { ...createdMember.dataValues, newEmergencyContact };
+
+      return obk;
     });
   } catch (error) {
     if (error.errors[0].message === 'email must be unique') {
@@ -50,4 +62,9 @@ const create = async (memberData) => {
   }
 };
 
-module.exports = { create, getAll, validateEntries };
+module.exports = {
+  create,
+  getAll,
+  validateEntries,
+  getById,
+};
