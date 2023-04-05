@@ -2,10 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { logRequest } = require('./src/utils/logger');
-
 const memberRouter = require('./src/routes/member.routes');
 const emergencyContactRouter = require('./src/routes/emergencyContact.routes');
-const db = require('./src/models');
 
 const app = express();
 

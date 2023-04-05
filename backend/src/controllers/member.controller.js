@@ -26,7 +26,6 @@ const getAllMembers = async (req, res) => {
 };
 
 const getMemberById = async (req, res) => {
-  console.log('ID: ', req.params.id);
   try {
     const member = await memberService.getById(req.params.id);
     return res.status(200).json(member);

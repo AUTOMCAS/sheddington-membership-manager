@@ -49,9 +49,7 @@ const create = async (memberData) => {
         { transaction: t },
       );
 
-      const obk = { ...createdMember.dataValues, newEmergencyContact };
-
-      return obk;
+      return { ...createdMember.dataValues, newEmergencyContact };
     });
   } catch (error) {
     if (error.errors[0].message === 'email must be unique') {

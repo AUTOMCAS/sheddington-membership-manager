@@ -1,12 +1,10 @@
-// Takes all models and applies to db object
-
 const Sequelize = require('sequelize');
 
 const env = process.env.NODE_ENV || 'development';
 
 const config = require('../config/config')[env];
 
-let sequelize = '';
+let sequelize = null;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
@@ -38,6 +36,6 @@ db.members.hasMany(db.emergencyContacts, {
   onDelete: 'CASCADE',
 });
 
-db.sequelize.sync({ force: false });
+// db.sequelize.sync({ force: false });
 
 module.exports = db;

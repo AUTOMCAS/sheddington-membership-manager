@@ -2,15 +2,15 @@ const request = require('supertest');
 
 const app = require('../../../app');
 
-const db = require('../../models');
+const models = require('../../models');
 
-const Members = db.members;
+const Members = models.members;
 
 const expectedMemberResponse = {
   id: 1,
   firstName: 'John',
-  lastName: 'Doe',
-  email: 'jd@example.com',
+  lastName: 'Smith',
+  email: 'js@example.com',
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
@@ -19,7 +19,7 @@ const expectedMemberResponse = {
   newEmergencyContact: {
     id: 1,
     firstName: 'Jane',
-    lastName: 'Doe',
+    lastName: 'Smith',
     telephone: '1234123412',
     relationship: 'Partner',
     member_id: 1,
@@ -28,8 +28,8 @@ const expectedMemberResponse = {
 
 const memberInput = {
   firstName: 'John',
-  lastName: 'Doe',
-  email: 'jd@example.com',
+  lastName: 'Smith',
+  email: 'js@example.com',
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
@@ -37,21 +37,19 @@ const memberInput = {
   renewalDate: '2024-12-01T00:00:00.000Z',
   emergencyContact: {
     firstName: 'Jane',
-    lastName: 'Doe',
+    lastName: 'Smith',
     telephone: '1234123412',
     relationship: 'Partner',
   },
 };
 
 describe('/members routes', () => {
-  const thisDb = db;
-
   afterEach(async () => {
     await Members.truncate({ cascade: true, restartIdentity: true });
   });
 
   afterAll(async () => {
-    await thisDb.sequelize.close();
+    await models.sequelize.close();
   });
 
   // Get all members
