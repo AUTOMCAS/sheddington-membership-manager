@@ -47,38 +47,45 @@ describe('member controller', () => {
       },
     };
 
-    const mockResponse = () => {
-      const res = {};
-      res.send = jest.fn().mockReturnValue(res);
-      res.status = jest.fn().mockReturnValue(res);
-      res.json = jest.fn().mockReturnValue(res);
-      return res;
-    };
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should return 200 status code and created member', async () => {
-      const mockRes = mockResponse();
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
 
       memberService.create = jest.fn().mockResolvedValue(mockCreatedMember);
 
-      await createMember(mockRequest, mockRes);
+      await createMember(mockRequest, mockResponse);
 
       expect(memberService.create).toHaveBeenCalled();
-      expect(mockRes.status).toHaveBeenCalledWith(200);
-      expect(mockRes.json).toHaveBeenCalledWith(mockCreatedMember);
-      expect(mockRes.send).not.toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith(mockCreatedMember);
+      expect(mockResponse.send).not.toHaveBeenCalled();
     });
 
     it('should return 400 status code and error message', async () => {
-      const mockRes = mockResponse();
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
       const mockError = new Error('Email must be unique');
 
       memberService.create = jest.fn().mockRejectedValue(mockError);
 
-      await createMember(mockRequest, mockRes);
+      await createMember(mockRequest, mockResponse);
 
       expect(memberService.create).toHaveBeenCalled();
-      expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.send).toHaveBeenCalledWith({ message: `${mockError}` });
-      expect(mockRes.json).not.toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.send).toHaveBeenCalledWith({
+        message: `${mockError}`,
+      });
+      expect(mockResponse.json).not.toHaveBeenCalled();
     });
   });
 
@@ -91,16 +98,16 @@ describe('member controller', () => {
 
       memberService.getAll = jest.fn().mockResolvedValue(mockMembers);
 
-      const req = {};
-      const res = {
+      const mockRequest = {};
+      const mockResponse = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
 
-      await getAllMembers(req, res);
+      await getAllMembers(mockRequest, mockResponse);
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(mockMembers);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith(mockMembers);
     });
 
     it('should return 400 status code and handle errors', async () => {
@@ -108,16 +115,16 @@ describe('member controller', () => {
 
       memberService.getAll.mockRejectedValue(mockError);
 
-      const req = {};
-      const res = {
+      const mockRequest = {};
+      const mockResponse = {
         status: jest.fn().mockReturnThis(),
         send: jest.fn(),
       };
 
-      await getAllMembers(req, res);
+      await getAllMembers(mockRequest, mockResponse);
 
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.send).toHaveBeenCalledWith({
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.send).toHaveBeenCalledWith({
         message: `An unknown error occurred. ${mockError}`,
       });
     });
