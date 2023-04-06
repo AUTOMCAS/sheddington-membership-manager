@@ -32,7 +32,11 @@ const getById = async (id) => {
 };
 
 const create = async (memberData) => {
+  if (memberData.emergencyContact === undefined) {
+    throw new Error('Emergency Contact missing');
+  }
   const { emergencyContact, ...member } = memberData;
+
   await validateEntries(member, 'Member');
   await validateEntries(emergencyContact, 'Emergency Contact');
 
@@ -44,12 +48,12 @@ const create = async (memberData) => {
 
       emergencyContact.member_id = createdMember.id;
 
-      const newEmergencyContact = await EmergencyContact.create(
+      const createdEmergencyContact = await EmergencyContact.create(
         emergencyContact,
         { transaction: t },
       );
 
-      return { ...createdMember.dataValues, newEmergencyContact };
+      return { ...createdMember.dataValues, createdEmergencyContact };
     });
   } catch (error) {
     if (error.errors[0].message === 'email must be unique') {

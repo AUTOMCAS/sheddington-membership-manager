@@ -16,7 +16,7 @@ const expectedMemberResponse = {
   gender: 'M',
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
-  newEmergencyContact: {
+  createdEmergencyContact: {
     id: 1,
     firstName: 'Jane',
     lastName: 'Smith',
@@ -98,8 +98,8 @@ describe('/members routes', () => {
           ignore: ['createdAt', 'updatedAt', 'newEmergencyContact'],
         });
 
-        expect(createdMember.newEmergencyContact).toMatchObject(
-          expectedMemberResponse.newEmergencyContact,
+        expect(createdMember.createdEmergencyContact).toMatchObject(
+          expectedMemberResponse.createdEmergencyContact,
           {
             ignore: ['createdAt', 'updatedAt'],
           },

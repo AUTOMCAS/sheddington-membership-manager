@@ -1,17 +1,22 @@
 const models = require('../../../models');
+const { sequelize } = require('../../../models');
 
 const Members = models.members;
+const EmergencyContact = models.emergencyContacts;
 
 const {
   validateEntries,
+  create,
   getById,
   getAll,
 } = require('../../../services/member.service');
 
-jest.mock('../../../models');
-
 describe('Member service', () => {
-  const mockMember = {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const mockCreatedMember = {
     id: 1,
     firstName: 'John',
     lastName: 'Smith',
@@ -29,6 +34,46 @@ describe('Member service', () => {
       relationship: 'Partner',
       member_id: 1,
     },
+  };
+
+  const mockMemberData = {
+    firstName: 'John',
+    lastName: 'Smith',
+    email: 'js@example.com',
+    telephone: '1234567890',
+    address: '12 example address',
+    gender: 'M',
+    joinDate: '2023-12-01T00:00:00.000Z',
+    renewalDate: '2024-12-01T00:00:00.000Z',
+    emergencyContact: {
+      firstName: 'Jane',
+      lastName: 'Smith',
+      telephone: '1234123412',
+      relationship: 'Partner',
+    },
+  };
+
+  const sequelizeCreatedMember = {
+    dataValues: {
+      id: 1,
+      firstName: 'John',
+      lastName: 'Smith',
+      email: 'js@example.com',
+      telephone: '1234567890',
+      address: '12 example address',
+      gender: 'M',
+      joinDate: '2023-12-01T00:00:00.000Z',
+      renewalDate: '2024-12-01T00:00:00.000Z',
+    },
+  };
+
+  const sequelizeCreatedEmergencyContact = {
+    id: 1,
+    firstName: 'Jane',
+    lastName: 'Smith',
+    telephone: '1234123412',
+    relationship: 'Partner',
+    member_id: 1,
   };
 
   describe('validateEntries', () => {
@@ -53,6 +98,65 @@ describe('Member service', () => {
     });
   });
 
+  describe('create', () => {
+    it('should first create a member and then, if successful, an emergency contact', async () => {
+      sequelize.transaction = jest
+        .fn()
+        .mockImplementation(async (callback) => callback());
+
+      Members.create = jest.fn().mockResolvedValue(sequelizeCreatedMember);
+      EmergencyContact.create = jest
+        .fn()
+        .mockResolvedValue(sequelizeCreatedEmergencyContact);
+
+      const { emergencyContact, ...member } = mockMemberData;
+
+      const result = await create(mockMemberData);
+
+      expect(sequelize.transaction).toHaveBeenCalled();
+      expect(Members.create).toHaveBeenCalledWith(member, {
+        transaction: undefined,
+      });
+      expect(EmergencyContact.create).toHaveBeenCalledWith(emergencyContact, {
+        transaction: undefined,
+      });
+      expect(result).toEqual(mockCreatedMember);
+    });
+
+    it('should throw an error if email is not unique', async () => {
+      const mockData = {
+        firstName: 'John',
+        email: 'js@example.com',
+        emergencyContact: {
+          firstName: 'Jane',
+        },
+      };
+
+      sequelize.transaction = jest
+        .fn()
+        .mockImplementation(async (callback) => callback());
+
+      Members.create = jest.fn().mockRejectedValue({
+        errors: [{ message: 'email must be unique' }],
+      });
+
+      await expect(create(mockData)).rejects.toThrowError(
+        'Email must be unique',
+      );
+    });
+
+    it('should throw an error if emergencyContact is missing', async () => {
+      const mockData = {
+        firstName: 'John',
+        email: 'js@example.com',
+      };
+
+      await expect(create(mockData)).rejects.toThrowError(
+        'Emergency Contact missing',
+      );
+    });
+  });
+
   describe('getAll', () => {
     it('should return array', async () => {
       const mockMembersResponse = [];
@@ -63,30 +167,19 @@ describe('Member service', () => {
 
       expect(result).toEqual(mockMembersResponse);
     });
+
     it('should return array of members', async () => {
       const mockMembersResponse = [
         {
           id: 1,
           firstName: 'John',
-          lastName: 'Smith',
           email: 'js@example.com',
-          telephone: '1234567890',
-          address: '12 example address',
-          gender: 'M',
-          joinDate: '2023-12-01T00:00:00.000Z',
-          renewalDate: '2024-12-01T00:00:00.000Z',
         },
 
         {
           id: 2,
           firstName: 'Ben',
-          lastName: 'Leaf',
           email: 'bs@example.com',
-          telephone: '5123467890',
-          address: '22 example address',
-          gender: 'M',
-          joinDate: '2023-12-01T00:00:00.000Z',
-          renewalDate: '2024-12-01T00:00:00.000Z',
         },
       ];
 
@@ -96,26 +189,27 @@ describe('Member service', () => {
 
       expect(result).toEqual(mockMembersResponse);
     });
+
     it('should throw an error if Members.findAll rejects', async () => {
       const mockError = new Error('Database error');
       Members.findAll.mockRejectedValueOnce(mockError);
 
-      await expect(getAll()).rejects.toThrow('Error: Database error');
+      await expect(getAll()).rejects.toThrowError('Error: Database error');
     });
   });
 
   describe('getById', () => {
     it('should return a member with the provided id', async () => {
-      Members.findByPk = jest.fn().mockResolvedValue(mockMember);
-      const result = await getById(mockMember.id);
-      expect(result).toEqual(mockMember);
+      Members.findByPk = jest.fn().mockResolvedValue(mockCreatedMember);
+      const result = await getById(mockCreatedMember.id);
+      expect(result).toEqual(mockCreatedMember);
     });
 
     it('should throw an error if no member with the given ID is found', async () => {
       const mockError = new Error('Member not found');
       Members.findByPk.mockRejectedValueOnce(mockError);
 
-      await expect(getById(mockMember.Id)).rejects.toThrowError(
+      await expect(getById(mockCreatedMember.Id)).rejects.toThrowError(
         'Member not found',
       );
     });
