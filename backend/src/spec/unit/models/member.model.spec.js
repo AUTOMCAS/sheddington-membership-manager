@@ -22,6 +22,9 @@ describe('Member model', () => {
       'telephone',
       'address',
       'gender',
+      'interests',
+      'medicalConditions',
+      'specialRequirements',
       'joinDate',
       'renewalDate',
     ].forEach(checkPropertyExists(member));

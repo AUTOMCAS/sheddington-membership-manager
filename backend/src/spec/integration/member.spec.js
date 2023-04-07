@@ -14,6 +14,9 @@ const expectedMemberResponse = {
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
+  interests: ['Making and Mending', 'Gardening'],
+  medicalConditions: ['Lower body paralysis'],
+  specialRequirements: ['Wheelchair access'],
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
   createdEmergencyContact: {
@@ -33,6 +36,9 @@ const memberInput = {
   telephone: '1234567890',
   address: '12 example address',
   gender: 'M',
+  interests: ['Making and Mending', 'Gardening'],
+  medicalConditions: ['Lower body paralysis'],
+  specialRequirements: ['Wheelchair access'],
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
   emergencyContact: {
@@ -73,6 +79,8 @@ describe('/members routes', () => {
       const response = await request(app).get(`/members/${id}`);
 
       const { createdMember, createdEmergencyContact } = response.body;
+      console.log(response.body);
+
       expect(response.statusCode).toBe(200);
       expect(createdMember).toMatchObject(
         expectedMemberResponse.createdMember,
