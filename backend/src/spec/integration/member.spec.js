@@ -6,7 +6,11 @@ const models = require('../../models');
 
 const Members = models.members;
 
-const { expectedMemberResponse, memberData } = require('../testData');
+const {
+  expectedMemberResponse,
+  memberData,
+  expectedMemberResponseById,
+} = require('../testData');
 
 describe('/members', () => {
   afterEach(async () => {
@@ -17,43 +21,7 @@ describe('/members', () => {
     await models.sequelize.close();
   });
 
-  // Get all members
-  describe('GET /members, get all members', () => {
-    it('should respond with a 200', async () => {
-      const response = await request(app).get('/members');
-      expect(response.statusCode).toBe(200);
-    });
-    it('should initially respond with an empty member list', async () => {
-      const { body } = await request(app).get('/members');
-      expect(body).toEqual([]);
-    });
-  });
-
-  // Get member by ID
-  describe('GET /members/:id, get member by ID', () => {
-    xit('should return member by ID', async () => {
-      await request(app).post('/members').send(memberData);
-
-      const id = 1;
-      const response = await request(app).get(`/members/${id}`);
-
-      const { createdMember, createdEmergencyContact } = response.body;
-      console.log(response.body);
-
-      expect(response.statusCode).toBe(200);
-      expect(createdMember).toMatchObject(
-        expectedMemberResponse.createdMember,
-        {
-          ignore: ['createdAt', 'updatedAt', 'createdEmergencyContact'],
-        },
-      );
-      expect(createdEmergencyContact).toMatchObject(
-        expectedMemberResponse.createdEmergencyContact,
-      );
-    });
-  });
-
-  // Create members
+  // Create member
   describe('POST /members, create a member', () => {
     describe('given valid entries', () => {
       it('should return the member payload', async () => {
@@ -99,6 +67,33 @@ describe('/members', () => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toMatchObject({
         message: "Error: Member's firstName cannot be empty string",
+      });
+    });
+  });
+
+  // Get all members
+  describe('GET /members, get all members', () => {
+    it('should respond with a 200', async () => {
+      const response = await request(app).get('/members');
+      expect(response.statusCode).toBe(200);
+    });
+    it('should initially respond with an empty member list', async () => {
+      const { body } = await request(app).get('/members');
+      expect(body).toEqual([]);
+    });
+  });
+
+  // Get member by ID
+  describe('GET /members/:id, get member by ID', () => {
+    it('should return member by ID', async () => {
+      await request(app).post('/members').send(memberData);
+
+      const id = 1;
+      const response = await request(app).get(`/members/${id}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toMatchObject(expectedMemberResponseById, {
+        ignore: ['createdAt', 'updatedAt'],
       });
     });
   });

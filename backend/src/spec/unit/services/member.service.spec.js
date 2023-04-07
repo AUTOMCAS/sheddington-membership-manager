@@ -65,6 +65,7 @@ describe('Member service', () => {
     });
   });
 
+  // Create member
   describe('create', () => {
     it('should first create a member and then, if successful, an emergency contact', async () => {
       sequelize.transaction = jest
@@ -124,6 +125,7 @@ describe('Member service', () => {
     });
   });
 
+  // Get all members
   describe('getAll', () => {
     it('should return array', async () => {
       const mockMembersResponse = [];
@@ -165,18 +167,23 @@ describe('Member service', () => {
     });
   });
 
+  // Get member by ID
   describe('getById', () => {
     it('should return a member with the provided id', async () => {
       Members.findByPk = jest.fn().mockResolvedValue(expectedMemberResponse);
       const result = await getById(expectedMemberResponse.id);
+
       expect(result).toEqual(expectedMemberResponse);
+      expect(Members.findByPk).toHaveBeenCalledWith(expectedMemberResponse.id, {
+        include: 'emergencyContacts',
+      });
     });
 
     it('should throw an error if no member with the given ID is found', async () => {
       const mockError = new Error('Member not found');
       Members.findByPk.mockRejectedValueOnce(mockError);
 
-      await expect(getById(expectedMemberResponse.Id)).rejects.toThrowError(
+      await expect(getById(expectedMemberResponse.id)).rejects.toThrowError(
         'Member not found',
       );
     });

@@ -17,7 +17,7 @@ const validateEntries = async (data, owner) => {
 
 const getAll = async () => {
   try {
-    return await Members.findAll();
+    return await Members.findAll({ include: 'emergencyContacts' });
   } catch (error) {
     throw new Error(error);
   }
@@ -25,7 +25,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   try {
-    return await Members.findByPk(id);
+    return await Members.findByPk(id, { include: 'emergencyContacts' });
   } catch (error) {
     throw new Error(error);
   }

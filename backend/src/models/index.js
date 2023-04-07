@@ -27,15 +27,15 @@ db.emergencyContacts = require('./emergencyContact.model')(
   Sequelize,
 );
 
-db.emergencyContacts.belongsTo(db.members, {
-  foreignKey: { name: 'member_id', allowNull: false },
-  onDelete: 'CASCADE',
-});
 db.members.hasMany(db.emergencyContacts, {
+  as: 'emergencyContacts',
   foreignKey: { name: 'member_id', allowNull: false },
   onDelete: 'CASCADE',
 });
-
-// db.sequelize.sync({ force: true });
+db.emergencyContacts.belongsTo(db.members, {
+  as: 'emergencyContacts',
+  foreignKey: { name: 'member_id', allowNull: false },
+  onDelete: 'CASCADE',
+});
 
 module.exports = db;

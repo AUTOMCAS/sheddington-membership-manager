@@ -10,6 +10,7 @@ const {
 } = require('../../../controllers/member.controller');
 
 describe('member controller', () => {
+  // Create member
   describe('createMember', () => {
     beforeEach(() => {
       jest.clearAllMocks();
@@ -55,6 +56,7 @@ describe('member controller', () => {
     });
   });
 
+  // Get all members
   describe('getAllMembers', () => {
     it('should return 200 status code and member list', async () => {
       const mockMembers = [
@@ -96,6 +98,7 @@ describe('member controller', () => {
     });
   });
 
+  // Get member by ID
   describe('getMemberById', () => {
     it('should return member by id', async () => {
       const mockMember = { id: 1, name: 'John Smith' };
