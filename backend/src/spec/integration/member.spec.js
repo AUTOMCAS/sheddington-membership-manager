@@ -6,48 +6,7 @@ const models = require('../../models');
 
 const Members = models.members;
 
-const expectedMemberResponse = {
-  id: 1,
-  firstName: 'John',
-  lastName: 'Smith',
-  email: 'js@example.com',
-  telephone: '1234567890',
-  address: '12 example address',
-  gender: 'M',
-  interests: ['Making and Mending', 'Gardening'],
-  medicalConditions: ['Lower body paralysis'],
-  specialRequirements: ['Wheelchair access'],
-  joinDate: '2023-12-01T00:00:00.000Z',
-  renewalDate: '2024-12-01T00:00:00.000Z',
-  createdEmergencyContact: {
-    id: 1,
-    firstName: 'Jane',
-    lastName: 'Smith',
-    telephone: '1234123412',
-    relationship: 'Partner',
-    member_id: 1,
-  },
-};
-
-const memberInput = {
-  firstName: 'John',
-  lastName: 'Smith',
-  email: 'js@example.com',
-  telephone: '1234567890',
-  address: '12 example address',
-  gender: 'M',
-  interests: ['Making and Mending', 'Gardening'],
-  medicalConditions: ['Lower body paralysis'],
-  specialRequirements: ['Wheelchair access'],
-  joinDate: '2023-12-01T00:00:00.000Z',
-  renewalDate: '2024-12-01T00:00:00.000Z',
-  emergencyContact: {
-    firstName: 'Jane',
-    lastName: 'Smith',
-    telephone: '1234123412',
-    relationship: 'Partner',
-  },
-};
+const { expectedMemberResponse, memberData } = require('../testData');
 
 describe('/members', () => {
   afterEach(async () => {
@@ -73,7 +32,7 @@ describe('/members', () => {
   // Get member by ID
   describe('GET /members/:id, get member by ID', () => {
     xit('should return member by ID', async () => {
-      await request(app).post('/members').send(memberInput);
+      await request(app).post('/members').send(memberData);
 
       const id = 1;
       const response = await request(app).get(`/members/${id}`);
@@ -98,7 +57,7 @@ describe('/members', () => {
   describe('POST /members, create a member', () => {
     describe('given valid entries', () => {
       it('should return the member payload', async () => {
-        const response = await request(app).post('/members').send(memberInput);
+        const response = await request(app).post('/members').send(memberData);
         const createdMember = response.body;
 
         expect(response.statusCode).toBe(200);
@@ -123,8 +82,8 @@ describe('/members', () => {
     });
 
     it('should fail when duplicate email already exists', async () => {
-      await request(app).post('/members').send(memberInput);
-      const response = await request(app).post('/members').send(memberInput);
+      await request(app).post('/members').send(memberData);
+      const response = await request(app).post('/members').send(memberData);
       expect(response.statusCode).toBe(400);
       expect(response.body).toMatchObject({
         message: 'Error: Email must be unique',
@@ -133,7 +92,7 @@ describe('/members', () => {
 
     it('should fail with error when entry is not present', async () => {
       const updatedMember = {
-        ...memberInput,
+        ...memberData,
         firstName: '',
       };
       const response = await request(app).post('/members').send(updatedMember);

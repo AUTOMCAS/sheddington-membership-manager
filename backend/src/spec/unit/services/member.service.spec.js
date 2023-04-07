@@ -1,5 +1,6 @@
 const models = require('../../../models');
 const { sequelize } = require('../../../models');
+const { expectedMemberResponse, memberData } = require('../../testData');
 
 const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
@@ -16,43 +17,6 @@ describe('Member service', () => {
     jest.clearAllMocks();
   });
 
-  const mockCreatedMember = {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Smith',
-    email: 'js@example.com',
-    telephone: '1234567890',
-    address: '12 example address',
-    gender: 'M',
-    joinDate: '2023-12-01T00:00:00.000Z',
-    renewalDate: '2024-12-01T00:00:00.000Z',
-    createdEmergencyContact: {
-      id: 1,
-      firstName: 'Jane',
-      lastName: 'Smith',
-      telephone: '1234123412',
-      relationship: 'Partner',
-      member_id: 1,
-    },
-  };
-
-  const mockMemberData = {
-    firstName: 'John',
-    lastName: 'Smith',
-    email: 'js@example.com',
-    telephone: '1234567890',
-    address: '12 example address',
-    gender: 'M',
-    joinDate: '2023-12-01T00:00:00.000Z',
-    renewalDate: '2024-12-01T00:00:00.000Z',
-    emergencyContact: {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      telephone: '1234123412',
-      relationship: 'Partner',
-    },
-  };
-
   const sequelizeCreatedMember = {
     dataValues: {
       id: 1,
@@ -62,6 +26,9 @@ describe('Member service', () => {
       telephone: '1234567890',
       address: '12 example address',
       gender: 'M',
+      interests: ['Making and Mending', 'Gardening'],
+      medicalConditions: ['Lower body paralysis'],
+      specialRequirements: ['Wheelchair access'],
       joinDate: '2023-12-01T00:00:00.000Z',
       renewalDate: '2024-12-01T00:00:00.000Z',
     },
@@ -109,9 +76,9 @@ describe('Member service', () => {
         .fn()
         .mockResolvedValue(sequelizeCreatedEmergencyContact);
 
-      const { emergencyContact, ...member } = mockMemberData;
+      const { emergencyContact, ...member } = memberData;
 
-      const result = await create(mockMemberData);
+      const result = await create(memberData);
 
       expect(sequelize.transaction).toHaveBeenCalled();
       expect(Members.create).toHaveBeenCalledWith(member, {
@@ -120,7 +87,7 @@ describe('Member service', () => {
       expect(EmergencyContact.create).toHaveBeenCalledWith(emergencyContact, {
         transaction: undefined,
       });
-      expect(result).toEqual(mockCreatedMember);
+      expect(result).toEqual(expectedMemberResponse);
     });
 
     it('should throw an error if email is not unique', async () => {
@@ -200,16 +167,16 @@ describe('Member service', () => {
 
   describe('getById', () => {
     it('should return a member with the provided id', async () => {
-      Members.findByPk = jest.fn().mockResolvedValue(mockCreatedMember);
-      const result = await getById(mockCreatedMember.id);
-      expect(result).toEqual(mockCreatedMember);
+      Members.findByPk = jest.fn().mockResolvedValue(expectedMemberResponse);
+      const result = await getById(expectedMemberResponse.id);
+      expect(result).toEqual(expectedMemberResponse);
     });
 
     it('should throw an error if no member with the given ID is found', async () => {
       const mockError = new Error('Member not found');
       Members.findByPk.mockRejectedValueOnce(mockError);
 
-      await expect(getById(mockCreatedMember.Id)).rejects.toThrowError(
+      await expect(getById(expectedMemberResponse.Id)).rejects.toThrowError(
         'Member not found',
       );
     });

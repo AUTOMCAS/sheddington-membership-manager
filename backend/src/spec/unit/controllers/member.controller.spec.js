@@ -1,4 +1,5 @@
 const memberService = require('../../../services/member.service');
+const { expectedMemberResponse, memberData } = require('../../testData');
 
 jest.mock('../../../services/member.service');
 
@@ -10,43 +11,6 @@ const {
 
 describe('member controller', () => {
   describe('createMember', () => {
-    const mockRequest = {
-      firstName: 'John',
-      lastName: 'Smith',
-      email: 'js@example.com',
-      telephone: '1234567890',
-      address: '12 example address',
-      gender: 'M',
-      joinDate: '2023-12-01T00:00:00.000Z',
-      renewalDate: '2024-12-01T00:00:00.000Z',
-      emergencyContact: {
-        firstName: 'Jane',
-        lastName: 'Smith',
-        telephone: '1234123412',
-        relationship: 'Partner',
-      },
-    };
-
-    const mockCreatedMember = {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Smith',
-      email: 'js@example.com',
-      telephone: '1234567890',
-      address: '12 example address',
-      gender: 'M',
-      joinDate: '2023-12-01T00:00:00.000Z',
-      renewalDate: '2024-12-01T00:00:00.000Z',
-      createdEmergencyContact: {
-        id: 1,
-        firstName: 'Jane',
-        lastName: 'Smith',
-        telephone: '1234123412',
-        relationship: 'Partner',
-        member_id: 1,
-      },
-    };
-
     beforeEach(() => {
       jest.clearAllMocks();
     });
@@ -58,13 +22,15 @@ describe('member controller', () => {
         send: jest.fn(),
       };
 
-      memberService.create = jest.fn().mockResolvedValue(mockCreatedMember);
+      memberService.create = jest
+        .fn()
+        .mockResolvedValue(expectedMemberResponse);
 
-      await createMember(mockRequest, mockResponse);
+      await createMember(memberData, mockResponse);
 
       expect(memberService.create).toHaveBeenCalled();
       expect(mockResponse.status).toHaveBeenCalledWith(200);
-      expect(mockResponse.json).toHaveBeenCalledWith(mockCreatedMember);
+      expect(mockResponse.json).toHaveBeenCalledWith(expectedMemberResponse);
       expect(mockResponse.send).not.toHaveBeenCalled();
     });
 
@@ -78,7 +44,7 @@ describe('member controller', () => {
 
       memberService.create = jest.fn().mockRejectedValue(mockError);
 
-      await createMember(mockRequest, mockResponse);
+      await createMember(memberData, mockResponse);
 
       expect(memberService.create).toHaveBeenCalled();
       expect(mockResponse.status).toHaveBeenCalledWith(400);
