@@ -20,7 +20,7 @@ DB_TEST_NAME=sheddington_membership_directory_test
 4. Install sequelize-cli using `npm install --save-dev sequelize-cli`
 
 5. cd to backend/src and migrate the models to the database.\
-   `npx sequelize-cli db:migrate`  
+   `npx sequelize-cli db:migrate --env development`  
    `npx sequelize-cli db:migrate --env test`
 
 ## Run

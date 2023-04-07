@@ -45,14 +45,11 @@ const create = async (memberData) => {
       const createdMember = await Members.create(member, {
         transaction: t,
       });
-
       emergencyContact.member_id = createdMember.id;
-
       const createdEmergencyContact = await EmergencyContact.create(
         emergencyContact,
         { transaction: t },
       );
-
       return { ...createdMember.dataValues, createdEmergencyContact };
     });
   } catch (error) {

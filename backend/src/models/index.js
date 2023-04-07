@@ -36,6 +36,6 @@ db.members.hasMany(db.emergencyContacts, {
   onDelete: 'CASCADE',
 });
 
-// db.sequelize.sync({ force: false });
+// db.sequelize.sync({ force: true });
 
 module.exports = db;

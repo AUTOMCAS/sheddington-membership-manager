@@ -1,6 +1,6 @@
 const request = require('supertest');
 
-const app = require('../../../app');
+const app = require('../../app');
 
 const models = require('../../models');
 
@@ -49,7 +49,7 @@ const memberInput = {
   },
 };
 
-describe('/members routes', () => {
+describe('/members', () => {
   afterEach(async () => {
     await Members.truncate({ cascade: true, restartIdentity: true });
   });
