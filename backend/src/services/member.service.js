@@ -1,19 +1,9 @@
 const models = require('../models');
 const { sequelize } = require('../models');
+const { validateMemberData } = require('../utils/validation');
 
 const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
-
-const validateEntries = async (data, owner) => {
-  if (data === null) return;
-  const entries = Object.entries(data);
-
-  entries.forEach((entry) => {
-    if (entry[1].length === 0) {
-      throw new Error(`${owner}'s ${entry[0]} cannot be empty string`);
-    }
-  });
-};
 
 const getAll = async () => {
   try {
@@ -32,25 +22,29 @@ const getById = async (id) => {
 };
 
 const create = async (memberData) => {
-  if (memberData.emergencyContact === undefined) {
-    throw new Error('Emergency Contact missing');
-  }
-  const { emergencyContact, ...member } = memberData;
-
-  await validateEntries(member, 'Member');
-  await validateEntries(emergencyContact, 'Emergency Contact');
+  const { emergencyContacts, ...member } = await validateMemberData(memberData);
 
   try {
     return await sequelize.transaction(async (t) => {
       const createdMember = await Members.create(member, {
         transaction: t,
       });
-      emergencyContact.member_id = createdMember.id;
-      const createdEmergencyContact = await EmergencyContact.create(
-        emergencyContact,
-        { transaction: t },
+
+      const createdEmergencyContacts = await Promise.all(
+        emergencyContacts.map(async (emergencyContact) => {
+          emergencyContact.member_id = createdMember.id;
+
+          const createdEmergencyContact = await EmergencyContact.create(
+            emergencyContact,
+            {
+              transaction: t,
+            },
+          );
+          return createdEmergencyContact;
+        }),
       );
-      return { ...createdMember.dataValues, createdEmergencyContact };
+
+      return { ...createdMember.dataValues, createdEmergencyContacts };
     });
   } catch (error) {
     if (error.errors[0].message === 'email must be unique') {
@@ -64,6 +58,5 @@ const create = async (memberData) => {
 module.exports = {
   create,
   getAll,
-  validateEntries,
   getById,
 };

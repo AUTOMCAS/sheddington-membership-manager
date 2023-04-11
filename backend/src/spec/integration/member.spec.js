@@ -33,8 +33,8 @@ describe('/members', () => {
           ignore: ['createdAt', 'updatedAt', 'newEmergencyContact'],
         });
 
-        expect(createdMember.createdEmergencyContact).toMatchObject(
-          expectedMemberResponse.createdEmergencyContact,
+        expect(createdMember.createdEmergencyContacts).toMatchObject(
+          expectedMemberResponse.createdEmergencyContacts,
           {
             ignore: ['createdAt', 'updatedAt'],
           },

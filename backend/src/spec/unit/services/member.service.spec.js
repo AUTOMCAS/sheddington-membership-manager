@@ -5,12 +5,7 @@ const { expectedMemberResponse, memberData } = require('../../testData');
 const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
 
-const {
-  validateEntries,
-  create,
-  getById,
-  getAll,
-} = require('../../../services/member.service');
+const { create, getById, getAll } = require('../../../services/member.service');
 
 describe('Member service', () => {
   beforeEach(() => {
@@ -43,27 +38,27 @@ describe('Member service', () => {
     member_id: 1,
   };
 
-  describe('validateEntries', () => {
-    it('throws an error if a field is an empty string', async () => {
-      const data = { firstName: '', lastName: 'Smith' };
-      const owner = 'Member';
-      await expect(validateEntries(data, owner)).rejects.toThrow(
-        "Member's firstName cannot be empty string",
-      );
-    });
+  // describe('validateEntries', () => {
+  //   it('throws an error if a field is an empty string', async () => {
+  //     const data = { firstName: '', lastName: 'Smith' };
+  //     const owner = 'Member';
+  //     await expect(validateEntries(data, owner)).rejects.toThrow(
+  //       "Member's firstName cannot be empty string",
+  //     );
+  //   });
 
-    it('does not throw an error if all fields are not empty strings', async () => {
-      const data = { firstName: 'John', lastName: 'Smith' };
-      const owner = 'Member';
-      await expect(validateEntries(data, owner)).resolves.not.toThrow();
-    });
+  //   it('does not throw an error if all fields are not empty strings', async () => {
+  //     const data = { firstName: 'John', lastName: 'Smith' };
+  //     const owner = 'Member';
+  //     await expect(validateEntries(data, owner)).resolves.not.toThrow();
+  //   });
 
-    it('returns if data is null', async () => {
-      const data = null;
-      const owner = 'Member';
-      await expect(validateEntries(data, owner)).resolves.toBeUndefined();
-    });
-  });
+  //   it('returns if data is null', async () => {
+  //     const data = null;
+  //     const owner = 'Member';
+  //     await expect(validateEntries(data, owner)).resolves.toBeUndefined();
+  //   });
+  // });
 
   // Create member
   describe('create', () => {
@@ -77,7 +72,7 @@ describe('Member service', () => {
         .fn()
         .mockResolvedValue(sequelizeCreatedEmergencyContact);
 
-      const { emergencyContact, ...member } = memberData;
+      const { emergencyContacts, ...member } = memberData;
 
       const result = await create(memberData);
 
@@ -85,9 +80,12 @@ describe('Member service', () => {
       expect(Members.create).toHaveBeenCalledWith(member, {
         transaction: undefined,
       });
-      expect(EmergencyContact.create).toHaveBeenCalledWith(emergencyContact, {
-        transaction: undefined,
-      });
+      expect(EmergencyContact.create).toHaveBeenCalledWith(
+        emergencyContacts[0],
+        {
+          transaction: undefined,
+        },
+      );
       expect(result).toEqual(expectedMemberResponse);
     });
 
@@ -95,9 +93,11 @@ describe('Member service', () => {
       const mockData = {
         firstName: 'John',
         email: 'js@example.com',
-        emergencyContact: {
-          firstName: 'Jane',
-        },
+        emergencyContacts: [
+          {
+            firstName: 'Jane',
+          },
+        ],
       };
 
       sequelize.transaction = jest
@@ -113,14 +113,14 @@ describe('Member service', () => {
       );
     });
 
-    it('should throw an error if emergencyContact is missing', async () => {
+    it('should throw an error if emergencyContacts are missing', async () => {
       const mockData = {
         firstName: 'John',
         email: 'js@example.com',
       };
 
       await expect(create(mockData)).rejects.toThrowError(
-        'Emergency Contact missing',
+        'Emergency Contacts missing',
       );
     });
   });

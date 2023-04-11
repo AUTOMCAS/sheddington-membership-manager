@@ -10,12 +10,14 @@ const memberData = {
   specialRequirements: ['Wheelchair access'],
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
-  emergencyContact: {
-    firstName: 'Jane',
-    lastName: 'Smith',
-    telephone: '1234123412',
-    relationship: 'Partner',
-  },
+  emergencyContacts: [
+    {
+      firstName: 'Jane',
+      lastName: 'Smith',
+      telephone: '1234123412',
+      relationship: 'Partner',
+    },
+  ],
 };
 
 const expectedMemberResponse = {
@@ -31,14 +33,16 @@ const expectedMemberResponse = {
   specialRequirements: ['Wheelchair access'],
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
-  createdEmergencyContact: {
-    id: 1,
-    firstName: 'Jane',
-    lastName: 'Smith',
-    telephone: '1234123412',
-    relationship: 'Partner',
-    member_id: 1,
-  },
+  createdEmergencyContacts: [
+    {
+      id: 1,
+      firstName: 'Jane',
+      lastName: 'Smith',
+      telephone: '1234123412',
+      relationship: 'Partner',
+      member_id: 1,
+    },
+  ],
 };
 
 const expectedMemberResponseById = {
