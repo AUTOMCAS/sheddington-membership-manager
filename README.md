@@ -20,8 +20,7 @@
 
 - [x] Retrieval of all members.
 - [x] Creation.
-- [ ] Retrieval by name.
-- [ ] Deletion.
+- [x] Deletion.
 - [ ] Update.
 
 ## Technologies
