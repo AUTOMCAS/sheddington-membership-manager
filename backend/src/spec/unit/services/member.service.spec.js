@@ -1,6 +1,9 @@
 const models = require('../../../models');
 const { sequelize } = require('../../../models');
 const { expectedMemberResponse, memberData } = require('../../testData');
+const { validateMemberData } = require('../../../utils/validation');
+
+jest.mock('../../../utils/validation');
 
 const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
@@ -34,77 +37,87 @@ describe('Member service', () => {
     },
   };
 
-  const sequelizeCreatedEmergencyContact = {
-    id: 1,
-    firstName: 'Jane',
-    lastName: 'Smith',
-    telephone: '1234123412',
-    relationship: 'Partner',
-    member_id: 1,
-  };
+  const sequelizeCreatedEmergencyContacts = [
+    {
+      id: 1,
+      firstName: 'Jane',
+      lastName: 'Smith',
+      telephone: '1234123412',
+      relationship: 'Partner',
+      member_id: 1,
+    },
+  ];
 
   // Create member
   describe('create', () => {
     it('should first create a member and then, if successful, an emergency contact', async () => {
+      // Mock setup - Arrange
       sequelize.transaction = jest
         .fn()
         .mockImplementation(async (callback) => callback());
 
-      Members.create = jest.fn().mockResolvedValue(sequelizeCreatedMember);
-      EmergencyContact.create = jest
-        .fn()
-        .mockResolvedValue(sequelizeCreatedEmergencyContact);
+      validateMemberData.mockResolvedValue(memberData);
 
+      Members.create = jest.fn().mockResolvedValue(sequelizeCreatedMember);
+
+      EmergencyContact.bulkCreate = jest
+        .fn()
+        .mockResolvedValue(sequelizeCreatedEmergencyContacts);
       const { emergencyContacts, ...member } = memberData;
 
+      // Act
       const result = await create(memberData);
 
+      // Assert
       expect(sequelize.transaction).toHaveBeenCalled();
       expect(Members.create).toHaveBeenCalledWith(member, {
         transaction: undefined,
       });
-      expect(EmergencyContact.create).toHaveBeenCalledWith(
-        emergencyContacts[0],
+      expect(EmergencyContact.bulkCreate).toHaveBeenCalledWith(
+        emergencyContacts,
         {
           transaction: undefined,
+          validate: true,
         },
       );
       expect(result).toEqual(expectedMemberResponse);
     });
 
     it('should throw an error if email is not unique', async () => {
-      const mockData = {
-        firstName: 'John',
-        email: 'js@example.com',
-        emergencyContacts: [
-          {
-            firstName: 'Jane',
-          },
-        ],
-      };
-
       sequelize.transaction = jest
         .fn()
         .mockImplementation(async (callback) => callback());
 
-      Members.create = jest.fn().mockRejectedValue({
-        errors: [{ message: 'email must be unique' }],
-      });
-
-      await expect(create(mockData)).rejects.toThrowError(
-        'Email must be unique',
+      const sequelizeUniqueConstraintError = new Error(
+        'SequelizeUniqueConstraintError',
       );
+      sequelizeUniqueConstraintError.name = 'SequelizeUniqueConstraintError';
+      validateMemberData.mockResolvedValue(memberData);
+
+      Members.create = jest
+        .fn()
+        .mockRejectedValueOnce(sequelizeUniqueConstraintError);
+
+      await expect(create(memberData)).rejects.toThrow('Email must be unique');
+
+      expect(validateMemberData).toHaveBeenCalledWith(memberData);
+      expect(EmergencyContact.bulkCreate).not.toHaveBeenCalled();
     });
 
-    it('should throw an error if emergencyContacts are missing', async () => {
-      const mockData = {
-        firstName: 'John',
-        email: 'js@example.com',
-      };
+    it('should throw an error for any other error', async () => {
+      sequelize.transaction = jest
+        .fn()
+        .mockImplementation(async (callback) => callback());
 
-      await expect(create(mockData)).rejects.toThrowError(
-        'Emergency Contacts missing',
-      );
+      const mockError = new Error('An error');
+
+      validateMemberData.mockResolvedValueOnce(memberData);
+
+      sequelize.transaction.mockImplementationOnce((fn) => {
+        throw mockError;
+      });
+
+      await expect(create(memberData)).rejects.toThrow(mockError.message);
     });
   });
 

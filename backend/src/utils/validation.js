@@ -18,10 +18,13 @@ const validateMemberData = async (memberData) => {
 
   await validateEntries(member, 'Member');
 
-  await emergencyContacts.forEach((emergencyContact) => {
-    validateEntries(emergencyContact, 'Emergency Contact');
-  });
+  await Promise.all(
+    emergencyContacts.map(async (emergencyContact) => {
+      await validateEntries(emergencyContact, 'Emergency Contact');
+    }),
+  );
 
   return { emergencyContacts, ...member };
 };
+
 module.exports = { validateEntries, validateMemberData };

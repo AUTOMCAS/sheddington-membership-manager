@@ -22,36 +22,39 @@ const getById = async (id) => {
 };
 
 const create = async (memberData) => {
-  const { emergencyContacts, ...member } = await validateMemberData(memberData);
-
   try {
+    const { emergencyContacts, ...member } = await validateMemberData(
+      memberData,
+    );
+
     return await sequelize.transaction(async (t) => {
       const createdMember = await Members.create(member, {
         transaction: t,
       });
 
-      const createdEmergencyContacts = await Promise.all(
-        emergencyContacts.map(async (emergencyContact) => {
-          emergencyContact.member_id = createdMember.id;
-
-          const createdEmergencyContact = await EmergencyContact.create(
-            emergencyContact,
-            {
-              transaction: t,
-            },
-          );
-          return createdEmergencyContact;
+      const updatedEmergencyContacts = emergencyContacts.map(
+        (emergencyContact) => ({
+          ...emergencyContact,
+          member_id: createdMember.id,
         }),
+      );
+
+      const createdEmergencyContacts = await EmergencyContact.bulkCreate(
+        updatedEmergencyContacts,
+        {
+          transaction: t,
+          validate: true,
+        },
       );
 
       return { ...createdMember.dataValues, createdEmergencyContacts };
     });
   } catch (error) {
-    if (error.errors[0].message === 'email must be unique') {
+    if (error.name === 'SequelizeUniqueConstraintError') {
       throw new Error('Email must be unique');
+    } else {
+      throw new Error(error.message.replace(error));
     }
-
-    throw new Error(error);
   }
 };
 
