@@ -5,7 +5,12 @@ const { expectedMemberResponse, memberData } = require('../../testData');
 const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
 
-const { create, getById, getAll } = require('../../../services/member.service');
+const {
+  create,
+  getById,
+  getAll,
+  deleteById,
+} = require('../../../services/member.service');
 
 describe('Member service', () => {
   beforeEach(() => {
@@ -37,28 +42,6 @@ describe('Member service', () => {
     relationship: 'Partner',
     member_id: 1,
   };
-
-  // describe('validateEntries', () => {
-  //   it('throws an error if a field is an empty string', async () => {
-  //     const data = { firstName: '', lastName: 'Smith' };
-  //     const owner = 'Member';
-  //     await expect(validateEntries(data, owner)).rejects.toThrow(
-  //       "Member's firstName cannot be empty string",
-  //     );
-  //   });
-
-  //   it('does not throw an error if all fields are not empty strings', async () => {
-  //     const data = { firstName: 'John', lastName: 'Smith' };
-  //     const owner = 'Member';
-  //     await expect(validateEntries(data, owner)).resolves.not.toThrow();
-  //   });
-
-  //   it('returns if data is null', async () => {
-  //     const data = null;
-  //     const owner = 'Member';
-  //     await expect(validateEntries(data, owner)).resolves.toBeUndefined();
-  //   });
-  // });
 
   // Create member
   describe('create', () => {
@@ -171,6 +154,7 @@ describe('Member service', () => {
   describe('getById', () => {
     it('should return a member with the provided id', async () => {
       Members.findByPk = jest.fn().mockResolvedValue(expectedMemberResponse);
+
       const result = await getById(expectedMemberResponse.id);
 
       expect(result).toEqual(expectedMemberResponse);
@@ -186,6 +170,41 @@ describe('Member service', () => {
       await expect(getById(expectedMemberResponse.id)).rejects.toThrowError(
         'Member not found',
       );
+    });
+  });
+
+  // Delete member by ID
+  describe('deleteById', () => {
+    it('should delete member with valid id', async () => {
+      const id = 1;
+      Members.destroy = jest.fn().mockResolvedValue(1);
+
+      const result = await deleteById(id);
+
+      expect(result).toEqual('Member deleted');
+      expect(Members.destroy).toHaveBeenCalledTimes(1);
+      expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
+    });
+
+    it('should throw an error if member not found', async () => {
+      const id = 1;
+      Members.destroy = jest.fn().mockResolvedValue(0);
+
+      await expect(deleteById(id)).rejects.toThrow('Member not found');
+
+      expect(Members.destroy).toHaveBeenCalledTimes(1);
+      expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
+    });
+
+    it('should throw an error if database operation fails', async () => {
+      const id = 1;
+      const errorMessage = 'Database operation failed';
+      Members.destroy = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+      await expect(deleteById(id)).rejects.toThrow(errorMessage);
+
+      expect(Members.destroy).toHaveBeenCalledTimes(1);
+      expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
     });
   });
 });

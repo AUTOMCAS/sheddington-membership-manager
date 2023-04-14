@@ -97,4 +97,24 @@ describe('/members', () => {
       });
     });
   });
+
+  // Delete a member
+  describe('DELETE /members/:id, delete member by ID', () => {
+    it('should delete a member by ID', async () => {
+      await request(app).post('/members').send(memberData);
+
+      const id = 1;
+
+      const response = await request(app).delete(`/members/${id}`);
+      expect(response.statusCode).toBe(204);
+    });
+
+    it('should respond with 404 and error message when member not found', async () => {
+      const id = 1;
+
+      const response = await request(app).delete(`/members/${id}`);
+      expect(response.statusCode).toBe(404);
+      expect(response.body.message).toBe('Error: Member not found');
+    });
+  });
 });

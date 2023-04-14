@@ -7,6 +7,7 @@ const {
   createMember,
   getAllMembers,
   getMemberById,
+  deleteMemberById,
 } = require('../../../controllers/member.controller');
 
 describe('member controller', () => {
@@ -114,6 +115,7 @@ describe('member controller', () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(200);
       expect(mockResponse.json).toHaveBeenCalledWith(mockMember);
+      expect(memberService.getById).toHaveBeenCalledWith(mockRequest.params.id);
     });
 
     it('should return 400 status code and handle errors', async () => {
@@ -130,6 +132,39 @@ describe('member controller', () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(400);
       expect(mockResponse.send).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteMemberById', () => {
+    it('should delete member and return 204 when member present', async () => {
+      const mockRequest = { params: { id: 1 } };
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+
+      await deleteMemberById(mockRequest, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(204);
+      expect(mockResponse.send).toHaveBeenCalled();
+      expect(memberService.deleteById).toHaveBeenCalledWith(
+        mockRequest.params.id,
+      );
+    });
+
+    it('should return a 404 error with an invalid id', async () => {
+      const req = { params: { id: 'invalid' } };
+      const res = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+      memberService.deleteById = jest
+        .fn()
+        .mockRejectedValue(new Error('Member not found'));
+
+      await deleteMemberById(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.send).toHaveBeenCalledWith({
+        message: 'Error: Member not found',
+      });
     });
   });
 });

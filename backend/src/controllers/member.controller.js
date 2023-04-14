@@ -31,7 +31,17 @@ const getMemberById = async (req, res) => {
     return res.status(200).json(member);
   } catch (error) {
     logger.error(error);
-    return res.status(400).send();
+    return res.status(400).send({ message: `${error}` });
+  }
+};
+
+const deleteMemberById = async (req, res) => {
+  try {
+    await memberService.deleteById(req.params.id);
+    return res.status(204).send();
+  } catch (error) {
+    logger.error(error);
+    return res.status(404).send({ message: `${error}` });
   }
 };
 
@@ -39,4 +49,5 @@ module.exports = {
   createMember,
   getAllMembers,
   getMemberById,
+  deleteMemberById,
 };
