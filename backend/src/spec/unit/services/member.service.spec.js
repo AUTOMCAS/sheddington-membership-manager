@@ -188,23 +188,24 @@ describe('Member service', () => {
 
   // Delete member by ID
   describe('deleteById', () => {
-    it('should delete member with valid id', async () => {
+    it('should return 1 if member is deleted', async () => {
       const id = 1;
       Members.destroy = jest.fn().mockResolvedValue(1);
 
       const result = await deleteById(id);
 
-      expect(result).toEqual('Member deleted');
+      expect(result).toEqual(1);
       expect(Members.destroy).toHaveBeenCalledTimes(1);
       expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
     });
 
-    it('should throw an error if member not found', async () => {
+    it('should return 0 if member not found', async () => {
       const id = 1;
       Members.destroy = jest.fn().mockResolvedValue(0);
 
-      await expect(deleteById(id)).rejects.toThrow('Member not found');
+      const result = await deleteById(id);
 
+      expect(result).toEqual(0);
       expect(Members.destroy).toHaveBeenCalledTimes(1);
       expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
     });

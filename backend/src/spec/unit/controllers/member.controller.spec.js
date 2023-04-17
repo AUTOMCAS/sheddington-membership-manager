@@ -50,10 +50,9 @@ describe('member controller', () => {
 
       expect(memberService.create).toHaveBeenCalled();
       expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.send).toHaveBeenCalledWith({
+      expect(mockResponse.json).toHaveBeenCalledWith({
         message: `${mockError}`,
       });
-      expect(mockResponse.json).not.toHaveBeenCalled();
     });
   });
 
@@ -87,13 +86,13 @@ describe('member controller', () => {
       const mockRequest = {};
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
-        send: jest.fn(),
+        json: jest.fn(),
       };
 
       await getAllMembers(mockRequest, mockResponse);
 
       expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.send).toHaveBeenCalledWith({
+      expect(mockResponse.json).toHaveBeenCalledWith({
         message: `An unknown error occurred. ${mockError}`,
       });
     });
@@ -125,22 +124,24 @@ describe('member controller', () => {
       const mockRequest = { params: { id: 1 } };
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
-        send: jest.fn(),
+        json: jest.fn(),
       };
 
       await getMemberById(mockRequest, mockResponse);
 
       expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.send).toHaveBeenCalled();
+      expect(mockResponse.json).toHaveBeenCalled();
     });
   });
 
+  // Delete member by ID
   describe('deleteMemberById', () => {
     it('should delete member and return 204 when member present', async () => {
       const mockRequest = { params: { id: 1 } };
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
         send: jest.fn(),
+        json: jest.fn(),
       };
 
       await deleteMemberById(mockRequest, mockResponse);
@@ -153,17 +154,19 @@ describe('member controller', () => {
     });
 
     it('should return a 404 error with an invalid id', async () => {
-      const req = { params: { id: 'invalid' } };
-      const res = { status: jest.fn().mockReturnThis(), send: jest.fn() };
-      memberService.deleteById = jest
-        .fn()
-        .mockRejectedValue(new Error('Member not found'));
+      const mockRequest = { params: { id: 'invalid' } };
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-      await deleteMemberById(req, res);
+      memberService.deleteById = jest.fn().mockResolvedValue(0);
 
-      expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.send).toHaveBeenCalledWith({
-        message: 'Error: Member not found',
+      await deleteMemberById(mockRequest, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Member not found',
       });
     });
   });

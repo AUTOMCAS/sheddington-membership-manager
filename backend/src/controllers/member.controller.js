@@ -9,19 +9,20 @@ const createMember = async (req, res) => {
     return res.status(200).json(createdMember);
   } catch (error) {
     logger.error(error);
-    return res.status(400).send({ message: `${error}` });
+    return res.status(400).json({ message: `${error}` });
   }
 };
 
 const getAllMembers = async (req, res) => {
   try {
     const members = await memberService.getAll();
+
     return res.status(200).json(members);
   } catch (error) {
     logger.error(error);
     return res
       .status(400)
-      .send({ message: `An unknown error occurred. ${error}` });
+      .json({ message: `An unknown error occurred. ${error}` });
   }
 };
 
@@ -31,17 +32,22 @@ const getMemberById = async (req, res) => {
     return res.status(200).json(member);
   } catch (error) {
     logger.error(error);
-    return res.status(400).send({ message: `${error}` });
+    return res.status(400).json({ message: `${error}` });
   }
 };
 
 const deleteMemberById = async (req, res) => {
   try {
-    await memberService.deleteById(req.params.id);
+    const deletionResponse = await memberService.deleteById(req.params.id);
+
+    if (deletionResponse === 0) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+
     return res.status(204).send();
   } catch (error) {
     logger.error(error);
-    return res.status(404).send({ message: `${error}` });
+    return res.status(500).json({ message: 'Unexpected server error' });
   }
 };
 
@@ -49,7 +55,7 @@ const updateMemberById = async (req, res) => {
   const newMemberData = req.body;
 
   if (newMemberData.emergencyContacts) {
-    return res.status(400).send({
+    return res.status(400).json({
       message: 'Do not include emergency contacts',
     });
   }
@@ -59,10 +65,15 @@ const updateMemberById = async (req, res) => {
       req.params.id,
       newMemberData,
     );
-    return res.status(200).json(updatedMember);
+
+    if (updatedMember[0] === 0) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+
+    return res.status(204).send();
   } catch (error) {
     logger.error(error);
-    return res.status(400).send({ message: `${error}` });
+    return res.status(500).json({ message: 'Unexpected server error' });
   }
 };
 

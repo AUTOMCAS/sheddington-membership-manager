@@ -59,18 +59,10 @@ const create = async (memberData) => {
 };
 
 const deleteById = async (id) => {
-  let message = null;
-
   try {
-    message = await Members.destroy({ where: { id } });
+    return await Members.destroy({ where: { id } });
   } catch (error) {
     throw new Error(error);
-  }
-
-  if (message === 0) {
-    throw new Error('Member not found');
-  } else {
-    return 'Member deleted';
   }
 };
 

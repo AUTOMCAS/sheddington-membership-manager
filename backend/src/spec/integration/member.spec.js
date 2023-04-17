@@ -114,7 +114,7 @@ describe('/members', () => {
 
       const response = await request(app).delete(`/members/${id}`);
       expect(response.statusCode).toBe(404);
-      expect(response.body.message).toBe('Error: Member not found');
+      expect(response.body.message).toBe('Member not found');
     });
   });
 });
