@@ -3,7 +3,7 @@ const { sequelize } = require('../models');
 const { validateMemberData } = require('../utils/validation');
 
 const Members = models.members;
-const EmergencyContact = models.emergencyContacts;
+const EmergencyContacts = models.emergencyContacts;
 
 const getAll = async () => {
   try {
@@ -39,7 +39,7 @@ const create = async (memberData) => {
         }),
       );
 
-      const createdEmergencyContacts = await EmergencyContact.bulkCreate(
+      const createdEmergencyContacts = await EmergencyContacts.bulkCreate(
         updatedEmergencyContacts,
         {
           transaction: t,
@@ -74,9 +74,22 @@ const deleteById = async (id) => {
   }
 };
 
+const updateById = async (id, newMemberData) => {
+  try {
+    const updatedMember = await Members.update(newMemberData, {
+      where: { id },
+    });
+
+    return updatedMember;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   deleteById,
+  updateById,
 };

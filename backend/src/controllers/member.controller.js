@@ -45,9 +45,31 @@ const deleteMemberById = async (req, res) => {
   }
 };
 
+const updateMemberById = async (req, res) => {
+  const newMemberData = req.body;
+
+  if (newMemberData.emergencyContacts) {
+    return res.status(400).send({
+      message: 'Do not include emergency contacts',
+    });
+  }
+
+  try {
+    const updatedMember = await memberService.updateById(
+      req.params.id,
+      newMemberData,
+    );
+    return res.status(200).json(updatedMember);
+  } catch (error) {
+    logger.error(error);
+    return res.status(400).send({ message: `${error}` });
+  }
+};
+
 module.exports = {
   createMember,
   getAllMembers,
   getMemberById,
   deleteMemberById,
+  updateMemberById,
 };
