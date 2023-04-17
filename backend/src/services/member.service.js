@@ -1,6 +1,5 @@
 const models = require('../models');
 const { sequelize } = require('../models');
-const { validateMemberData } = require('../utils/validation');
 
 const Members = models.members;
 const EmergencyContacts = models.emergencyContacts;
@@ -23,9 +22,7 @@ const getById = async (id) => {
 
 const create = async (memberData) => {
   try {
-    const { emergencyContacts, ...member } = await validateMemberData(
-      memberData,
-    );
+    const { emergencyContacts, ...member } = memberData;
 
     return await sequelize.transaction(async (t) => {
       const createdMember = await Members.create(member, {
@@ -50,11 +47,7 @@ const create = async (memberData) => {
       return { ...createdMember.dataValues, createdEmergencyContacts };
     });
   } catch (error) {
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      throw new Error('Email must be unique');
-    } else {
-      throw new Error(error.message.replace(error));
-    }
+    throw new Error(error);
   }
 };
 

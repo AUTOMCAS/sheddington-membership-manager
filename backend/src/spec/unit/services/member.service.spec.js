@@ -1,9 +1,6 @@
 const models = require('../../../models');
 const { sequelize } = require('../../../models');
 const { expectedMemberResponse, memberData } = require('../../testData');
-const { validateMemberData } = require('../../../utils/validation');
-
-jest.mock('../../../utils/validation');
 
 const Members = models.members;
 const EmergencyContact = models.emergencyContacts;
@@ -56,8 +53,6 @@ describe('Member service', () => {
         .fn()
         .mockImplementation(async (callback) => callback());
 
-      validateMemberData.mockResolvedValue(memberData);
-
       Members.create = jest.fn().mockResolvedValue(sequelizeCreatedMember);
 
       EmergencyContact.bulkCreate = jest
@@ -83,35 +78,12 @@ describe('Member service', () => {
       expect(result).toEqual(expectedMemberResponse);
     });
 
-    it('should throw an error if email is not unique', async () => {
-      sequelize.transaction = jest
-        .fn()
-        .mockImplementation(async (callback) => callback());
-
-      const sequelizeUniqueConstraintError = new Error(
-        'SequelizeUniqueConstraintError',
-      );
-      sequelizeUniqueConstraintError.name = 'SequelizeUniqueConstraintError';
-      validateMemberData.mockResolvedValue(memberData);
-
-      Members.create = jest
-        .fn()
-        .mockRejectedValueOnce(sequelizeUniqueConstraintError);
-
-      await expect(create(memberData)).rejects.toThrow('Email must be unique');
-
-      expect(validateMemberData).toHaveBeenCalledWith(memberData);
-      expect(EmergencyContact.bulkCreate).not.toHaveBeenCalled();
-    });
-
-    it('should throw an error for any other error', async () => {
+    it('should throw an error for any error', async () => {
       sequelize.transaction = jest
         .fn()
         .mockImplementation(async (callback) => callback());
 
       const mockError = new Error('An error');
-
-      validateMemberData.mockResolvedValueOnce(memberData);
 
       sequelize.transaction.mockImplementationOnce((fn) => {
         throw mockError;

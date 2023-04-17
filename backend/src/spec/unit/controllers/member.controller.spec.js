@@ -1,7 +1,9 @@
 const memberService = require('../../../services/member.service');
 const { expectedMemberResponse, memberData } = require('../../testData');
+const { validateMemberData } = require('../../../utils/validation');
 
 jest.mock('../../../services/member.service');
+jest.mock('../../../utils/validation');
 
 const {
   createMember,
@@ -11,51 +13,6 @@ const {
 } = require('../../../controllers/member.controller');
 
 describe('member controller', () => {
-  // Create member
-  describe('createMember', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it('should return 200 status code and created member', async () => {
-      const mockResponse = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-        send: jest.fn(),
-      };
-
-      memberService.create = jest
-        .fn()
-        .mockResolvedValue(expectedMemberResponse);
-
-      await createMember(memberData, mockResponse);
-
-      expect(memberService.create).toHaveBeenCalled();
-      expect(mockResponse.status).toHaveBeenCalledWith(200);
-      expect(mockResponse.json).toHaveBeenCalledWith(expectedMemberResponse);
-      expect(mockResponse.send).not.toHaveBeenCalled();
-    });
-
-    it('should return 400 status code and error message', async () => {
-      const mockResponse = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-        send: jest.fn(),
-      };
-      const mockError = new Error('Email must be unique');
-
-      memberService.create = jest.fn().mockRejectedValue(mockError);
-
-      await createMember(memberData, mockResponse);
-
-      expect(memberService.create).toHaveBeenCalled();
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        message: `${mockError}`,
-      });
-    });
-  });
-
   // Get all members
   describe('getAllMembers', () => {
     it('should return 200 status code and member list', async () => {
@@ -78,7 +35,7 @@ describe('member controller', () => {
       expect(mockResponse.json).toHaveBeenCalledWith(mockMembers);
     });
 
-    it('should return 400 status code and handle errors', async () => {
+    it('should return 500 status for unexpected errors', async () => {
       const mockError = new Error('An unknown error occurred.');
 
       memberService.getAll.mockRejectedValue(mockError);
@@ -91,9 +48,9 @@ describe('member controller', () => {
 
       await getAllMembers(mockRequest, mockResponse);
 
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.json).toHaveBeenCalledWith({
-        message: `An unknown error occurred. ${mockError}`,
+        message: 'Unexpected server error',
       });
     });
   });
@@ -117,7 +74,130 @@ describe('member controller', () => {
       expect(memberService.getById).toHaveBeenCalledWith(mockRequest.params.id);
     });
 
-    it('should return 400 status code and handle errors', async () => {
+    // Create member
+    describe('createMember', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+      });
+
+      it('should return 200 status code and created member', async () => {
+        const mockResponse = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+          send: jest.fn(),
+        };
+
+        validateMemberData.mockResolvedValue(null);
+
+        memberService.create = jest
+          .fn()
+          .mockResolvedValue(expectedMemberResponse);
+
+        await createMember(memberData, mockResponse);
+
+        expect(memberService.create).toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.json).toHaveBeenCalledWith(expectedMemberResponse);
+        expect(mockResponse.send).not.toHaveBeenCalled();
+      });
+
+      it('should return 500 status code for unexpected server error', async () => {
+        const mockError = new Error('Unknown error occurred');
+        memberService.create.mockRejectedValue(mockError);
+
+        const mockResponse = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createMember(memberData, mockResponse);
+
+        expect(mockResponse.status).toHaveBeenCalledWith(500);
+        expect(mockResponse.json).toHaveBeenCalled();
+      });
+
+      it('should return 409 status code and error message if email is not unique', async () => {
+        const mockResponse = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+          send: jest.fn(),
+        };
+        const mockError = new Error(
+          'SequelizeUniqueConstraintError: Validation error',
+        );
+
+        memberService.create = jest.fn().mockRejectedValue(mockError);
+
+        await createMember(memberData, mockResponse);
+
+        expect(memberService.create).toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(409);
+        expect(mockResponse.json).toHaveBeenCalledWith({
+          message: 'Email must be unique',
+        });
+      });
+
+      it('should return 409 status code and error message if emergency contacts missing', async () => {
+        const mockResponse = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+          send: jest.fn(),
+        };
+        const mockError = new Error('Emergency Contacts missing');
+        mockError.code = 'EMERGENCY_CONTACTS_MISSING';
+
+        validateMemberData.mockRejectedValue(mockError);
+
+        await createMember(memberData, mockResponse);
+
+        expect(memberService.create).not.toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(409);
+        expect(mockResponse.json).toHaveBeenCalledWith({
+          message: 'Emergency Contacts missing',
+        });
+      });
+
+      it('should return 409 status code and error message if entries are empty', async () => {
+        const mockResponse = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+          send: jest.fn(),
+        };
+        const mockError = new Error(
+          "Members's firstName cannot be empty string",
+        );
+        mockError.code = 'EMPTY_ENTRY';
+
+        validateMemberData.mockRejectedValue(mockError);
+
+        await createMember(memberData, mockResponse);
+
+        expect(memberService.create).not.toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(409);
+        expect(mockResponse.json).toHaveBeenCalledWith({
+          message: "Members's firstName cannot be empty string",
+        });
+      });
+    });
+
+    it('should return 404 status if member not found', async () => {
+      memberService.getById.mockResolvedValue(null);
+
+      const mockRequest = { params: { id: 1 } };
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await getMemberById(mockRequest, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Member not found',
+      });
+    });
+
+    it('should return 500 status for unexpected error', async () => {
       const mockError = new Error('Unknown error occurred');
       memberService.getById.mockRejectedValue(mockError);
 
@@ -129,7 +209,7 @@ describe('member controller', () => {
 
       await getMemberById(mockRequest, mockResponse);
 
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.json).toHaveBeenCalled();
     });
   });

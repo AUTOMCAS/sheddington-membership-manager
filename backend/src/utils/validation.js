@@ -1,17 +1,25 @@
+const CustomError = require('./errorHandling');
+
 const validateEntries = async (data, owner) => {
   if (data === null) return;
   const entries = Object.entries(data);
 
   entries.forEach((entry) => {
     if (entry[1].length === 0) {
-      throw new Error(`${owner}'s ${entry[0]} cannot be empty string`);
+      throw new CustomError(
+        `${owner}'s ${entry[0]} cannot be empty string`,
+        'EMPTY_ENTRY',
+      );
     }
   });
 };
 
 const validateMemberData = async (memberData) => {
   if (!memberData.emergencyContacts) {
-    throw new Error('Emergency Contacts missing');
+    throw new CustomError(
+      'Emergency Contacts missing',
+      'EMERGENCY_CONTACTS_MISSING',
+    );
   }
 
   const { emergencyContacts, ...member } = memberData;

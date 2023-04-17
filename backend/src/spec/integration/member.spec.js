@@ -44,17 +44,17 @@ describe('/members', () => {
   });
 
   describe('given invalid entries', () => {
-    it('should fail with code 400 and error message when given nothing', async () => {
+    it('should fail with code 400 and error message when given empty input', async () => {
       const response = await request(app).post('/members').send();
-      expect(response.statusCode).toBe(400);
+      expect(response.statusCode).toBe(409);
     });
 
     it('should fail when duplicate email already exists', async () => {
       await request(app).post('/members').send(memberData);
       const response = await request(app).post('/members').send(memberData);
-      expect(response.statusCode).toBe(400);
+      expect(response.statusCode).toBe(409);
       expect(response.body).toMatchObject({
-        message: 'Error: Email must be unique',
+        message: 'Email must be unique',
       });
     });
 
@@ -64,9 +64,9 @@ describe('/members', () => {
         firstName: '',
       };
       const response = await request(app).post('/members').send(updatedMember);
-      expect(response.statusCode).toBe(400);
+      expect(response.statusCode).toBe(409);
       expect(response.body).toMatchObject({
-        message: "Error: Member's firstName cannot be empty string",
+        message: "Member's firstName cannot be empty string",
       });
     });
   });
