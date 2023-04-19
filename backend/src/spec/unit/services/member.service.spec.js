@@ -3,7 +3,7 @@ const { sequelize } = require('../../../models');
 const { expectedMemberResponse, memberData } = require('../../testData');
 
 const Members = models.members;
-const EmergencyContact = models.emergencyContacts;
+const EmergencyContacts = models.emergencyContacts;
 
 const {
   create,
@@ -55,7 +55,7 @@ describe('Member service', () => {
 
       Members.create = jest.fn().mockResolvedValue(sequelizeCreatedMember);
 
-      EmergencyContact.bulkCreate = jest
+      EmergencyContacts.bulkCreate = jest
         .fn()
         .mockResolvedValue(sequelizeCreatedEmergencyContacts);
       const { emergencyContacts, ...member } = memberData;
@@ -68,7 +68,7 @@ describe('Member service', () => {
       expect(Members.create).toHaveBeenCalledWith(member, {
         transaction: undefined,
       });
-      expect(EmergencyContact.bulkCreate).toHaveBeenCalledWith(
+      expect(EmergencyContacts.bulkCreate).toHaveBeenCalledWith(
         emergencyContacts,
         {
           transaction: undefined,
