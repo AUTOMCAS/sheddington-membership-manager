@@ -6,7 +6,7 @@ const createEmergencyContact = async (req, res) => {
   const emergencyContact = req.body;
 
   try {
-    await validateEntries(emergencyContact, 'Emergency Contact');
+    await validateEntries(emergencyContact, 'Emergency contact');
 
     const createdEmergencyContact = await emergencyContactService.create(
       emergencyContact,
@@ -16,6 +16,11 @@ const createEmergencyContact = async (req, res) => {
   } catch (error) {
     logger.error(error);
 
+    if (error.message.includes('SequelizeForeignKeyConstraintError')) {
+      return res
+        .status(409)
+        .json({ message: 'Member with that ID does not exist' });
+    }
     if (error.code === 'EMPTY_ENTRY') {
       return res.status(409).json({ message: error.message });
     }

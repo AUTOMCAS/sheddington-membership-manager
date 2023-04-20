@@ -74,112 +74,6 @@ describe('member controller', () => {
       expect(memberService.getById).toHaveBeenCalledWith(mockRequest.params.id);
     });
 
-    // Create member
-    describe('createMember', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-      });
-
-      it('should return 200 status code and created member', async () => {
-        const mockResponse = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-          send: jest.fn(),
-        };
-
-        validateMemberData.mockResolvedValue(null);
-
-        memberService.create = jest
-          .fn()
-          .mockResolvedValue(expectedMemberResponse);
-
-        await createMember(memberData, mockResponse);
-
-        expect(memberService.create).toHaveBeenCalled();
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
-        expect(mockResponse.json).toHaveBeenCalledWith(expectedMemberResponse);
-        expect(mockResponse.send).not.toHaveBeenCalled();
-      });
-
-      it('should return 500 status code for unexpected server error', async () => {
-        const mockError = new Error('Unknown error occurred');
-        memberService.create.mockRejectedValue(mockError);
-
-        const mockResponse = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-        };
-
-        await createMember(memberData, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(500);
-        expect(mockResponse.json).toHaveBeenCalled();
-      });
-
-      it('should return 409 status code and error message if email is not unique', async () => {
-        const mockResponse = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-          send: jest.fn(),
-        };
-        const mockError = new Error(
-          'SequelizeUniqueConstraintError: Validation error',
-        );
-
-        memberService.create = jest.fn().mockRejectedValue(mockError);
-
-        await createMember(memberData, mockResponse);
-
-        expect(memberService.create).toHaveBeenCalled();
-        expect(mockResponse.status).toHaveBeenCalledWith(409);
-        expect(mockResponse.json).toHaveBeenCalledWith({
-          message: 'Email must be unique',
-        });
-      });
-
-      it('should return 409 status code and error message if emergency contacts missing', async () => {
-        const mockResponse = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-          send: jest.fn(),
-        };
-        const mockError = new Error('Emergency Contacts missing');
-        mockError.code = 'EMERGENCY_CONTACTS_MISSING';
-
-        validateMemberData.mockRejectedValue(mockError);
-
-        await createMember(memberData, mockResponse);
-
-        expect(memberService.create).not.toHaveBeenCalled();
-        expect(mockResponse.status).toHaveBeenCalledWith(409);
-        expect(mockResponse.json).toHaveBeenCalledWith({
-          message: 'Emergency Contacts missing',
-        });
-      });
-
-      it('should return 409 status code and error message if entries are empty', async () => {
-        const mockResponse = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-          send: jest.fn(),
-        };
-        const mockError = new Error(
-          "Members's firstName cannot be empty string",
-        );
-        mockError.code = 'EMPTY_ENTRY';
-
-        validateMemberData.mockRejectedValue(mockError);
-
-        await createMember(memberData, mockResponse);
-
-        expect(memberService.create).not.toHaveBeenCalled();
-        expect(mockResponse.status).toHaveBeenCalledWith(409);
-        expect(mockResponse.json).toHaveBeenCalledWith({
-          message: "Members's firstName cannot be empty string",
-        });
-      });
-    });
-
     it('should return 404 status if member not found', async () => {
       memberService.getById.mockResolvedValue(null);
 
@@ -211,6 +105,110 @@ describe('member controller', () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.json).toHaveBeenCalled();
+    });
+  });
+
+  // Create member
+  describe('createMember', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should return 200 status code and created member', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
+
+      validateMemberData.mockResolvedValue(null);
+
+      memberService.create = jest
+        .fn()
+        .mockResolvedValue(expectedMemberResponse);
+
+      await createMember(memberData, mockResponse);
+
+      expect(memberService.create).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith(expectedMemberResponse);
+      expect(mockResponse.send).not.toHaveBeenCalled();
+    });
+
+    it('should return 500 status code for unexpected server error', async () => {
+      const mockError = new Error('Unknown error occurred');
+      memberService.create.mockRejectedValue(mockError);
+
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await createMember(memberData, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalled();
+    });
+
+    it('should return 409 status code and error message if email is not unique', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
+      const mockError = new Error(
+        'SequelizeUniqueConstraintError: Validation error',
+      );
+
+      memberService.create = jest.fn().mockRejectedValue(mockError);
+
+      await createMember(memberData, mockResponse);
+
+      expect(memberService.create).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(409);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Email must be unique',
+      });
+    });
+
+    it('should return 409 status code and error message if emergency contacts missing', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
+      const mockError = new Error('Emergency Contacts missing');
+      mockError.code = 'EMERGENCY_CONTACTS_MISSING';
+
+      validateMemberData.mockRejectedValue(mockError);
+
+      await createMember(memberData, mockResponse);
+
+      expect(memberService.create).not.toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(409);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Emergency Contacts missing',
+      });
+    });
+
+    it('should return 409 status code and error message if entries are empty', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
+      const mockError = new Error("Members's firstName cannot be empty string");
+      mockError.code = 'EMPTY_ENTRY';
+
+      validateMemberData.mockRejectedValue(mockError);
+
+      await createMember(memberData, mockResponse);
+
+      expect(memberService.create).not.toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(409);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: "Members's firstName cannot be empty string",
+      });
     });
   });
 

@@ -44,7 +44,7 @@ describe('/members', () => {
   });
 
   describe('given invalid entries', () => {
-    it('should fail with code 400 and error message when given empty input', async () => {
+    it('should fail with code 409 and error message when given empty input', async () => {
       const response = await request(app).post('/members').send();
       expect(response.statusCode).toBe(409);
     });

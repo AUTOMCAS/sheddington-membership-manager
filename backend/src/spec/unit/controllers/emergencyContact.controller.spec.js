@@ -14,6 +14,7 @@ describe('Emergency contact controller', () => {
     lastName: 'Smith',
     telephone: '1234123412',
     relationship: 'Partner',
+    member_id: 1,
   };
 
   const mockEmergencyContactResponse = {
