@@ -13,4 +13,13 @@ const create = async (emergencyContact) => {
   }
 };
 
-module.exports = { create };
+const deleteById = async (id) => {
+  try {
+    return await EmergencyContacts.destroy({ where: { id } });
+  } catch (error) {
+    logger.error(error);
+    throw new Error(error);
+  }
+};
+
+module.exports = { create, deleteById };

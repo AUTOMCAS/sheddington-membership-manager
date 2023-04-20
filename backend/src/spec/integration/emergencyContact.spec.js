@@ -80,4 +80,23 @@ describe('/emergencyContact', () => {
       });
     });
   });
+
+  describe('/DELETE emergencyContact, delete emergency contact', () => {
+    it('should delete an emergency contact', async () => {
+      await request(app).post('/emergencyContacts').send(emergencyContactData);
+
+      const id = 1;
+      const response = await request(app).delete(`/emergencyContacts/${id}`);
+
+      expect(response.statusCode).toBe(204);
+    });
+
+    it('should respond with 404 and error message when emergency contact not found', async () => {
+      const id = 1;
+
+      const response = await request(app).delete(`/emergencyContacts/${id}`);
+      expect(response.statusCode).toBe(404);
+      expect(response.body.message).toBe('Emergency contact not found');
+    });
+  });
 });
