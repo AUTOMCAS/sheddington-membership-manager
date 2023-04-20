@@ -28,4 +28,21 @@ const createEmergencyContact = async (req, res) => {
   }
 };
 
-module.exports = { createEmergencyContact };
+const deleteEmergencyContactById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletionResponse = await emergencyContactService.deleteById(id);
+
+    if (deletionResponse === 0) {
+      return res.status(404).json({ message: 'Emergency contact not found' });
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({ message: 'Unexpected server error' });
+  }
+};
+
+module.exports = { createEmergencyContact, deleteEmergencyContactById };

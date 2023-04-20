@@ -1,5 +1,6 @@
 const {
   createEmergencyContact,
+  deleteEmergencyContactById,
 } = require('../../../controllers/emergencyContact.controller');
 
 const emergencyContactService = require('../../../services/emergencyContact.service');
@@ -26,64 +27,107 @@ describe('Emergency contact controller', () => {
     member_id: 1,
   };
 
-  it('should return 200 and created emergency contact if successful', async () => {
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+  // Create
+  describe('create', () => {
+    it('should return 200 and created emergency contact if successful', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-    validateEntries.mockResolvedValue(null);
+      validateEntries.mockResolvedValue(null);
 
-    emergencyContactService.create = jest
-      .fn()
-      .mockResolvedValue(mockEmergencyContactResponse);
+      emergencyContactService.create = jest
+        .fn()
+        .mockResolvedValue(mockEmergencyContactResponse);
 
-    await createEmergencyContact(emergencyContactData, mockResponse);
+      await createEmergencyContact(emergencyContactData, mockResponse);
 
-    expect(emergencyContactService.create).toHaveBeenCalled();
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith(
-      mockEmergencyContactResponse,
-    );
-  });
+      expect(emergencyContactService.create).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith(
+        mockEmergencyContactResponse,
+      );
+    });
 
-  it('should return 500 for unknown errors', async () => {
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+    it('should return 500 for unknown errors', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-    const mockError = new Error('Unknown error occurred');
-    emergencyContactService.create.mockRejectedValue(mockError);
+      const mockError = new Error('Unknown error occurred');
+      emergencyContactService.create.mockRejectedValue(mockError);
 
-    await createEmergencyContact(emergencyContactData, mockResponse);
+      await createEmergencyContact(emergencyContactData, mockResponse);
 
-    expect(emergencyContactService.create).toHaveBeenCalled();
-    expect(mockResponse.status).toHaveBeenCalledWith(500);
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      message: 'Unexpected server error',
+      expect(emergencyContactService.create).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Unexpected server error',
+      });
+    });
+
+    it('should return 409 for invalid entries', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const mockError = new Error(
+        "Emergency Contact's firstName cannot be empty string",
+      );
+      mockError.code = 'EMPTY_ENTRY';
+
+      validateEntries.mockRejectedValue(mockError);
+
+      await createEmergencyContact(emergencyContactData, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(409);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: "Emergency Contact's firstName cannot be empty string",
+      });
+      expect(emergencyContactService.create).not.toHaveBeenCalled();
     });
   });
 
-  it('should return 409 for invalid entries', async () => {
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+  // DeleteByID
 
-    const mockError = new Error(
-      "Emergency Contact's firstName cannot be empty string",
-    );
-    mockError.code = 'EMPTY_ENTRY';
+  describe('DeleteById', () => {
+    it('should return 204 on successful deletion', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
 
-    validateEntries.mockRejectedValue(mockError);
+      const id = 1;
 
-    await createEmergencyContact(emergencyContactData, mockResponse);
+      const mockRequest = { params: { id } };
 
-    expect(mockResponse.status).toHaveBeenCalledWith(409);
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      message: "Emergency Contact's firstName cannot be empty string",
+      await deleteEmergencyContactById(mockRequest, mockResponse);
+
+      expect(emergencyContactService.deleteById).toHaveBeenCalledWith(id);
+      expect(mockResponse.status).toHaveBeenCalledWith(204);
+      expect(mockResponse.send).toHaveBeenCalled();
     });
-    expect(emergencyContactService.create).not.toHaveBeenCalled();
+
+    it('should return 409 if emergency contact does not exist', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const mockRequest = { params: 'invalid' };
+
+      emergencyContactService.deleteById = jest.fn().mockResolvedValue(0);
+
+      await deleteEmergencyContactById(mockRequest, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Emergency contact not found',
+      });
+    });
   });
 });
