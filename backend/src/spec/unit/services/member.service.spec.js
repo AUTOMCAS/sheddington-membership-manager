@@ -1,17 +1,15 @@
 const models = require('../../../models');
 const { sequelize } = require('../../../models');
 const { expectedMemberResponse, memberData } = require('../../testData');
-const { validateMemberData } = require('../../../utils/validation');
-
-jest.mock('../../../utils/validation');
 
 const Members = models.members;
-const EmergencyContact = models.emergencyContacts;
+const EmergencyContacts = models.emergencyContacts;
 
 const {
   create,
   getById,
   getAll,
+  updateById,
   deleteById,
 } = require('../../../services/member.service');
 
@@ -56,11 +54,9 @@ describe('Member service', () => {
         .fn()
         .mockImplementation(async (callback) => callback());
 
-      validateMemberData.mockResolvedValue(memberData);
-
       Members.create = jest.fn().mockResolvedValue(sequelizeCreatedMember);
 
-      EmergencyContact.bulkCreate = jest
+      EmergencyContacts.bulkCreate = jest
         .fn()
         .mockResolvedValue(sequelizeCreatedEmergencyContacts);
       const { emergencyContacts, ...member } = memberData;
@@ -73,7 +69,7 @@ describe('Member service', () => {
       expect(Members.create).toHaveBeenCalledWith(member, {
         transaction: undefined,
       });
-      expect(EmergencyContact.bulkCreate).toHaveBeenCalledWith(
+      expect(EmergencyContacts.bulkCreate).toHaveBeenCalledWith(
         emergencyContacts,
         {
           transaction: undefined,
@@ -83,35 +79,12 @@ describe('Member service', () => {
       expect(result).toEqual(expectedMemberResponse);
     });
 
-    it('should throw an error if email is not unique', async () => {
-      sequelize.transaction = jest
-        .fn()
-        .mockImplementation(async (callback) => callback());
-
-      const sequelizeUniqueConstraintError = new Error(
-        'SequelizeUniqueConstraintError',
-      );
-      sequelizeUniqueConstraintError.name = 'SequelizeUniqueConstraintError';
-      validateMemberData.mockResolvedValue(memberData);
-
-      Members.create = jest
-        .fn()
-        .mockRejectedValueOnce(sequelizeUniqueConstraintError);
-
-      await expect(create(memberData)).rejects.toThrow('Email must be unique');
-
-      expect(validateMemberData).toHaveBeenCalledWith(memberData);
-      expect(EmergencyContact.bulkCreate).not.toHaveBeenCalled();
-    });
-
-    it('should throw an error for any other error', async () => {
+    it('should throw an error for any error', async () => {
       sequelize.transaction = jest
         .fn()
         .mockImplementation(async (callback) => callback());
 
       const mockError = new Error('An error');
-
-      validateMemberData.mockResolvedValueOnce(memberData);
 
       sequelize.transaction.mockImplementationOnce((fn) => {
         throw mockError;
@@ -186,25 +159,66 @@ describe('Member service', () => {
     });
   });
 
+  // Update
+  describe('Update', () => {
+    const newMemberData = {
+      firstName: 'Jane',
+    };
+
+    const id = 1;
+
+    it('should update an member', async () => {
+      Members.update = jest.fn().mockResolvedValue([1]);
+
+      const result = await updateById(newMemberData, id);
+
+      expect(result).toEqual([1]);
+      expect(Members.update).toHaveBeenCalledWith(newMemberData, {
+        where: { id },
+      });
+    });
+
+    it('should return [0] if emergency contact not updated/found', async () => {
+      Members.update = jest.fn().mockResolvedValue([0]);
+
+      const result = await updateById(newMemberData, id);
+
+      expect(result).toEqual([0]);
+      expect(Members.update).toHaveBeenCalledWith(newMemberData, {
+        where: { id },
+      });
+    });
+
+    it('should return errors', async () => {
+      const mockError = new Error('An error');
+      Members.update = jest.fn().mockRejectedValueOnce(mockError);
+
+      await expect(updateById(newMemberData, id)).rejects.toThrowError(
+        'An error',
+      );
+    });
+  });
+
   // Delete member by ID
   describe('deleteById', () => {
-    it('should delete member with valid id', async () => {
+    it('should return 1 if member is deleted', async () => {
       const id = 1;
       Members.destroy = jest.fn().mockResolvedValue(1);
 
       const result = await deleteById(id);
 
-      expect(result).toEqual('Member deleted');
+      expect(result).toEqual(1);
       expect(Members.destroy).toHaveBeenCalledTimes(1);
       expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
     });
 
-    it('should throw an error if member not found', async () => {
+    it('should return 0 if member not found', async () => {
       const id = 1;
       Members.destroy = jest.fn().mockResolvedValue(0);
 
-      await expect(deleteById(id)).rejects.toThrow('Member not found');
+      const result = await deleteById(id);
 
+      expect(result).toEqual(0);
       expect(Members.destroy).toHaveBeenCalledTimes(1);
       expect(Members.destroy).toHaveBeenCalledWith({ where: { id } });
     });
