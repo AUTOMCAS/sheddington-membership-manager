@@ -12,16 +12,17 @@
 
 - [x] Member list: All members are displayed on the main page with full details.
 - [x] Member creation: A member can be created using an input form.
-- [ ] Member search function: A member can be searched for using name.
+- [ ] Member page: Displaying all info.
 - [ ] Member deletion.
 - [ ] Member update.
+- [ ] Member search function: A member can be searched for using name.
 
 ### Backend
 
 - [x] Retrieval of all members.
-- [x] Creation.
-- [x] Deletion.
-- [ ] Update.
+- [x] Create.
+- [x] Delete.
+- [x] Update.
 
 ## Technologies
 
