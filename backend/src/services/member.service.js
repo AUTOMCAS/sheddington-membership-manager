@@ -59,7 +59,7 @@ const deleteById = async (id) => {
   }
 };
 
-const updateById = async (id, newMemberData) => {
+const updateById = async (newMemberData, id) => {
   try {
     return await Members.update(newMemberData, {
       where: { id },

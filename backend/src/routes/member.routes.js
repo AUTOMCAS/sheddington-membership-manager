@@ -22,7 +22,7 @@ router.get('/:id', getMemberById);
 // Delete Member by ID
 router.delete('/:id', deleteMemberById);
 
-// Delete Member by ID
+// Update Member by ID
 router.put('/:id', updateMemberById);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const {
   create,
   getById,
   getAll,
+  updateById,
   deleteById,
 } = require('../../../services/member.service');
 
@@ -154,6 +155,46 @@ describe('Member service', () => {
 
       await expect(getById(expectedMemberResponse.id)).rejects.toThrowError(
         'Member not found',
+      );
+    });
+  });
+
+  // Update
+  describe('Update', () => {
+    const newMemberData = {
+      firstName: 'Jane',
+    };
+
+    const id = 1;
+
+    it('should update an member', async () => {
+      Members.update = jest.fn().mockResolvedValue([1]);
+
+      const result = await updateById(newMemberData, id);
+
+      expect(result).toEqual([1]);
+      expect(Members.update).toHaveBeenCalledWith(newMemberData, {
+        where: { id },
+      });
+    });
+
+    it('should return [0] if emergency contact not updated/found', async () => {
+      Members.update = jest.fn().mockResolvedValue([0]);
+
+      const result = await updateById(newMemberData, id);
+
+      expect(result).toEqual([0]);
+      expect(Members.update).toHaveBeenCalledWith(newMemberData, {
+        where: { id },
+      });
+    });
+
+    it('should return errors', async () => {
+      const mockError = new Error('An error');
+      Members.update = jest.fn().mockRejectedValueOnce(mockError);
+
+      await expect(updateById(newMemberData, id)).rejects.toThrowError(
+        'An error',
       );
     });
   });

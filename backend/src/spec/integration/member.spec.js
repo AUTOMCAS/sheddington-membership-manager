@@ -98,6 +98,51 @@ describe('/members', () => {
     });
   });
 
+  // Update member by ID
+  describe('/PUT /members/:id, update member by id', () => {
+    it('should update a member', async () => {
+      // Create member to be updated
+      await request(app).post('/members').send(memberData);
+
+      const updatedMemberData = { firstName: 'Chris' };
+
+      const id = 1;
+      const response = await request(app)
+        .put(`/members/${id}`)
+        .send(updatedMemberData);
+
+      expect(response.statusCode).toBe(204);
+    });
+
+    it('should respond with 404 and error message when member not found', async () => {
+      const id = 5;
+
+      const updatedMemberData = { firstName: 'Chris' };
+
+      const response = await request(app)
+        .put(`/members/${id}`)
+        .send(updatedMemberData);
+
+      expect(response.statusCode).toBe(404);
+      expect(response.body.message).toBe('Member with that ID not found');
+    });
+
+    it('should respond with 400 when emergencyContact is given in request body', async () => {
+      // Create member to be updated
+      await request(app).post('/members').send(memberData);
+
+      const updatedMemberData = { ...memberData, firstName: 'Chris' };
+
+      const id = 1;
+      const response = await request(app)
+        .put(`/members/${id}`)
+        .send(updatedMemberData);
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body.message).toBe('Do not include emergencyContacts');
+    });
+  });
+
   // Delete a member
   describe('DELETE /members/:id, delete member by ID', () => {
     it('should delete a member by ID', async () => {
@@ -114,7 +159,7 @@ describe('/members', () => {
 
       const response = await request(app).delete(`/members/${id}`);
       expect(response.statusCode).toBe(404);
-      expect(response.body.message).toBe('Member not found');
+      expect(response.body.message).toBe('Member with that ID not found');
     });
   });
 });

@@ -9,6 +9,7 @@ const {
   createMember,
   getAllMembers,
   getMemberById,
+  updateMemberById,
   deleteMemberById,
 } = require('../../../controllers/member.controller');
 
@@ -212,6 +213,103 @@ describe('member controller', () => {
     });
   });
 
+  // Update by ID
+  describe('updateById', () => {
+    const id = 1;
+    it('should return 204 on successful update', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+
+      const newMemberData = {
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newMemberData };
+
+      memberService.updateById = jest.fn().mockResolvedValue([1]);
+
+      await updateMemberById(mockRequest, mockResponse);
+
+      expect(memberService.updateById).toHaveBeenCalledWith(newMemberData, id);
+      expect(mockResponse.status).toHaveBeenCalledWith(204);
+      expect(mockResponse.send).toHaveBeenCalled();
+    });
+
+    it('should return 400 if emergencyContact is included in request body', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const newMemberData = {
+        ...memberData,
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newMemberData };
+
+      await updateMemberById(mockRequest, mockResponse);
+
+      expect(memberService.updateById).not.toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Do not include emergencyContacts',
+      });
+    });
+
+    it('should return 404 if member does not exist', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const newMemberData = {
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newMemberData };
+
+      memberService.updateById = jest.fn().mockResolvedValue([0]);
+
+      await updateMemberById(mockRequest, mockResponse);
+
+      expect(memberService.updateById).toHaveBeenCalledWith(newMemberData, id);
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Member with that ID not found',
+      });
+    });
+
+    it('should return 500 for unknown errors', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const newMemberData = {
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newMemberData };
+
+      const mockError = new Error('Unknown error');
+      memberService.updateById.mockRejectedValue(mockError);
+
+      await updateMemberById(mockRequest, mockResponse);
+
+      expect(memberService.updateById).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Unexpected server error',
+      });
+    });
+  });
+
   // Delete member by ID
   describe('deleteMemberById', () => {
     it('should delete member and return 204 when member present', async () => {
@@ -244,7 +342,7 @@ describe('member controller', () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(404);
       expect(mockResponse.json).toHaveBeenCalledWith({
-        message: 'Member not found',
+        message: 'Member with that ID not found',
       });
     });
   });

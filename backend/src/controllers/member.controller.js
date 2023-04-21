@@ -55,12 +55,23 @@ const createMember = async (req, res) => {
   }
 };
 
-const deleteMemberById = async (req, res) => {
-  try {
-    const deletionResponse = await memberService.deleteById(req.params.id);
+const updateMemberById = async (req, res) => {
+  const newMemberData = req.body;
 
-    if (deletionResponse === 0) {
-      return res.status(404).json({ message: 'Member not found' });
+  if (newMemberData.emergencyContacts) {
+    return res.status(400).json({
+      message: 'Do not include emergencyContacts',
+    });
+  }
+
+  try {
+    const updatedMember = await memberService.updateById(
+      newMemberData,
+      req.params.id,
+    );
+
+    if (updatedMember[0] === 0) {
+      return res.status(404).json({ message: 'Member with that ID not found' });
     }
 
     return res.status(204).send();
@@ -70,23 +81,12 @@ const deleteMemberById = async (req, res) => {
   }
 };
 
-const updateMemberById = async (req, res) => {
-  const newMemberData = req.body;
-
-  if (newMemberData.emergencyContacts) {
-    return res.status(400).json({
-      message: 'Do not include emergency contacts',
-    });
-  }
-
+const deleteMemberById = async (req, res) => {
   try {
-    const updatedMember = await memberService.updateById(
-      req.params.id,
-      newMemberData,
-    );
+    const deletionResponse = await memberService.deleteById(req.params.id);
 
-    if (updatedMember[0] === 0) {
-      return res.status(404).json({ message: 'Member not found' });
+    if (deletionResponse === 0) {
+      return res.status(404).json({ message: 'Member with that ID not found' });
     }
 
     return res.status(204).send();
