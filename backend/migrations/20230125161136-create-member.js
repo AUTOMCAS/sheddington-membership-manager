@@ -40,15 +40,15 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: false,
       },
-      medicalConditions: {
-        type: Sequelize.ARRAY(Sequelize.TEXT),
+      medicalInformation: {
+        type: Sequelize.STRING,
         allowNull: false,
-        field: 'medical_conditions',
+        field: 'medical_information',
       },
-      specialRequirements: {
-        type: Sequelize.ARRAY(Sequelize.TEXT),
+      accessibilityRequirements: {
+        type: Sequelize.STRING,
         allowNull: false,
-        field: 'special_requirements',
+        field: 'accessibility_requirements',
       },
       joinDate: {
         allowNull: false,

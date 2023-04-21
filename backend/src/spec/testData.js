@@ -6,8 +6,8 @@ const memberData = {
   address: '12 example address',
   gender: 'M',
   interests: ['Making and Mending', 'Gardening'],
-  medicalConditions: ['Lower body paralysis'],
-  specialRequirements: ['Wheelchair access'],
+  medicalInformation: 'Lower body paralysis',
+  accessibilityRequirements: 'Wheelchair access',
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
   emergencyContacts: [
@@ -29,8 +29,8 @@ const expectedMemberResponse = {
   address: '12 example address',
   gender: 'M',
   interests: ['Making and Mending', 'Gardening'],
-  medicalConditions: ['Lower body paralysis'],
-  specialRequirements: ['Wheelchair access'],
+  medicalInformation: 'Lower body paralysis',
+  accessibilityRequirements: 'Wheelchair access',
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
   createdEmergencyContacts: [
@@ -54,8 +54,8 @@ const expectedMemberResponseById = {
   address: '12 example address',
   gender: 'M',
   interests: ['Making and Mending', 'Gardening'],
-  medicalConditions: ['Lower body paralysis'],
-  specialRequirements: ['Wheelchair access'],
+  medicalInformation: 'Lower body paralysis',
+  accessibilityRequirements: 'Wheelchair access',
   joinDate: '2023-12-01T00:00:00.000Z',
   renewalDate: '2024-12-01T00:00:00.000Z',
   emergencyContacts: [
