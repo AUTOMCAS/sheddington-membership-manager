@@ -28,14 +28,20 @@ const createEmergencyContact = async (req, res) => {
   }
 };
 
-const deleteEmergencyContactById = async (req, res) => {
+const updateEmergencyContactById = async (req, res) => {
   const { id } = req.params;
+  const newEmergencyContactData = req.body;
 
   try {
-    const deletionResponse = await emergencyContactService.deleteById(id);
+    const updateResponse = await emergencyContactService.updateById(
+      newEmergencyContactData,
+      id,
+    );
 
-    if (deletionResponse === 0) {
-      return res.status(404).json({ message: 'Emergency contact not found' });
+    if (updateResponse[0] === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Emergency contact with that ID not found' });
     }
 
     return res.status(204).send();
@@ -45,4 +51,27 @@ const deleteEmergencyContactById = async (req, res) => {
   }
 };
 
-module.exports = { createEmergencyContact, deleteEmergencyContactById };
+const deleteEmergencyContactById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletionResponse = await emergencyContactService.deleteById(id);
+
+    if (deletionResponse === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Emergency contact with that ID not found' });
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({ message: 'Unexpected server error' });
+  }
+};
+
+module.exports = {
+  createEmergencyContact,
+  deleteEmergencyContactById,
+  updateEmergencyContactById,
+};

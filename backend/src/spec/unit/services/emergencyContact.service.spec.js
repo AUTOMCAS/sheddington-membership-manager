@@ -1,6 +1,7 @@
 const {
   create,
   deleteById,
+  updateById,
 } = require('../../../services/emergencyContact.service');
 const models = require('../../../models');
 
@@ -23,6 +24,7 @@ describe('Emergency contact service', () => {
     member_id: 1,
   };
 
+  // Create
   describe('create', () => {
     it('should create emergency contact', async () => {
       EmergencyContacts.create = jest
@@ -48,6 +50,49 @@ describe('Emergency contact service', () => {
     });
   });
 
+  // Update
+  describe('Update', () => {
+    const newEmergencyContactData = {
+      firstName: 'Jane',
+    };
+
+    const id = 1;
+
+    it('should update an emergency contact', async () => {
+      EmergencyContacts.update = jest.fn().mockResolvedValue(1);
+
+      const result = await updateById(newEmergencyContactData, id);
+
+      expect(result).toEqual(1);
+      expect(EmergencyContacts.update).toHaveBeenCalledWith(
+        newEmergencyContactData,
+        { where: { id } },
+      );
+    });
+
+    it('should return 0 if emergency contact not updated/found', async () => {
+      EmergencyContacts.update = jest.fn().mockResolvedValue(0);
+
+      const result = await updateById(newEmergencyContactData, id);
+
+      expect(result).toEqual(0);
+      expect(EmergencyContacts.update).toHaveBeenCalledWith(
+        newEmergencyContactData,
+        { where: { id } },
+      );
+    });
+
+    it('should return errors', async () => {
+      const mockError = new Error('An error');
+      EmergencyContacts.update = jest.fn().mockRejectedValueOnce(mockError);
+
+      await expect(
+        updateById(newEmergencyContactData, id),
+      ).rejects.toThrowError('An error');
+    });
+  });
+
+  // Delete by ID
   describe('deleteById', () => {
     it('should return 1 if emergency contact is deleted', async () => {
       EmergencyContacts.destroy = jest.fn().mockResolvedValue(1);

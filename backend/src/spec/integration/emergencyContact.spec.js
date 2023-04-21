@@ -40,6 +40,7 @@ describe('/emergencyContact', () => {
     member_id: 1,
   };
 
+  // Create
   describe('/POST emergencyContact, create emergency contact', () => {
     it('should create a emergency contact', async () => {
       const response = await request(app)
@@ -81,11 +82,46 @@ describe('/emergencyContact', () => {
     });
   });
 
-  describe('/DELETE emergencyContact, delete emergency contact', () => {
-    it('should delete an emergency contact', async () => {
+  // Update
+  describe('/PUT emergencyContact, update emergency contact', () => {
+    const newEmergencyContactData = {
+      ...emergencyContactData,
+      firstName: 'David',
+    };
+
+    it('should update an emergency contact', async () => {
       await request(app).post('/emergencyContacts').send(emergencyContactData);
 
       const id = 1;
+      const response = await request(app)
+        .put(`/emergencyContacts/${id}`)
+        .send(newEmergencyContactData);
+
+      expect(response.statusCode).toBe(204);
+    });
+
+    it('should respond with 404 and error message when emergency contact not found', async () => {
+      const id = 5;
+
+      const response = await request(app)
+        .put(`/emergencyContacts/${id}`)
+        .send(newEmergencyContactData);
+
+      expect(response.statusCode).toBe(404);
+      expect(response.body.message).toBe(
+        'Emergency contact with that ID not found',
+      );
+    });
+  });
+
+  // Delete
+  describe('/DELETE emergencyContact, delete emergency contact', () => {
+    it('should delete an emergency contact', async () => {
+      // Create emergency contact with ID of 1
+      await request(app).post('/emergencyContacts').send(emergencyContactData);
+
+      const id = 1;
+
       const response = await request(app).delete(`/emergencyContacts/${id}`);
 
       expect(response.statusCode).toBe(204);
@@ -96,7 +132,9 @@ describe('/emergencyContact', () => {
 
       const response = await request(app).delete(`/emergencyContacts/${id}`);
       expect(response.statusCode).toBe(404);
-      expect(response.body.message).toBe('Emergency contact not found');
+      expect(response.body.message).toBe(
+        'Emergency contact with that ID not found',
+      );
     });
   });
 });

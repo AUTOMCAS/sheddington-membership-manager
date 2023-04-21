@@ -61,11 +61,9 @@ const deleteById = async (id) => {
 
 const updateById = async (id, newMemberData) => {
   try {
-    const updatedMember = await Members.update(newMemberData, {
+    return await Members.update(newMemberData, {
       where: { id },
     });
-
-    return updatedMember;
   } catch (error) {
     throw new Error(error);
   }

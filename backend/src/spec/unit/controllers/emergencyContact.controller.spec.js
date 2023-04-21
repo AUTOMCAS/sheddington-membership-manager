@@ -1,6 +1,7 @@
 const {
   createEmergencyContact,
   deleteEmergencyContactById,
+  updateEmergencyContactById,
 } = require('../../../controllers/emergencyContact.controller');
 
 const emergencyContactService = require('../../../services/emergencyContact.service');
@@ -50,24 +51,6 @@ describe('Emergency contact controller', () => {
       );
     });
 
-    it('should return 500 for unknown errors', async () => {
-      const mockResponse = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      const mockError = new Error('Unknown error occurred');
-      emergencyContactService.create.mockRejectedValue(mockError);
-
-      await createEmergencyContact(emergencyContactData, mockResponse);
-
-      expect(emergencyContactService.create).toHaveBeenCalled();
-      expect(mockResponse.status).toHaveBeenCalledWith(500);
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        message: 'Unexpected server error',
-      });
-    });
-
     it('should return 409 for invalid entries', async () => {
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
@@ -89,10 +72,110 @@ describe('Emergency contact controller', () => {
       });
       expect(emergencyContactService.create).not.toHaveBeenCalled();
     });
+
+    it('should return 500 for unknown errors', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      const mockError = new Error('Unknown error');
+      emergencyContactService.create.mockRejectedValue(mockError);
+
+      await createEmergencyContact(emergencyContactData, mockResponse);
+
+      expect(emergencyContactService.create).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Unexpected server error',
+      });
+    });
   });
 
-  // DeleteByID
+  // Update by ID
+  describe('updateById', () => {
+    const id = 1;
+    it('should return 204 on successful update', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
 
+      const newEmergencyContactData = {
+        ...emergencyContactData,
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newEmergencyContactData };
+
+      emergencyContactService.updateById = jest.fn().mockResolvedValue([1]);
+
+      await updateEmergencyContactById(mockRequest, mockResponse);
+
+      expect(emergencyContactService.updateById).toHaveBeenCalledWith(
+        newEmergencyContactData,
+        id,
+      );
+      expect(mockResponse.status).toHaveBeenCalledWith(204);
+      expect(mockResponse.send).toHaveBeenCalled();
+    });
+
+    it('should return 404 if emergency contact does not exist', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const newEmergencyContactData = {
+        ...emergencyContactData,
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newEmergencyContactData };
+
+      emergencyContactService.updateById = jest.fn().mockResolvedValue([0]);
+
+      await updateEmergencyContactById(mockRequest, mockResponse);
+
+      expect(emergencyContactService.updateById).toHaveBeenCalledWith(
+        newEmergencyContactData,
+        id,
+      );
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Emergency contact with that ID not found',
+      });
+    });
+
+    it('should return 500 for unknown errors', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const newEmergencyContactData = {
+        ...emergencyContactData,
+        firstName: 'David',
+      };
+
+      const mockRequest = { params: { id }, body: newEmergencyContactData };
+
+      const mockError = new Error('Unknown error');
+      emergencyContactService.updateById.mockRejectedValue(mockError);
+
+      await updateEmergencyContactById(mockRequest, mockResponse);
+
+      expect(emergencyContactService.updateById).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Unexpected server error',
+      });
+    });
+  });
+
+  // Delete by ID
   describe('DeleteById', () => {
     it('should return 204 on successful deletion', async () => {
       const mockResponse = {
@@ -104,6 +187,8 @@ describe('Emergency contact controller', () => {
 
       const mockRequest = { params: { id } };
 
+      emergencyContactService.deleteById = jest.fn().mockResolvedValue(1);
+
       await deleteEmergencyContactById(mockRequest, mockResponse);
 
       expect(emergencyContactService.deleteById).toHaveBeenCalledWith(id);
@@ -111,7 +196,7 @@ describe('Emergency contact controller', () => {
       expect(mockResponse.send).toHaveBeenCalled();
     });
 
-    it('should return 409 if emergency contact does not exist', async () => {
+    it('should return 404 if emergency contact does not exist', async () => {
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
         send: jest.fn(),
@@ -126,7 +211,30 @@ describe('Emergency contact controller', () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(404);
       expect(mockResponse.json).toHaveBeenCalledWith({
-        message: 'Emergency contact not found',
+        message: 'Emergency contact with that ID not found',
+      });
+    });
+
+    it('should return 500 for unknown errors', async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+        json: jest.fn(),
+      };
+
+      const id = 1;
+
+      const mockRequest = { params: { id } };
+
+      const mockError = new Error('Unknown error');
+      emergencyContactService.deleteById.mockRejectedValue(mockError);
+
+      await deleteEmergencyContactById(mockRequest, mockResponse);
+
+      expect(emergencyContactService.deleteById).toHaveBeenCalled();
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: 'Unexpected server error',
       });
     });
   });
