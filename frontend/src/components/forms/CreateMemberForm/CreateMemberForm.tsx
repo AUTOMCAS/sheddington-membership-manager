@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
 
@@ -17,8 +17,19 @@ type Member = {
   telephone: string;
   address: string;
   gender: string;
+  interests: string[];
+  medicalInformation: string;
+  specialRequirements: string;
   joinDate: string;
   renewalDate: string;
+  emergencyContacts: EmergencyContact[];
+};
+
+type EmergencyContact = {
+  firstName: string;
+  lastName: string;
+  telephone: string;
+  relationship: string;
 };
 
 const CreateMemberForm: React.FC = (): JSX.Element => {
@@ -31,11 +42,23 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
     telephone: '',
     address: '',
     gender: '',
+    interests: [],
+    medicalInformation: '',
+    specialRequirements: '',
     joinDate: '',
     renewalDate: '',
+    emergencyContacts: [
+      {
+        firstName: '',
+        lastName: '',
+        telephone: '',
+        relationship: '',
+      },
+    ],
   };
 
   const handleSubmit = async (values: Member) => {
+    console.log('Values: ', values);
     let response = await memberService.create(values);
 
     if (response.status === 200) {
@@ -122,6 +145,42 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               data-test="genderInput"
             />
 
+            <div id="checkbox-group">Interests</div>
+            <div role="group" aria-labelledby="checkbox-group">
+              <label>
+                <Field
+                  type="checkbox"
+                  name="interests"
+                  value="Making and Mending"
+                />
+                Making and Mending
+              </label>
+              <label>
+                <Field type="checkbox" name="interests" value="Gardening" />
+                Gardening
+              </label>
+              <label>
+                <Field type="checkbox" name="interests" value="Craft" />
+                Craft
+              </label>
+            </div>
+
+            <TextInputField
+              label="Medical Information"
+              name="medicalInformation"
+              type="text"
+              placeholder="Medical Information"
+              data-test="medicalInformationInput"
+            />
+
+            <TextInputField
+              label="Special Requirements"
+              name="specialRequirements"
+              type="text"
+              placeholder="Special Requirements"
+              data-test="specialRequirementsInput"
+            />
+
             <DatePickerField
               name="joinDate"
               label="Join Date"
@@ -134,10 +193,40 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               placeholder="Renewal Date"
             />
 
+            <TextInputField
+              label="First Name"
+              name="emergencyContacts[0].firstName"
+              type="text"
+              placeholder="Emergency Contact's First Name"
+              data-test="eCFirstNameInput"
+            />
+
+            <TextInputField
+              label="Last Name"
+              name="emergencyContacts[0].lastName"
+              type="text"
+              placeholder="Emergency Contact's Last Name"
+              data-test="eCLastNameInput"
+            />
+
+            <TextInputField
+              label="Telephone"
+              name="emergencyContacts[0].telephone"
+              type="text"
+              placeholder="Emergency Contact's Telephone"
+              data-test="eCTelephoneInput"
+            />
+
+            <TextInputField
+              label="Relationship"
+              name="emergencyContacts[0].relationship"
+              type="text"
+              placeholder="Emergency Contact's Relationship to member"
+              data-test="eCRelationshipInput"
+            />
             <div className="display-message" data-test="display-message">
               {displayMessage}
             </div>
-
             <div className="submit-button-container">
               <button
                 className="submit-button"
