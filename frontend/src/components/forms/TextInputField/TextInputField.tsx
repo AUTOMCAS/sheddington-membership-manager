@@ -18,7 +18,7 @@ const TextInputField: React.FC<TextInputFieldProps> = ({
 
   return (
     <div className="text-input-field">
-      <label htmlFor={props.id || props.name}>{label}</label>
+      {/* <label htmlFor={props.id || props.name}>{label}</label> */}
       <input className="text-input" autoComplete="off" {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>

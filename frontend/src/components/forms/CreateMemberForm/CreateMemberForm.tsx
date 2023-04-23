@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldArray } from 'formik';
 
 import * as Yup from 'yup';
 
@@ -19,7 +19,7 @@ type Member = {
   gender: string;
   interests: string[];
   medicalInformation: string;
-  specialRequirements: string;
+  accessibilityRequirements: string;
   joinDate: string;
   renewalDate: string;
   emergencyContacts: EmergencyContact[];
@@ -44,7 +44,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
     gender: '',
     interests: [],
     medicalInformation: '',
-    specialRequirements: '',
+    accessibilityRequirements: '',
     joinDate: '',
     renewalDate: '',
     emergencyContacts: [
@@ -58,8 +58,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
   };
 
   const handleSubmit = async (values: Member) => {
-    console.log('Values: ', values);
-    let response = await memberService.create(values);
+    const response = await memberService.create(values);
 
     if (response.status === 200) {
       setDisplayMessage('Member Created');
@@ -82,21 +81,31 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
           .required('Telephone number is required')
           .min(10, 'Telephone number must be at least 10 characters')
           .max(15, 'Telephone number must not exceed 15 characters'),
-        gender: Yup.string().required(
-          'Gender is required. Enter "Unknown" or "Undisclosed where appropriate',
-        ),
+        gender: Yup.string().required('Gender is required'),
         address: Yup.string().required('Address is required'),
         joinDate: Yup.date().required('Join date is required'),
         renewalDate: Yup.string().required('Renewal date is required'),
+        emergencyContacts: Yup.array().of(
+          Yup.object().shape({
+            firstName: Yup.string().required('First name is required'),
+            lastName: Yup.string().required('Last name is required'),
+            telephone: Yup.string()
+              .required('Telephone number is required')
+              .min(10, 'Telephone number must be at least 10 characters')
+              .max(15, 'Telephone number must not exceed 15 characters'),
+            relationship: Yup.string().required('Relationship is required'),
+          }),
+        ),
       })}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
         handleSubmit(values);
         setSubmitting(false);
+        resetForm();
       }}
     >
       <div className="create-member-page">
-        <div className="form" data-test="memberForm">
-          <Form>
+        <div className="form-wrapper" data-test="memberForm">
+          <Form className="form">
             <TextInputField
               label="First Name"
               name="firstName"
@@ -145,26 +154,27 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               data-test="genderInput"
             />
 
-            <div id="checkbox-group">Interests</div>
-            <div role="group" aria-labelledby="checkbox-group">
-              <label>
-                <Field
-                  type="checkbox"
-                  name="interests"
-                  value="Making and Mending"
-                />
-                Making and Mending
-              </label>
-              <label>
-                <Field type="checkbox" name="interests" value="Gardening" />
-                Gardening
-              </label>
-              <label>
-                <Field type="checkbox" name="interests" value="Craft" />
-                Craft
-              </label>
+            <div id="checkbox-group" className="interests-wrapper">
+              <div className="form-header">Interests</div>
+              <div role="group" aria-labelledby="checkbox-group">
+                <label>
+                  <Field
+                    type="checkbox"
+                    name="interests"
+                    value="Making and Mending"
+                  />
+                  Making and Mending
+                </label>
+                <label>
+                  <Field type="checkbox" name="interests" value="Gardening" />
+                  Gardening
+                </label>
+                <label>
+                  <Field type="checkbox" name="interests" value="Craft" />
+                  Craft
+                </label>
+              </div>
             </div>
-
             <TextInputField
               label="Medical Information"
               name="medicalInformation"
@@ -174,11 +184,11 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
             />
 
             <TextInputField
-              label="Special Requirements"
-              name="specialRequirements"
+              label="Accessibility Requirements"
+              name="accessibilityRequirements"
               type="text"
-              placeholder="Special Requirements"
-              data-test="specialRequirementsInput"
+              placeholder="Accessibility Requirements"
+              data-test="accessibilityRequirementsInput"
             />
 
             <DatePickerField
@@ -193,37 +203,41 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               placeholder="Renewal Date"
             />
 
-            <TextInputField
-              label="First Name"
-              name="emergencyContacts[0].firstName"
-              type="text"
-              placeholder="Emergency Contact's First Name"
-              data-test="eCFirstNameInput"
-            />
+            <div className="emergency-contacts-wrapper">
+              <div className="form-header">Emergency Contact information</div>
+              <TextInputField
+                label="First Name"
+                name="emergencyContacts[0].firstName"
+                type="text"
+                placeholder="First Name"
+                data-test="eCFirstNameInput"
+              />
 
-            <TextInputField
-              label="Last Name"
-              name="emergencyContacts[0].lastName"
-              type="text"
-              placeholder="Emergency Contact's Last Name"
-              data-test="eCLastNameInput"
-            />
+              <TextInputField
+                label="Last Name"
+                name="emergencyContacts[0].lastName"
+                type="text"
+                placeholder="Last Name"
+                data-test="eCLastNameInput"
+              />
 
-            <TextInputField
-              label="Telephone"
-              name="emergencyContacts[0].telephone"
-              type="text"
-              placeholder="Emergency Contact's Telephone"
-              data-test="eCTelephoneInput"
-            />
+              <TextInputField
+                label="Telephone"
+                name="emergencyContacts[0].telephone"
+                type="text"
+                placeholder="Telephone"
+                data-test="eCTelephoneInput"
+              />
 
-            <TextInputField
-              label="Relationship"
-              name="emergencyContacts[0].relationship"
-              type="text"
-              placeholder="Emergency Contact's Relationship to member"
-              data-test="eCRelationshipInput"
-            />
+              <TextInputField
+                label="Relationship"
+                name="emergencyContacts[0].relationship"
+                type="text"
+                placeholder="Relationship to member"
+                data-test="eCRelationshipInput"
+              />
+            </div>
+
             <div className="display-message" data-test="display-message">
               {displayMessage}
             </div>
