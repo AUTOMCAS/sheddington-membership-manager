@@ -18,7 +18,13 @@ const TextareaInputField: React.FC<TextareaInputFieldProps> = ({
 
   return (
     <div className="textarea-input-field">
-      <textarea className="textarea-input" autoComplete="off" {...field} {...props} />
+      <label htmlFor={props.id || props.name}>{label}</label>
+      <textarea
+        className="textarea-input"
+        autoComplete="off"
+        {...field}
+        {...props}
+      />
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
       ) : null}

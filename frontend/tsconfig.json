@@ -14,6 +14,6 @@
     //"noUnusedLocals": true
     //"noUnusedParameters": true
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/pages/MemberPage"],
   "exclude": ["node_modules"]
 }

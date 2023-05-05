@@ -3,14 +3,14 @@ import './MemberTable.css';
 import moment from 'moment';
 
 import { useTable } from 'react-table';
+
 type MemberProps = {
   id: string | number;
   firstName: string;
   lastName: string;
   email: string;
   telephone: string;
-  address: string;
-  gender: string | undefined;
+  gender: string;
   joinDate: string;
   renewalDate: string;
   createdAt: string;
@@ -46,10 +46,6 @@ const MemberTable: React.FC<MemberTableProps> = ({
             accessor: 'telephone',
           },
           {
-            Header: 'Address',
-            accessor: 'address',
-          },
-          {
             Header: 'Gender',
             accessor: 'gender',
           },
@@ -60,6 +56,17 @@ const MemberTable: React.FC<MemberTableProps> = ({
           {
             Header: 'Renewal Date',
             accessor: (row: any): string => formatDate(row.renewalDate),
+          },
+          {
+            Header: 'View',
+            accessor: 'id',
+
+            Cell: (props: any) => (
+              <a href={`/members/${props.value}`}>
+                {' '}
+                <button>View</button>
+              </a>
+            ),
           },
         ],
       },

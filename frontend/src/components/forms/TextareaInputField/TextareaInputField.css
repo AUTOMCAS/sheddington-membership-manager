@@ -4,14 +4,20 @@
   font-size: 14px;
   padding: 6px 0;
   margin: auto;
-  /* width: 350px; */
+}
+.textarea-input-field label {
+  padding-bottom: 6px;
+  font-size: 16px;
+  margin-left: 4px;
+  color: #696969;
 }
 
 .textarea-input {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
   padding: 12px;
   margin-bottom: 16px;
   text-align: start;
-  font-size: 16px;
   height: 42px;
   border-radius: 5px;
   background: white;
