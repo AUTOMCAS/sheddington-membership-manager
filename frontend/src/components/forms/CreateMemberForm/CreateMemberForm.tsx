@@ -105,58 +105,85 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
     >
       <div className="create-member-page">
         <div className="form-wrapper" data-test="memberForm">
+          <div className="form-header">New Member Form</div>
           <Form className="form">
-            <TextInputField
-              label="First Name"
-              name="firstName"
-              type="text"
-              placeholder="First Name"
-              data-test="firstNameInput"
-            />
+            <div className="personal-information-wrapper">
+              <div className="form-sub-header">Personal information</div>
+              <div className="grid-content">
+                <TextInputField
+                  label="First Name"
+                  name="firstName"
+                  type="text"
+                  placeholder="First Name"
+                  data-test="firstNameInput"
+                />
 
-            <TextInputField
-              label="Last Name"
-              name="lastName"
-              type="text"
-              placeholder="Last Name"
-              data-test="lastNameInput"
-            />
+                <TextInputField
+                  label="Last Name"
+                  name="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                  data-test="lastNameInput"
+                />
 
-            <TextInputField
-              label="Email"
-              name="email"
-              type="text"
-              placeholder="email@email.com"
-              data-test="emailInput"
-            />
+                <TextInputField
+                  label="Email"
+                  name="email"
+                  type="text"
+                  placeholder="email@email.com"
+                  data-test="emailInput"
+                />
 
-            <TextInputField
-              label="Telephone"
-              name="telephone"
-              type="text"
-              placeholder="Telephone"
-              data-test="telephoneInput"
-            />
+                <TextInputField
+                  label="Telephone"
+                  name="telephone"
+                  type="text"
+                  placeholder="Telephone"
+                  data-test="telephoneInput"
+                />
 
-            <TextInputField
-              label="Address"
-              name="address"
-              type="text"
-              placeholder="Address"
-              data-test="addressInput"
-            />
+                <TextInputField
+                  label="Address"
+                  name="address"
+                  type="text"
+                  placeholder="Address"
+                  data-test="addressInput"
+                />
 
-            <TextInputField
-              label="Gender"
-              name="gender"
-              type="text"
-              placeholder="Gender"
-              data-test="genderInput"
-            />
+                <TextInputField
+                  label="Gender"
+                  name="gender"
+                  type="text"
+                  placeholder="Gender"
+                  data-test="genderInput"
+                />
+
+                <TextInputField
+                  label="Medical Information"
+                  name="medicalInformation"
+                  type="text"
+                  placeholder="Medical Information"
+                  data-test="medicalInformationInput"
+                />
+
+                <TextInputField
+                  label="Accessibility Requirements"
+                  name="accessibilityRequirements"
+                  type="text"
+                  placeholder="Accessibility Requirements"
+                  data-test="accessibilityRequirementsInput"
+                />
+              </div>
+              <hr />
+            </div>
 
             <div id="checkbox-group" className="interests-wrapper">
-              <div className="form-header">Interests</div>
-              <div role="group" aria-labelledby="checkbox-group">
+              <div className="form-sub-header">Interests</div>
+              <div
+                role="group"
+                aria-labelledby="checkbox-group"
+                className="checkbox-wrapper"
+              >
                 <label>
                   <Field
                     type="checkbox"
@@ -174,68 +201,64 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
                   Craft
                 </label>
               </div>
+              <hr />
             </div>
-            <TextInputField
-              label="Medical Information"
-              name="medicalInformation"
-              type="text"
-              placeholder="Medical Information"
-              data-test="medicalInformationInput"
-            />
 
-            <TextInputField
-              label="Accessibility Requirements"
-              name="accessibilityRequirements"
-              type="text"
-              placeholder="Accessibility Requirements"
-              data-test="accessibilityRequirementsInput"
-            />
+            <div className="dates-wrapper">
+              <div className="form-sub-header">Dates</div>
+              <div className="grid-content">
+                <DatePickerField
+                  name="joinDate"
+                  label="Join Date"
+                  placeholder="Join Date"
+                />
 
-            <DatePickerField
-              name="joinDate"
-              label="Join Date"
-              placeholder="Join Date"
-            />
+                <DatePickerField
+                  name="renewalDate"
+                  label="Renewal Date"
+                  placeholder="Renewal Date"
+                />
+              </div>
+              <hr />
+            </div>
 
-            <DatePickerField
-              name="renewalDate"
-              label="Renewal Date"
-              placeholder="Renewal Date"
-            />
+            <div className="emergency-contacts-wrapper ">
+              <div className="form-sub-header">
+                Emergency Contact information
+              </div>
+              <div className="grid-content">
+                <TextInputField
+                  label="First Name"
+                  name="emergencyContacts[0].firstName"
+                  type="text"
+                  placeholder="First Name"
+                  data-test="eCFirstNameInput"
+                />
 
-            <div className="emergency-contacts-wrapper">
-              <div className="form-header">Emergency Contact information</div>
-              <TextInputField
-                label="First Name"
-                name="emergencyContacts[0].firstName"
-                type="text"
-                placeholder="First Name"
-                data-test="eCFirstNameInput"
-              />
+                <TextInputField
+                  label="Last Name"
+                  name="emergencyContacts[0].lastName"
+                  type="text"
+                  placeholder="Last Name"
+                  data-test="eCLastNameInput"
+                />
 
-              <TextInputField
-                label="Last Name"
-                name="emergencyContacts[0].lastName"
-                type="text"
-                placeholder="Last Name"
-                data-test="eCLastNameInput"
-              />
+                <TextInputField
+                  label="Telephone"
+                  name="emergencyContacts[0].telephone"
+                  type="text"
+                  placeholder="Telephone"
+                  data-test="eCTelephoneInput"
+                />
 
-              <TextInputField
-                label="Telephone"
-                name="emergencyContacts[0].telephone"
-                type="text"
-                placeholder="Telephone"
-                data-test="eCTelephoneInput"
-              />
-
-              <TextInputField
-                label="Relationship"
-                name="emergencyContacts[0].relationship"
-                type="text"
-                placeholder="Relationship to member"
-                data-test="eCRelationshipInput"
-              />
+                <TextInputField
+                  label="Relationship"
+                  name="emergencyContacts[0].relationship"
+                  type="text"
+                  placeholder="Relationship to member"
+                  data-test="eCRelationshipInput"
+                />
+              </div>
             </div>
 
             <div className="display-message" data-test="display-message">

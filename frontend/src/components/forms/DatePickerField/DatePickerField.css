@@ -5,16 +5,23 @@
   padding: 6px 0;
   margin: auto;
   width: 350px;
+  height: 97px;
 }
 
-label {
+.date-picker-field-wrapper label {
   padding-bottom: 6px;
   font-size: 16px;
+  margin-left: 4px;
+  color: #696969;
 }
 
 .react-datepicker__input-container input {
-  height: 30px;
-  padding: 5px;
-  text-align: start;
   width: 100%;
+  padding: 12px;
+  text-align: start;
+  font-size: 16px;
+  height: 42px;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #adadad;
 }

@@ -6,45 +6,82 @@
 }
 
 .form-wrapper {
-  background-color: #e8e8e8;
+  background-color: #f7f7f7;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 12px;
   margin: 20px auto;
   max-width: 1000px;
   box-shadow: #000000 0 10px 20px -10px;
   padding: 40px;
 }
 
-.form {
+.form-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.form-sub-header {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.grid-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 20px;
 }
 
-.form-header,
+hr {
+  margin-top: 10px;
+  margin-bottom: 24px;
+  border-top: 1px solid #d8d8d8
+}
+
+.form-sub-header,
 .interests-wrapper,
 .submit-button-container,
 .back-button-container {
   grid-column: span 2;
 }
 
-.emergency-contacts-wrapper {
-  grid-column: span 2;
-  display: grid;
-  grid-column-gap: 20px;
-  grid-template-columns: repeat(2, 1fr);
-  background-color: #dad9d9;
-  border-radius: 6px;
-  padding: 20px 20px 6px;
-  margin-top: 20px;
+.checkbox-wrapper {
+  display: flex;
+  padding-top: 6px;
+  display: flex 1;
+  gap: 140px;
+  margin-bottom: 30px;
 }
 
+.checkbox-wrapper label {
+display: flex;
+  align-items: center;
+}
+
+input[type='checkbox'] {
+  appearance: none;
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000000;
+  cursor: pointer;
+}
+
+input[type='checkbox']:checked {
+  content: 'X';
+  background-color: #487de0;
+  padding: 6px;
+}
+
+
+
 @media screen and (max-width: 768px) {
-  .form {
+  .grid-content {
     grid-template-columns: 1fr;
   }
 
-  .form-header,
+  .form-sub-header,
   .interests-wrapper,
   .submit-button-container,
   .back-button-container {
@@ -76,20 +113,8 @@
   font-size: 14px;
 }
 
-button {
-  background-color: #5299c8;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 0;
-  color: #ffffff;
-  text-align: center;
-  cursor: pointer;
-  font-size: 16px;
-  width: fit-content;
-  box-shadow: #000000 0 5px 10px -5px;
-}
-
 .display-message {
   color: #cd5c5c;
   text-align: center;
+  font-size: 24px;
 }
