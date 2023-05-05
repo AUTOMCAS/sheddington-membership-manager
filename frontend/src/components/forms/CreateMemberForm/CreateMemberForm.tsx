@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import memberService from '../../../services/member.service';
 import './CreateMemberForm.css';
 import TextInputField from '../TextInputField/TextInputField';
+import TextareaInputField from '../TextareaInputField/TextareaInputField';
 import DatePickerField from '../DatePickerField/DatePickerField';
 
 type Member = {
@@ -108,7 +109,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
           <div className="form-header">New Member Form</div>
           <Form className="form">
             <div className="personal-information-wrapper">
-              <div className="form-sub-header">Personal information</div>
+              <div className="form-sub-header">Personal Information</div>
               <div className="grid-content">
                 <TextInputField
                   label="First Name"
@@ -157,23 +158,27 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
                   placeholder="Gender"
                   data-test="genderInput"
                 />
-
-                <TextInputField
-                  label="Medical Information"
-                  name="medicalInformation"
-                  type="text"
-                  placeholder="Medical Information"
-                  data-test="medicalInformationInput"
-                />
-
-                <TextInputField
-                  label="Accessibility Requirements"
-                  name="accessibilityRequirements"
-                  type="text"
-                  placeholder="Accessibility Requirements"
-                  data-test="accessibilityRequirementsInput"
-                />
               </div>
+              <hr />
+            </div>
+
+            <div className="personal-information-wrapper">
+            <div className="form-sub-header">Additional Requirements</div>
+              <TextareaInputField
+                label="Medical Information"
+                name="medicalInformation"
+                type="textarea"
+                placeholder="Medical Information"
+                data-test="medicalInformationInput"
+              />
+
+              <TextareaInputField
+                label="Accessibility Requirements"
+                name="accessibilityRequirements"
+                type="textarea"
+                placeholder="Accessibility Requirements"
+                data-test="accessibilityRequirementsInput"
+              />
               <hr />
             </div>
 
@@ -224,7 +229,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
 
             <div className="emergency-contacts-wrapper ">
               <div className="form-sub-header">
-                Emergency Contact information
+                Emergency Contact Information
               </div>
               <div className="grid-content">
                 <TextInputField
