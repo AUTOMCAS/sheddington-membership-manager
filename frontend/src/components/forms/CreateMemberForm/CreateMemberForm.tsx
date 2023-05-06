@@ -99,6 +99,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
         ),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
+        console.log(values.interests)
         handleSubmit(values);
         setSubmitting(false);
         resetForm();
@@ -162,7 +163,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               <hr />
             </div>
 
-            <div className="personal-information-wrapper">
+            <div className="additional-requirements-wrapper">
             <div className="form-sub-header">Additional Requirements</div>
               <TextareaInputField
                 label="Medical Information"
