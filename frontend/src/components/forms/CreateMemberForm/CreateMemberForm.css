@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1024px;
+  width: 800px;
 }
 
 .form-wrapper {
@@ -36,7 +36,7 @@
 hr {
   margin-top: 10px;
   margin-bottom: 24px;
-  border-top: 1px solid #d8d8d8
+  border-top: 1px solid #d8d8d8;
 }
 
 .form-sub-header,
@@ -46,16 +46,19 @@ hr {
   grid-column: span 2;
 }
 
+
+
 .checkbox-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 80px;
+  grid-row-gap: 20px;
   padding-top: 6px;
-  display: flex 1;
-  gap: 140px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .checkbox-wrapper label {
-display: flex;
+  display: flex;
   align-items: center;
 }
 
@@ -73,8 +76,6 @@ input[type='checkbox']:checked {
   background-color: #487de0;
   padding: 6px;
 }
-
-
 
 @media screen and (max-width: 768px) {
   .grid-content {

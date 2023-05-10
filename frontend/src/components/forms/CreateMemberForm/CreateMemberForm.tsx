@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
 
@@ -26,6 +26,10 @@ type Member = {
   emergencyContacts: EmergencyContact[];
 };
 
+interface FormProps extends Member {
+  otherInterests: string;
+}
+
 type EmergencyContact = {
   firstName: string;
   lastName: string;
@@ -36,7 +40,7 @@ type EmergencyContact = {
 const CreateMemberForm: React.FC = (): JSX.Element => {
   const [displayMessage, setDisplayMessage] = useState<string>('');
 
-  const initialValues: Member = {
+  const initialValues: FormProps = {
     firstName: '',
     lastName: '',
     email: '',
@@ -44,6 +48,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
     address: '',
     gender: '',
     interests: [],
+    otherInterests: '',
     medicalInformation: '',
     accessibilityRequirements: '',
     joinDate: '',
@@ -99,8 +104,25 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
         ),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        console.log(values.interests)
-        handleSubmit(values);
+        if (values.otherInterests !== '') {
+          values.interests.push(values.otherInterests);
+        }
+
+        if (values.medicalInformation === '') {
+          values.medicalInformation = 'None given'
+        }
+
+        if (values.accessibilityRequirements === '') {
+          values.accessibilityRequirements = 'None given'
+        }
+
+        if (values.interests.length === 0) {
+          values.interests = ['None given']
+        }
+
+        const { otherInterests, ...submissionValues } = values;
+
+        handleSubmit(submissionValues);
         setSubmitting(false);
         resetForm();
       }}
@@ -113,50 +135,50 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               <div className="form-sub-header">Personal Information</div>
               <div className="grid-content">
                 <TextInputField
-                  label="First Name"
+                  label="First Name*"
                   name="firstName"
                   type="text"
-                  placeholder="First Name"
+                  placeholder="First Name*"
                   data-test="firstNameInput"
                 />
 
                 <TextInputField
-                  label="Last Name"
+                  label="Last Name*"
                   name="lastName"
                   type="text"
-                  placeholder="Last Name"
+                  placeholder="Last Name*"
                   data-test="lastNameInput"
                 />
 
                 <TextInputField
-                  label="Email"
+                  label="Email*"
                   name="email"
                   type="text"
-                  placeholder="email@email.com"
+                  placeholder="email@email.com*"
                   data-test="emailInput"
                 />
 
                 <TextInputField
-                  label="Telephone"
+                  label="Telephone*"
                   name="telephone"
                   type="text"
-                  placeholder="Telephone"
+                  placeholder="Telephone*"
                   data-test="telephoneInput"
                 />
 
                 <TextInputField
-                  label="Address"
+                  label="Address*"
                   name="address"
                   type="text"
-                  placeholder="Address"
+                  placeholder="Address*"
                   data-test="addressInput"
                 />
 
                 <TextInputField
-                  label="Gender"
+                  label="Gender*"
                   name="gender"
                   type="text"
-                  placeholder="Gender"
+                  placeholder="Gender*"
                   data-test="genderInput"
                 />
               </div>
@@ -164,7 +186,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
             </div>
 
             <div className="additional-requirements-wrapper">
-            <div className="form-sub-header">Additional Requirements</div>
+              <div className="form-sub-header">Additional Requirements</div>
               <TextareaInputField
                 label="Medical Information"
                 name="medicalInformation"
@@ -194,19 +216,45 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
                   <Field
                     type="checkbox"
                     name="interests"
-                    value="Making and Mending"
+                    value="Arts & Crafts"
                   />
-                  Making and Mending
+                  Arts & Crafts
+                </label>
+                <label>
+                  <Field type="checkbox" name="interests" value="Cooking" />
+                  Cooking
                 </label>
                 <label>
                   <Field type="checkbox" name="interests" value="Gardening" />
                   Gardening
                 </label>
                 <label>
-                  <Field type="checkbox" name="interests" value="Craft" />
-                  Craft
+                  <Field
+                    type="checkbox"
+                    name="interests"
+                    value="Making and Mending"
+                  />
+                  Making and Mending
+                </label>
+                <label>
+                  <Field
+                    type="checkbox"
+                    name="interests"
+                    value="Meeting & Socialising"
+                  />
+                  Meeting & Socialising
+                </label>
+                <label>
+                  <Field type="checkbox" name="interests" value="Walking" />
+                  Walking
                 </label>
               </div>
+              <TextInputField
+                label="Other Interests"
+                type="text"
+                name="otherInterests"
+                placeholder="Additional interests"
+              />
               <hr />
             </div>
 
@@ -215,14 +263,14 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               <div className="grid-content">
                 <DatePickerField
                   name="joinDate"
-                  label="Join Date"
-                  placeholder="Join Date"
+                  label="Join Date*"
+                  placeholder="Join Date*"
                 />
 
                 <DatePickerField
                   name="renewalDate"
-                  label="Renewal Date"
-                  placeholder="Renewal Date"
+                  label="Renewal Date*"
+                  placeholder="Renewal Date*"
                 />
               </div>
               <hr />
@@ -234,34 +282,34 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
               </div>
               <div className="grid-content">
                 <TextInputField
-                  label="First Name"
+                  label="First Name*"
                   name="emergencyContacts[0].firstName"
                   type="text"
-                  placeholder="First Name"
+                  placeholder="First Name*"
                   data-test="eCFirstNameInput"
                 />
 
                 <TextInputField
-                  label="Last Name"
+                  label="Last Name*"
                   name="emergencyContacts[0].lastName"
                   type="text"
-                  placeholder="Last Name"
+                  placeholder="Last Name*"
                   data-test="eCLastNameInput"
                 />
 
                 <TextInputField
-                  label="Telephone"
+                  label="Telephone*"
                   name="emergencyContacts[0].telephone"
                   type="text"
-                  placeholder="Telephone"
+                  placeholder="Telephone*"
                   data-test="eCTelephoneInput"
                 />
 
                 <TextInputField
-                  label="Relationship"
+                  label="Relationship*"
                   name="emergencyContacts[0].relationship"
                   type="text"
-                  placeholder="Relationship to member"
+                  placeholder="Relationship to member*"
                   data-test="eCRelationshipInput"
                 />
               </div>
@@ -282,7 +330,6 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
           </Form>
           <div className="back-button-container">
             <a href="/members">
-              {' '}
               <button className="back-button" data-test="back-button">
                 Back to Members
               </button>
