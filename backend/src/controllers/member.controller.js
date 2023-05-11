@@ -41,8 +41,8 @@ const createMember = async (req, res) => {
     logger.error(error);
 
     if (
-      error.code === 'EMERGENCY_CONTACTS_MISSING' ||
-      error.code === 'EMPTY_ENTRY'
+      error.code === 'EMERGENCY_CONTACTS_MISSING'
+      || error.code === 'EMPTY_ENTRY'
     ) {
       return res.status(409).json({ message: error.message });
     }

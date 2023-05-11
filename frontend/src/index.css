@@ -26,3 +26,8 @@
   color: #ffffff;
   font-size: 24px;
 }
+
+::placeholder {
+  color: #696969;
+  font-size: 16px;
+}

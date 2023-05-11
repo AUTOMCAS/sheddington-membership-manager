@@ -12,10 +12,11 @@
   padding-bottom: 6px;
   font-size: 16px;
   margin-left: 4px;
-  color: #696969;
+  color: #000000;
 }
 
 .react-datepicker__input-container input {
+  font-family: 'Lato', sans-serif;
   width: 100%;
   padding: 12px;
   text-align: start;

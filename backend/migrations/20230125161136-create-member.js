@@ -38,16 +38,16 @@ module.exports = {
       },
       interests: {
         type: Sequelize.ARRAY(Sequelize.TEXT),
-        allowNull: false,
+        allowNull: true,
       },
       medicalInformation: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         field: 'medical_information',
       },
       accessibilityRequirements: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         field: 'accessibility_requirements',
       },
       joinDate: {

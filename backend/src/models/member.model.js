@@ -36,16 +36,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     interests: {
       type: DataTypes.ARRAY(DataTypes.TEXT),
-      allowNull: false,
+      allowNull: true,
     },
     medicalInformation: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       field: 'medical_information',
     },
     accessibilityRequirements: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       field: 'accessibility_requirements',
     },
     joinDate: {

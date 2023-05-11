@@ -19,7 +19,14 @@
   text-align: center;
   font-weight: bold;
   font-size: 32px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.field-warning {
+  font-size: 16px;
+  color: #696969;
+  font-style: italic;
+  margin-bottom: 16px;
 }
 
 .form-sub-header {
@@ -46,7 +53,63 @@ hr {
   grid-column: span 2;
 }
 
+.address-wrapper {
+  padding-bottom: 16px;
+}
 
+.address-input-field {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  padding: 12px;
+  height: 42px;
+  width: 350px;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #adadad;
+  resize: vertical;
+  min-height: 100px;
+  text-align: start;
+}
+
+.gender-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.gender-label {
+  font-size: 16px;
+  color: #000000;
+  padding-bottom: 16px;
+}
+.gender-radio-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+
+.gender-radio-group label {
+  padding-right: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.gender-radio-group label input {
+  margin-right: 12px;
+}
+
+.custom-gender-input {
+  padding: 12px;
+  text-align: start;
+  font-size: 16px;
+  height: 32px;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #adadad;
+  margin-bottom: 6px;
+}
 
 .checkbox-wrapper {
   display: grid;
