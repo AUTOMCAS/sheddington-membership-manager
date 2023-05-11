@@ -65,8 +65,10 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
     ],
   };
 
-  const handleSubmit = async (values: Member) => {
-    const response = await memberService.create(values);
+  const handleSubmit = async (values: FormProps) => {
+    const member: Member = await setMemberValues(values);
+
+    const response = await memberService.create(member);
 
     if (response.status === 200) {
       setDisplayMessage('Member Created');
@@ -74,6 +76,32 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
       const data = await response.json();
       setDisplayMessage(data.message);
     }
+  };
+
+  const setMemberValues = async (values: FormProps): Promise<Member> => {
+    if (values.gender === 'Custom') {
+      values.gender = values.customGender;
+    }
+
+    if (values.otherInterests !== '') {
+      values.interests.push(values.otherInterests);
+    }
+
+    if (values.interests.length === 0) {
+      values.interests = ['None given'];
+    }
+
+    if (values.medicalInformation === '') {
+      values.medicalInformation = 'None given';
+    }
+
+    if (values.accessibilityRequirements === '') {
+      values.accessibilityRequirements = 'None given';
+    }
+
+    const { otherInterests, customGender, ...memberValues } = values;
+
+    return memberValues;
   };
 
   return (
@@ -108,31 +136,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
         ),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        if (values.otherInterests !== '') {
-          values.interests.push(values.otherInterests);
-        }
-
-        if (values.gender === '') {
-          values.gender = values.customGender;
-        }
-
-        if (values.medicalInformation === '') {
-          values.medicalInformation = 'None given';
-        }
-
-        if (values.accessibilityRequirements === '') {
-          values.accessibilityRequirements = 'None given';
-        }
-
-        if (values.interests.length === 0) {
-          values.interests = ['None given'];
-        }
-
-        const { otherInterests, customGender, ...submissionValues } = values;
-
-        console.log(submissionValues);
-
-        handleSubmit(submissionValues);
+        handleSubmit(values);
         setSubmitting(false);
         resetForm();
       }}
