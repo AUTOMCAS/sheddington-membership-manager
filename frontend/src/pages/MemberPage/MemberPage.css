@@ -1,7 +1,8 @@
 .member-page {
-  background-color: #f9fafb
+  width: 100%;
+  background-color: #f3f4f7;
+  padding: 20px;
 }
-
 
 .page-heading {
   font-size: 24px;
@@ -13,28 +14,66 @@
 .full-name-heading {
   font-size: 36px;
   font-weight: bold;
-
+  margin-bottom: 16px;
 }
 
-.grid-content {
+.member-info-wrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 20px;
+  gap: 20px;
 }
 
-@media screen and (max-width: 768px) {
-  .grid-content {
-    grid-template-columns: 1fr;
-  }
-}
-
-.personal-information-wrapper {
+.member-page .personal-information-wrapper,
+.member-page .membership-wrapper,
+.member-page .emergency-contacts-wrapper,
+.member-page .additional-requirements-wrapper,
+.member-page .interests-wrapper {
+  background-color: #fff;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
+.personal-information-wrapper {
+  grid-column-start: 1;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
 
+.membership-wrapper {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
 
-.content {
+.emergency-contacts-wrapper {
+  grid-column-start: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.additional-requirements-wrapper {
+  grid-column-start: 1;
+  grid-row-start: 3;
+  grid-row-end: 5;
+}
+
+.interests-wrapper {
+  grid-column-start: 2;
+  grid-row-start: 3;
+  grid-row-end: 5;
+}
+.form-sub-header {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+hr {
+  margin-bottom: 24px;
+  margin-top: 0px;
+  border-top: 1px solid #d8d8d8;
+}
+
+.info {
   padding-bottom: 12px;
 }
 

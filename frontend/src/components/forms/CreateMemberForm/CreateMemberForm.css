@@ -87,8 +87,6 @@ hr {
   flex-wrap: wrap;
 }
 
-
-
 .gender-radio-group label {
   padding-right: 20px;
   margin-bottom: 10px;
@@ -104,11 +102,13 @@ hr {
   padding: 12px;
   text-align: start;
   font-size: 16px;
-  height: 32px;
+  height: 42px;
   border-radius: 5px;
   background: white;
   border: 1px solid #adadad;
   margin-bottom: 6px;
+  display: flex;
+  flex: 1;
 }
 
 .checkbox-wrapper {

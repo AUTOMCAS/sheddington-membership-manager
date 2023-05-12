@@ -58,83 +58,79 @@ const MemberPage: React.FC = (): JSX.Element => {
 
   return (
     <div className="member-page">
-      <h2 className="page-heading">Member page</h2>
-
       {member !== null && (
         <div>
           <div className="full-name-heading">{`${member.firstName} ${member.lastName}`}</div>
-          <div className="personal-information-wrapper">
-            <div className="form-sub-header">Personal Information</div>
-            <label>First Name:</label>
-            <div className="content">{member.firstName}</div>
-            <label>Last Name:</label>
-            <div className="content">{member.lastName}</div>
-            <label>Email:</label>
-            <div className="content">{member.email}</div>
-            <label>Telephone:</label>
-            <div className="content">{member.telephone}</div>
-            <label>Address:</label>
-            <div className="content">{member.address}</div>
-            <label>Gender:</label>
-            <div className="content">{member.gender}</div>
-            <hr />
-          </div>
-
-          <div className="additional-requirements-wrapper">
-            <div className="form-sub-header">Additional Requirements</div>
-            <div className="grid-content">
-              <label>Medical Information:</label>
-              <div>{member.medicalInformation}</div>
-              <label>Accessibility Requirements:</label>
-              <div>{member.accessibilityRequirements}</div>
+          <div className="member-info-wrapper">
+            <div className="personal-information-wrapper">
+              <div className="form-sub-header">Personal Information</div>
+              <hr />
+              <label>First Name:</label>
+              <div className="info">{member.firstName}</div>
+              <label>Last Name:</label>
+              <div className="info">{member.lastName}</div>
+              <label>Email:</label>
+              <div className="info">{member.email}</div>
+              <label>Telephone:</label>
+              <div className="info">{member.telephone}</div>
+              <label>Address:</label>
+              <div className="info">{member.address}</div>
+              <label>Gender:</label>
+              <div className="info">{member.gender}</div>
             </div>
-            <hr />
-          </div>
 
-          <div className="interests-wrapper">
-            <div className="form-sub-header">Interests</div>
-            <div className="grid-content">
+            <div className="membership-wrapper">
+              <div className="form-sub-header">Membership information</div>
+              <hr />
+              <label>Memership number:</label>
+              <div className="info">{member.id}</div>
+              <label>Join Date:</label>
+              <div className="info">{formatDate(member.joinDate)}</div>
+              <label>Renewal Date:</label>
+              <div className="info">{formatDate(member.renewalDate)}</div>
+            </div>
+
+            <div className="emergency-contacts-wrapper">
+              <div className="form-sub-header">
+                Emergency Contact information
+              </div>
+              <hr />
               <div>
+                {member.emergencyContacts.map((eContact, index) => {
+                  return (
+                    <div key={index}>
+                      <label>First Name:</label>
+                      <div className="info">{eContact.firstName}</div>
+                      <label>Last Name:</label>
+                      <div className="info">{eContact.lastName}</div>
+                      <label>Telephone:</label>
+                      <div className="info">{eContact.telephone}</div>
+                      <label>Relationship to member:</label>
+                      <div className="info">{eContact.relationship}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="additional-requirements-wrapper">
+              <div className="form-sub-header">Additional Requirements</div>
+              <hr />
+              <label>Medical Information:</label>
+              <div className="info">{member.medicalInformation}</div>
+              <label>Accessibility Requirements:</label>
+              <div className="info">{member.accessibilityRequirements}</div>
+            </div>
+
+            <div className="interests-wrapper">
+              <div className="form-sub-header">Interests</div>
+              <hr />
+              <div className="info">
                 {member.interests.map((interest, index) => {
                   return <div key={index}>{interest}</div>;
                 })}
               </div>
             </div>
-            <hr />
-          </div>
-
-          <div className="membership-wrapper">
-            <div className="form-sub-header">Membership information</div>
-            <div className="grid-content">
-              <label>Join Date:</label>
-              <div>{formatDate(member.joinDate)}</div>
-              <label>Renewal Date:</label>
-              <div>{formatDate(member.renewalDate)}</div>
-            </div>
-            <hr />
-          </div>
-
-          <div className="emergency-contacts-wrapper">
-            <div className="form-sub-header">Emergency Contact information</div>
-            <div>
-              {member.emergencyContacts.map((eContact, index) => {
-                return (
-                  <div key={index}>
-                    <div className="grid-content">
-                      <label>First Name:</label>
-                      <div>{eContact.firstName}</div>
-                      <label>Last Name:</label>
-                      <div>{eContact.lastName}</div>
-                      <label>Telephone:</label>
-                      <div>{eContact.telephone}</div>
-                      <label>Relationship to member:</label>
-                      <div>{eContact.relationship}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <hr />
           </div>
         </div>
       )}
