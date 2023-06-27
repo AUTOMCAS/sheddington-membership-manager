@@ -148,7 +148,7 @@ const CreateMemberForm: React.FC = (): JSX.Element => {
             <div className="field-warning">
               Fields marked with * are required
             </div>
-            <Form className="form">
+            <Form className="form" data-test="memberForms">
               <div className="personal-information-wrapper">
                 <div className="form-sub-header">Personal Information</div>
                 <div className="grid-content">

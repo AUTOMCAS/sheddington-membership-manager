@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MemberTable from '../../components/MemberTable/MemberTable';
 import memberService from '../../services/member.service';
 
-import './Members.css';
+import './MemberDirectory.css';
 
 type MemberProps = {
   id: string | number;
@@ -18,7 +18,7 @@ type MemberProps = {
   updatedAt: string;
 };
 
-const Members: React.FC = (): JSX.Element => {
+const MemberDirectory: React.FC = (): JSX.Element => {
   const [members, setMembers] = useState<Array<MemberProps>>([]);
 
   useEffect(() => {
@@ -46,4 +46,4 @@ const Members: React.FC = (): JSX.Element => {
   );
 };
 
-export default Members;
+export default MemberDirectory;

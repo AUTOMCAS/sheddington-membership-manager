@@ -32,7 +32,7 @@ describe('CreateMember.cy.tsx', () => {
   });
   it('Should have input for gender', () => {
     cy.mount(<CreateMember />);
-    cy.getByData('genderInput').type('Unknown').should('have.value', 'Unknown');
+    cy.getByData('customGenderInput').type('Unknown').should('have.value', 'Unknown');
   });
   it('Should have input for join date', () => {
     cy.mount(<CreateMember />);
