@@ -13,11 +13,12 @@ const {
 } = require('../testData');
 
 describe('/members', () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     await Members.truncate({ cascade: true, restartIdentity: true });
   });
 
   afterAll(async () => {
+    await Members.truncate({ cascade: true, restartIdentity: true });
     await models.sequelize.close();
   });
 
@@ -28,7 +29,7 @@ describe('/members', () => {
         const response = await request(app).post('/members').send(memberData);
         const createdMember = response.body;
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(201);
         expect(createdMember).toMatchObject(expectedMemberResponse, {
           ignore: ['createdAt', 'updatedAt', 'newEmergencyContact'],
         });

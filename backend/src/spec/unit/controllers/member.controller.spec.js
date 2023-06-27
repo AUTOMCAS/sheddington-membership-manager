@@ -115,7 +115,7 @@ describe('member controller', () => {
       jest.clearAllMocks();
     });
 
-    it('should return 200 status code and created member', async () => {
+    it('should return 201 status code and created member', async () => {
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -131,7 +131,7 @@ describe('member controller', () => {
       await createMember(memberData, mockResponse);
 
       expect(memberService.create).toHaveBeenCalled();
-      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith(expectedMemberResponse);
       expect(mockResponse.send).not.toHaveBeenCalled();
     });

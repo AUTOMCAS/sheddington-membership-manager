@@ -36,7 +36,7 @@ const createMember = async (req, res) => {
 
     const createdMember = await memberService.create(memberData);
 
-    return res.status(200).json(createdMember);
+    return res.status(201).json(createdMember);
   } catch (error) {
     logger.error(error);
 

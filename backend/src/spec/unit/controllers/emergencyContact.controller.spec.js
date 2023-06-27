@@ -30,7 +30,7 @@ describe('Emergency contact controller', () => {
 
   // Create
   describe('create', () => {
-    it('should return 200 and created emergency contact if successful', async () => {
+    it('should return 201 and created emergency contact if successful', async () => {
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -45,7 +45,7 @@ describe('Emergency contact controller', () => {
       await createEmergencyContact(emergencyContactData, mockResponse);
 
       expect(emergencyContactService.create).toHaveBeenCalled();
-      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith(
         mockEmergencyContactResponse,
       );

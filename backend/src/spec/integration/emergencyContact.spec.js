@@ -4,18 +4,17 @@ const app = require('../../app');
 
 const models = require('../../models');
 
-const EmergencyContacts = models.emergencyContacts;
 const Members = models.members;
 
 const { memberData } = require('../testData');
 
 describe('/emergencyContact', () => {
   beforeEach(async () => {
+    await Members.truncate({ cascade: true, restartIdentity: true });
     await Members.create(memberData);
   });
 
   afterEach(async () => {
-    await EmergencyContacts.truncate({ cascade: true, restartIdentity: true });
     await Members.truncate({ cascade: true, restartIdentity: true });
   });
 
@@ -49,7 +48,7 @@ describe('/emergencyContact', () => {
 
       const createdEmergencyContact = response.body;
 
-      expect(response.statusCode).toBe(200);
+      expect(response.statusCode).toBe(201);
       expect(createdEmergencyContact).toMatchObject(
         expectedEmergencyContactResponse,
         { ignore: ['createdAt', 'updatedAt'] },

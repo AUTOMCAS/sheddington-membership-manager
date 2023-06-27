@@ -12,7 +12,7 @@ const createEmergencyContact = async (req, res) => {
       emergencyContact,
     );
 
-    return res.status(200).json(createdEmergencyContact);
+    return res.status(201).json(createdEmergencyContact);
   } catch (error) {
     logger.error(error);
 
